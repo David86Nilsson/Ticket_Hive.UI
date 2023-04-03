@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ticket_Hive.Data
+namespace Ticket_Hive.Data.Models
 {
-    internal class UserDbContext
+    internal class AppUserModel
     {
     }
 }
