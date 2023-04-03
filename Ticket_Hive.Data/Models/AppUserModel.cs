@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ticket_Hive.Data.Models
+﻿namespace Ticket_Hive.Data.Models
 {
-    internal class AppUserModel
+    public class AppUserModel
     {
+        public int Id { get; set; }
+        public string Username { get; set; } = null!;
+        public List<BookingModel> Bookings { get; set; } = new();
     }
 }
