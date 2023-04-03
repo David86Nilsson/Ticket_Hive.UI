@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Ticket_Hive.Data;
 using Ticket_Hive.UI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 var UserconnectionString = builder.Configuration.GetConnectionString("UserDbConnectionstring") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(UserconnectionString));
+
+var EventconnectionString = builder.Configuration.GetConnectionString("EventDbConnectionstring");
+builder.Services.AddDbContext<EventDbContext>(options => options.UseSqlServer(EventconnectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
