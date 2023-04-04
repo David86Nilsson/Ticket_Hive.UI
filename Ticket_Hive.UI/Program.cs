@@ -50,15 +50,35 @@ using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider()
         IdentityRole adminRole = new();
         adminRole.Name = "Admin";
         var createRoleResult = roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
-
+        // Add Admin
         if (createRoleResult.Succeeded)
         {
-            IdentityUser? user = userManager.FindByNameAsync("Admin").GetAwaiter().GetResult();
-            if (user != null)
+            var admin = userManager.FindByNameAsync("admin").GetAwaiter().GetResult();
+            if (admin == null)
             {
-                var addToRoleResult = userManager.AddToRoleAsync(user, "Admin").GetAwaiter().GetResult();
+                IdentityUser newAdmin = new()
+                {
+                    UserName = "admin"
+                };
+
+                userManager.CreateAsync(newAdmin, "Password1234!").GetAwaiter().GetResult();
+                admin = userManager.FindByNameAsync("admin").GetAwaiter().GetResult();
+            }
+            if (admin != null)
+            {
+                var addToRoleResult = userManager.AddToRoleAsync(admin, "Admin").GetAwaiter().GetResult();
             }
         }
+    }
+    // Add a user
+    var user = userManager.FindByNameAsync("user").GetAwaiter().GetResult();
+    if (user == null)
+    {
+        IdentityUser newUser = new()
+        {
+            UserName = "user"
+        };
+        userManager.CreateAsync(newUser, "Password1234!").GetAwaiter().GetResult();
     }
 }
 
@@ -71,8 +91,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
