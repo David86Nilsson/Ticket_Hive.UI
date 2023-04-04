@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ticket_Hive.Data;
 
@@ -11,9 +12,11 @@ using Ticket_Hive.Data;
 namespace Ticket_Hive.Data.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    partial class EventDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230404135457_adminAndUser")]
+    partial class adminAndUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,63 +128,6 @@ namespace Ticket_Hive.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Capacity = 100,
-                            DateTime = new DateTime(2023, 4, 14, 18, 46, 14, 566, DateTimeKind.Local).AddTicks(4656),
-                            EventType = "Nightclub",
-                            Location = "Lund",
-                            Name = "Kareoke bowling",
-                            Price = 100m,
-                            TicketsSold = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Capacity = 300,
-                            DateTime = new DateTime(2023, 4, 9, 18, 46, 14, 566, DateTimeKind.Local).AddTicks(4711),
-                            EventType = "Musical",
-                            Location = "Malmö",
-                            Name = "Mama Mia",
-                            Price = 200m,
-                            TicketsSold = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Capacity = 30000,
-                            DateTime = new DateTime(2023, 4, 24, 18, 46, 14, 566, DateTimeKind.Local).AddTicks(4714),
-                            EventType = "Sport",
-                            Location = "Stockholm",
-                            Name = "AIK - Hammarby",
-                            Price = 500m,
-                            TicketsSold = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Capacity = 20,
-                            DateTime = new DateTime(2023, 4, 6, 18, 46, 14, 566, DateTimeKind.Local).AddTicks(4717),
-                            EventType = "Övrigt",
-                            Location = "Halmstad",
-                            Name = "Gästföreläsning med Steve Jobs",
-                            Price = 10m,
-                            TicketsSold = 20
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Capacity = 10,
-                            DateTime = new DateTime(2023, 4, 29, 18, 46, 14, 566, DateTimeKind.Local).AddTicks(4720),
-                            EventType = "Sport",
-                            Location = "Köpenhamn",
-                            Name = "VM i Rally-Pingis",
-                            Price = 25m,
-                            TicketsSold = 0
-                        });
                 });
 
             modelBuilder.Entity("Ticket_Hive.Data.Models.ShoppingCartModel", b =>

@@ -34,6 +34,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 builder.Services.AddScoped<IAppUserModelRepo, AppUserModelRepo>();
 builder.Services.AddScoped<IBookingRepo, BookingRepo>();
 builder.Services.AddScoped<IEventModelRepo, EventModelRepo>();
+builder.Services.AddScoped<IShoppingCartModelRepo, ShoppingCartModelRepo>();
 
 
 using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider())
