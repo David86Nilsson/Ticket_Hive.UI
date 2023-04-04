@@ -29,12 +29,12 @@ namespace Ticket_Hive.Data.Repos
 
         public async Task<IEnumerable<BookingModel>?> GetAllBookingsAsync()
         {
-            return await context.Bookings.Include(b => b.Event).ToListAsync();
+            return await context.Bookings.Include(b => b.Event).Include(b => b.User).ToListAsync();
         }
 
         public async Task<BookingModel?> GetBookingByIdAsync(int id)
         {
-            return await context.Bookings.Include(b => b.Event).FirstOrDefaultAsync(b => b.Id == id);
+            return await context.Bookings.Include(b => b.Event).Include(b => b.User).FirstOrDefaultAsync(b => b.Id == id);
         }
 
         public async Task<bool> UpdateBookingAsync(BookingModel updatedBooking)
@@ -44,7 +44,7 @@ namespace Ticket_Hive.Data.Repos
             {
                 booking.BookingDate = updatedBooking.BookingDate;
                 booking.Event = updatedBooking.Event;
-                booking.Users = updatedBooking.Users;
+                booking.User = updatedBooking.User;
                 context.Bookings.Update(booking);
                 await context.SaveChangesAsync();
                 return true;
