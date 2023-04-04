@@ -2,29 +2,29 @@
 
 namespace Ticket_Hive.Data.Repos
 {
-    public class BookingRepo : IBookingRepo
+    public class EventModelRepo : IEventModelRepo
     {
-        public Task<bool> AddBookingAsync(BookingModel newBooking)
+        public Task<bool> AddEventAsync(EventModel newEvent)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteBookingAsync(BookingModel bookingToDelete)
+        public Task<bool> DeleteEventAsync(EventModel eventToDelete)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<BookingModel>> GetAllBookingsAsync()
+        public Task<List<EventModel>?> GetAllEventsAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<BookingModel?> GetBookingByIdAsync(int id)
+        public Task<EventModel?> GetEventByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateBookingAsync(BookingModel updatedBooking)
+        public Task<bool> UpdateEventAsync(EventModel updatedEvent)
         {
             throw new NotImplementedException();
         }
