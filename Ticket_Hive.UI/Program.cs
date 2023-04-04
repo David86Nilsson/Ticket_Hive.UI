@@ -26,10 +26,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 var EventconnectionString = builder.Configuration.GetConnectionString("EventDbConnectionstring");
 builder.Services.AddDbContext<EventDbContext>(options => options.UseSqlServer(EventconnectionString));
 
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<IAppUserModelRepo, AppUserModelRepo>();
 builder.Services.AddScoped<IBookingRepo, BookingRepo>();
@@ -71,8 +71,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
