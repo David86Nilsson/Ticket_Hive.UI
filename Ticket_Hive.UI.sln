@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticket_Hive.UI", "Ticket_Hive.UI\Ticket_Hive.UI.csproj", "{658B8E9B-5630-4CB0-86B4-8B49F2A292C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticket_Hive.UI", "Ticket_Hive.UI\Ticket_Hive.UI.csproj", "{658B8E9B-5630-4CB0-86B4-8B49F2A292C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticket_Hive.Logic", "Ticket_Hive.Logic\Ticket_Hive.Logic.csproj", "{BF98A374-1986-4311-AFCD-5F49A2AD4C1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticket_Hive.Logic", "Ticket_Hive.Logic\Ticket_Hive.Logic.csproj", "{BF98A374-1986-4311-AFCD-5F49A2AD4C1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticket_Hive.Data", "Ticket_Hive.Data\Ticket_Hive.Data.csproj", "{A44CB863-58CC-45EE-8217-9CE8EC35C29A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticket_Hive.Data", "Ticket_Hive.Data\Ticket_Hive.Data.csproj", "{A44CB863-58CC-45EE-8217-9CE8EC35C29A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
