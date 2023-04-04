@@ -6,9 +6,9 @@ namespace Ticket_Hive.Data.Repos
     {
         public Task<List<EventModel>?> GetAllEventsAsync();
         public Task<EventModel?> GetEventByIdAsync(int id);
-        public Task<bool> AddEventAsync(EventModel newEvent);
+        public Task AddEventAsync(EventModel newEvent);
         public Task<bool> UpdateEventAsync(EventModel updatedEvent);
-        public Task<bool> DeleteEventAsync(EventModel eventToDelete);
+        public Task DeleteEventAsync(EventModel eventToDelete);
 
     }
 }
