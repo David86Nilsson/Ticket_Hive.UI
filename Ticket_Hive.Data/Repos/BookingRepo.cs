@@ -1,32 +1,55 @@
-﻿using Ticket_Hive.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Ticket_Hive.Data.Models;
 
 namespace Ticket_Hive.Data.Repos
 {
     public class BookingRepo : IBookingRepo
     {
-        public Task<bool> AddBookingAsync(BookingModel newBooking)
+        private readonly EventDbContext context;
+
+        public BookingRepo(EventDbContext context)
         {
-            throw new NotImplementedException();
+            this.context = context;
+        }
+        public async Task AddBookingAsync(BookingModel newBooking)
+        {
+            await context.Bookings.AddAsync(newBooking);
+            await context.SaveChangesAsync();
         }
 
-        public Task<bool> DeleteBookingAsync(BookingModel bookingToDelete)
+        public async Task DeleteBookingAsync(BookingModel bookingToDelete)
         {
-            throw new NotImplementedException();
+            BookingModel? booking = await context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingToDelete.Id);
+            if (booking != null)
+            {
+                context.Bookings.Remove(booking);
+                await context.SaveChangesAsync();
+            }
         }
 
-        public Task<IEnumerable<BookingModel>> GetAllBookingsAsync()
+        public async Task<IEnumerable<BookingModel>?> GetAllBookingsAsync()
         {
-            throw new NotImplementedException();
+            return await context.Bookings.Include(b => b.Event).ToListAsync();
         }
 
-        public Task<BookingModel?> GetBookingByIdAsync(int id)
+        public async Task<BookingModel?> GetBookingByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await context.Bookings.Include(b => b.Event).FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        public Task<bool> UpdateBookingAsync(BookingModel updatedBooking)
+        public async Task<bool> UpdateBookingAsync(BookingModel updatedBooking)
         {
-            throw new NotImplementedException();
+            BookingModel? booking = await context.Bookings.FirstOrDefaultAsync(b => b.Id == updatedBooking.Id);
+            if (booking != null)
+            {
+                booking.BookingDate = updatedBooking.BookingDate;
+                booking.Event = updatedBooking.Event;
+                booking.Users = updatedBooking.Users;
+                context.Bookings.Update(booking);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

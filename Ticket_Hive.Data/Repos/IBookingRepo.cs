@@ -6,9 +6,9 @@ namespace Ticket_Hive.Data.Repos
     {
         public Task<IEnumerable<BookingModel>> GetAllBookingsAsync();
         public Task<BookingModel?> GetBookingByIdAsync(int id);
-        public Task<bool> AddBookingAsync(BookingModel newBooking);
+        public Task AddBookingAsync(BookingModel newBooking);
         public Task<bool> UpdateBookingAsync(BookingModel updatedBooking);
-        public Task<bool> DeleteBookingAsync(BookingModel bookingToDelete);
+        public Task DeleteBookingAsync(BookingModel bookingToDelete);
 
     }
 }

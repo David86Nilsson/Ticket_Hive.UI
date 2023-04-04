@@ -1,32 +1,64 @@
-﻿using Ticket_Hive.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Ticket_Hive.Data.Models;
 
 namespace Ticket_Hive.Data.Repos
 {
     public class EventModelRepo : IEventModelRepo
     {
-        public Task<bool> AddEventAsync(EventModel newEvent)
+        private readonly EventDbContext context;
+
+        public EventModelRepo(EventDbContext context)
         {
-            throw new NotImplementedException();
+            this.context = context;
+        }
+        public async Task AddEventAsync(EventModel newEvent)
+        {
+            await context.Events.AddAsync(newEvent);
+            await context.SaveChangesAsync();
         }
 
-        public Task<bool> DeleteEventAsync(EventModel eventToDelete)
+        public async Task DeleteEventAsync(EventModel eventToDelete)
         {
-            throw new NotImplementedException();
+            EventModel? existingEvent = await context.Events.FirstOrDefaultAsync(e => e.Id == eventToDelete.Id);
+            if (existingEvent != null)
+            {
+                context.Events.Remove(existingEvent);
+                await context.SaveChangesAsync();
+            }
+
         }
 
-        public Task<List<EventModel>?> GetAllEventsAsync()
+        public async Task<List<EventModel>?> GetAllEventsAsync()
         {
-            throw new NotImplementedException();
+            return await context.Events.Include(e => e.Users).ToListAsync();
+
         }
 
-        public Task<EventModel?> GetEventByIdAsync(int id)
+        public async Task<EventModel?> GetEventByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await context.Events.Include(e => e.Users).FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public Task<bool> UpdateEventAsync(EventModel updatedEvent)
+        public async Task<bool> UpdateEventAsync(EventModel updatedEvent)
         {
-            throw new NotImplementedException();
+            EventModel? existingEvent = await context.Events.FirstOrDefaultAsync(e => e.Id == updatedEvent.Id);
+            if (existingEvent != null)
+            {
+                existingEvent.EventType = updatedEvent.EventType;
+                existingEvent.Price = updatedEvent.Price;
+                existingEvent.Location = updatedEvent.Location;
+                existingEvent.Capacity = updatedEvent.Capacity;
+                existingEvent.TicketsSold = updatedEvent.TicketsSold;
+                existingEvent.Users = updatedEvent.Users;
+                existingEvent.Name = updatedEvent.Name;
+                existingEvent.DateTime = updatedEvent.DateTime;
+
+                context.Events.Update(existingEvent);
+                await context.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
         }
     }
 }
