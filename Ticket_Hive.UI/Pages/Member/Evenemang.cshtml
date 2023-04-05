@@ -2,3 +2,51 @@
 @model Ticket_Hive.UI.Pages.Member.EvenemangModel
 @{
 }
+
+<div>
+    <button class="btn btn-primary" asp-page="/Index">Home</button>
+</div>
+<div class="text-center">
+    <h1>@Model.EventToShow.Name</h1>
+    <img src="Model.Event.Image" />
+   <table>
+        <tr>
+            <td>Location</td>
+            <td>@Model.EventToShow.Location</td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>@Model.EventToShow.DateTime.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td>@Model.EventToShow.Price</td>
+        </tr>
+        <tr>
+            <td>Capacity</td>
+            <td>@Model.EventToShow.Capacity</td>
+        </tr>
+        <tr>
+            <td>Tickets left</td>
+            @if (@Model.TicketsLeft < 1)
+            {
+                <td class="text-danger">@Model.TicketsLeft</td>
+            }
+            else{
+            <td>@Model.TicketsLeft</td>
+            }
+        </tr>
+   </table>
+    @if (Model.TicketsLeft < 0)
+    {
+        <h4>Tickets are sold out</h4>
+    }
+    else
+    {
+   <form method="post">
+        <input type="hidden" name="eventId" value="@Model.EventToShow.Id" />
+        <input type="number" max="@Model.TicketsLeft" min="1" name="amount" value="1" asp-for="Tickets"/>
+        <input type="submit" value="Buy Tickets"/>
+   </form>
+    }
+</div>
