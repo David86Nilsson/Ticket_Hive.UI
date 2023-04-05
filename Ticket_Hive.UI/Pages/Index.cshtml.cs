@@ -5,14 +5,17 @@ namespace Ticket_Hive.UI.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+		protected void btnSignIn_Click(object sender, EventArgs e)
+		{
+			Response.Redirect("/SignIn");
+		}
 
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
+		protected void btnRegister_Click(object sender, EventArgs e)
+		{
+			Response.Redirect("/Register");
+		}
 
-        public void OnGet()
+		public void OnGet()
         {
 
         }
