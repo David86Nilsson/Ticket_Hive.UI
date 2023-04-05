@@ -3,4 +3,38 @@
 @{
 }
 
-<h1>Register</h1>
+<style>
+	body {
+		background-color: #fbe89c;
+	}
+
+	.btn-primary {
+		background-color: #305076;
+		border-color: #305076;
+		color: #fbe89c;
+		margin-top: 10px;
+	}
+
+	</style>
+
+
+	<div class="container">
+    <h1 class="display-3 " style="color: #305076;">Register</h1>
+	<form method="post">
+		<div class="form-group">
+			<label for="username-input" style="color: #305076;">Username:</label>
+			<input class="form-control w-50" id="username-input" type="text" asp-for="Username" />
+			<br />
+			<label for="password-input" style="color: #305076;">Password:</label>
+			<input class="form-control w-50" id="password-input" type="password" asp-for="Password" />
+
+			<button type="submit" class="btn btn-primary">Register</button>
+
+		</div>
+
+	</form>
+
+	</div>
+
+
+
