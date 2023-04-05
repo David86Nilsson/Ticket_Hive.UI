@@ -49,5 +49,9 @@ namespace Ticket_Hive.Data.Repos
             }
             return false;
         }
+        public async Task<ShoppingCartModel?> GetMostRecentShoppingCartAsync()
+        {
+            return await context.ShoppingCarts.OrderByDescending(sc => sc.Id).FirstOrDefaultAsync();
+        }
     }
 }

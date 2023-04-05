@@ -9,5 +9,6 @@ namespace Ticket_Hive.Data.Repos
         public Task AddShoppingCartAsync(ShoppingCartModel newShoppingCart);
         public Task<bool> UpdateShoppingCartAsync(ShoppingCartModel updatedShoppingCart);
         public Task DeleteShoppingCartAsync(ShoppingCartModel shoppingCartToDelete);
+        public Task<ShoppingCartModel> GetMostRecentShoppingCartAsync();
     }
 }
