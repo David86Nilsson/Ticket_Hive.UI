@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using Ticket_Hive.Data.Models;
 using Ticket_Hive.Data.Repos;
 using Ticket_Hive.Logic;
@@ -23,6 +24,8 @@ namespace Ticket_Hive.UI.Pages.Member
         public EventManager? EventManager { get; set; }
         public ShoppingCartModel? ShoppingCart { get; set; }
         public AppUserModel? AppUser { get; set; }
+
+        public List<CartCookieModel> cartCookieList;
 
 
         public EvenemangModel(SignInManager<IdentityUser> signInManager, IEventModelRepo eventRepo, IAppUserModelRepo appUserModelRepo, IShoppingCartModelRepo cartModelRepo)
@@ -69,45 +72,62 @@ namespace Ticket_Hive.UI.Pages.Member
                     User = AppUser
                 };
                 ShoppingCart.Bookings.Add(newBooking);
-                await cartModelRepo.UpdateShoppingCartAsync(ShoppingCart);
+                await SetCookieAsync(ShoppingCart);
             }
             return RedirectToPage();
         }
 
         private async Task GetCookieAsync()
         {
-            CookieValue = Request.Cookies[$"{AppUser.Username}_cart"];
-            if (string.IsNullOrEmpty(CookieValue))
+            var cookie = HttpContext.Session.GetString("ShoppingCart");
+            if (string.IsNullOrEmpty(cookie))
             {
-                await CreateNewCookieAsync();
+                ShoppingCart = new()
+                {
+                    User = AppUser
+                };
+                cartCookieList = new();
             }
             else
             {
-                bool IsValue = int.TryParse(CookieValue, out int cartId);
-                if (IsValue)
+                cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
+                if (cartCookieList != null)
                 {
-                    ShoppingCart = await cartModelRepo.GetShoppingCartByIdAsync(cartId);
-                    if (ShoppingCart == null)
+                    foreach (CartCookieModel cartCookieModel in cartCookieList)
                     {
-                        await CreateNewCookieAsync();
+                        if (cartCookieModel.UserName == AppUser.Username)
+                        {
+                            ShoppingCart = cartCookieModel.ShoppingCart;
+                            break;
+                        }
                     }
                 }
-                else
+                else if (ShoppingCart == null)
                 {
-                    await CreateNewCookieAsync();
+                    cartCookieList = new();
+                    ShoppingCart = new()
+                    {
+                        User = AppUser
+                    };
                 }
             }
         }
-        private async Task CreateNewCookieAsync()
+        private async Task SetCookieAsync(ShoppingCartModel cart)
         {
-            if (AppUser != null)
+            CartCookieModel? cartCookie = cartCookieList.FirstOrDefault(cookie => cookie.UserName == cart.User.Username);
+            if (cartCookie == null)
             {
-                CookieOptions options = new();
-                options.Expires = DateTime.Now.AddMinutes(10);
-                await cartModelRepo.AddShoppingCartAsync(new ShoppingCartModel() { User = AppUser, Created = DateTime.Now });
-                ShoppingCart = await cartModelRepo.GetMostRecentShoppingCartAsync();
-                Response.Cookies.Append("ShoppingListCookie", ShoppingCart.Id.ToString(), options);
+                cartCookieList.Add(new CartCookieModel() { UserName = AppUser.Username, ShoppingCart = cart });
             }
+            else
+            {
+                cartCookie.ShoppingCart = cart;
+            }
+            CookieOptions options = new();
+            options.Expires = DateTime.Now.AddMinutes(10);
+            var cookieValue = JsonConvert.SerializeObject(cartCookieList);
+            HttpContext.Session.SetString("ShoppingCart", cookieValue);
+
         }
     }
 }
