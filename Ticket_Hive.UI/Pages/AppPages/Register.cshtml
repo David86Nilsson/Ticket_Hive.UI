@@ -15,17 +15,21 @@
 		margin-top: 10px;
 	}
 
+	.blueColor{
+		color: #305076;
+	}
+
 	</style>
 
 
 	<div class="container">
-    <h1 class="display-3 mt-3" style="color: #305076;">Register</h1>
+    <h1 class="display-3 mt-3 blueColor">Register</h1>
 	<form method="post">
 		<div class="form-group">
-			<label for="username-input" style="color: #305076;">Username:</label>
+			<label for="username-input" class="blueColor">Username:</label>
 			<input class="form-control w-50" id="username-input" type="text" asp-for="Username" />
 			<br />
-			<label for="password-input" style="color: #305076;">Password:</label>
+			<label for="password-input" class="blueColor">Password:</label>
 			<input class="form-control w-50" id="password-input" type="password" asp-for="Password" />
 
 			<button type="submit" class="btn btn-primary">Register</button>
