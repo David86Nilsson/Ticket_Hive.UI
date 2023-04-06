@@ -20,6 +20,7 @@ namespace Ticket_Hive.UI.Pages
 		[Required(ErrorMessage = "Password cannot be empty!")]
 		public string? Password { get; set; }
 
+
         public RegistreringsSidaModel(SignInManager<IdentityUser> signInManager, IAppUserModelRepo AppUser)
         {
             this.signInManager = signInManager;
