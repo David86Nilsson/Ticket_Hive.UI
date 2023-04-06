@@ -11,11 +11,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
 });
 
-builder.Services.AddRazorPages(options =>
-{
-    options.Conventions.AuthorizePage("/Admin", "AdminPolicy");
-    options.Conventions.AuthorizeFolder("/Member");
-});
+//builder.Services.AddRazorPages(options =>
+//{
+//    options.Conventions.AuthorizePage("/Admin", "AdminPolicy");
+//    options.Conventions.AuthorizeFolder("/Member");
+//});
 
 
 // Add services to the container.

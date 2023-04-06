@@ -11,7 +11,8 @@ namespace Ticket_Hive.UI.Pages
     [BindProperties]
     public class RegistreringsSidaModel : PageModel
     {
-		private readonly SignInManager<IdentityUser> signInManager;
+        // Dependency injection of SignInManager and IAppUserModelRepo
+        private readonly SignInManager<IdentityUser> signInManager;
 		private readonly IAppUserModelRepo AppUser;
 
 		[Required (ErrorMessage = "Username cannot be empty!")]
@@ -20,6 +21,8 @@ namespace Ticket_Hive.UI.Pages
 		[Required(ErrorMessage = "Password cannot be empty!")]
 		public string? Password { get; set; }
 
+
+        // Constructor to inject SignInManager and IAppUserModelRepo
         public RegistreringsSidaModel(SignInManager<IdentityUser> signInManager, IAppUserModelRepo AppUser)
         {
             this.signInManager = signInManager;
@@ -29,44 +32,46 @@ namespace Ticket_Hive.UI.Pages
         public void OnGet()
         {
         }
-
+		//Register a new úser using POST
 		public async Task<IActionResult> OnPost()
 		{
-			if (ModelState.IsValid)
+            // Validate the ModelState
+            if (ModelState.IsValid)
 			{
-				// Registrera en användare
 
-				// Skapa en ny instans av IdentityUser med användarnamn
-				IdentityUser user = new()
+                // Create a new instance of IdentityUser with the provided Username
+                IdentityUser user = new()
 				{
 					UserName = Username
 				};
 
-				// Registrera användaren med hjälp av repot
-				var registerResult = await signInManager.UserManager.CreateAsync(user, Password);
+                // Register the user using the repository
+                var registerResult = await signInManager.UserManager.CreateAsync(user, Password);
 
 				if (registerResult.Succeeded)
 				{
-					// Testa att logga in med lösenord
-					AppUserModel newUser = new()
+                    // Test to log in with the provided password
+                    AppUserModel newUser = new()
 					{
 						Username = Username
 
 					};
 
-					await AppUser.AddAppUserAsync(newUser);
+                    // Add the new user to the repository
+                    await AppUser.AddAppUserAsync(newUser);
 
-					var signInResult = await signInManager.PasswordSignInAsync(Username, Password, false, false);
+                    // Attempt to sign in the user using the provided credentials
+                    var signInResult = await signInManager.PasswordSignInAsync(Username, Password, false, false);
 
 					if (signInResult.Succeeded)
 					{
-						// Skicka användaren till Klotterplanket
-						return RedirectToPage("/AppPages/SignIn");
+                        // Redirect the user to the SignIn page upon successful registration
+                        return RedirectToPage("/AppPages/SignIn");
 					}
 				}
 			}
-
-			return Page();
+            // If ModelState is not valid, return the same page
+            return Page();
 		}
 	}
 }

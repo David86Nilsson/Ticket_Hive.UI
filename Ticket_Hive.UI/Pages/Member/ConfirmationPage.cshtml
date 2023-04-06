@@ -1,0 +1,47 @@
+﻿@page
+@model Ticket_Hive.UI.Pages.Member.ConfirmationPageModel
+@{
+}
+
+<style>
+    body{
+        background-color: #fbe89c;
+    }
+    .blueColor
+    {
+        color: #305076;
+    }
+    .btn 
+    {
+        background-color: #305076;
+        border-color: #305076;
+        color: #fbe89c;
+        margin-top: 10px;
+    }
+    .blackLogo 
+    {
+	    max-width: 100px;
+    }
+    
+</style>
+
+<div class="d-flex justify-content-between" style="width:100%">
+    <h1 class="display-3 blueColor mt-3">Thank You For Your Order!</h1>
+    <img src="/Images/logos/yellow only logo.png" class="blackLogo mt-3" />
+</div>
+
+<h3 class="p-1">Below Is A Confirmation Of Your Booking</h3>
+<hr />
+
+<div class="container">
+    @foreach (var ev in Model.Events)
+    {
+        <p>Location: @ev.Location</p>
+        <p>Price: @ev.Price</p>
+        <p>Capacity: @ev.Capacity</p>
+        <hr />
+    }
+    <a class="btn btn-primary">Booking Page</a>
+</div>
+
+
