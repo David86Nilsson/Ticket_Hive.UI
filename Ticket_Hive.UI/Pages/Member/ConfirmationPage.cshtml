@@ -16,18 +16,21 @@
         color: #fbe89c;
         margin-top: 10px;
     }
+    .blackLogo {
 
+						
+							  max-width: 100px;
+    }
     
 </style>
 
-<div class="container">
-    <h1 class="display-3 blueColor mt-3">Thank You For Your Order!</h>
-        <br />
-        <h3 class="p-1" >Below Is A Confirmation Of Your Booking</h3>
-        <hr />
-
-
+<div class="d-flex justify-content-between" style="width:100%">
+    <h1 class="display-3 blueColor mt-3">Thank You For Your Order!</h1>
+    <img src="/Images/logos/yellow only logo.png" class="blackLogo mt-3" />
 </div>
+
+<h3 class="p-1">Below Is A Confirmation Of Your Booking</h3>
+<hr />
 
 <div class="container">
     @foreach (var ev in Model.Events)
@@ -37,10 +40,7 @@
         <p>Capacity: @ev.Capacity</p>
         <hr />
     }
-
     <a class="btn btn-primary">Booking Page</a>
-
-
 </div>
 
 
