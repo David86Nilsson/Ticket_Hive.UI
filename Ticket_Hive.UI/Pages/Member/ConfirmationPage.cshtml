@@ -21,10 +21,26 @@
 </style>
 
 <div class="container">
-    <h1 class="display-3 blueColor mt-3">Confirmation</h>
+    <h1 class="display-3 blueColor mt-3">Thank You For Your Order!</h>
         <br />
-        <a class="btn btn-primary">Booking Page</a>
+        <h3 class="p-1" >Below Is A Confirmation Of Your Booking</h3>
+        <hr />
+
+
 </div>
 
+<div class="container">
+    @foreach (var ev in Model.Events)
+    {
+        <p>Location: @ev.Location</p>
+        <p>Price: @ev.Price</p>
+        <p>Capacity: @ev.Capacity</p>
+        <hr />
+    }
+
+    <a class="btn btn-primary">Booking Page</a>
+
+
+</div>
 
 
