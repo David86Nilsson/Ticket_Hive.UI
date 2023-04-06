@@ -36,6 +36,11 @@ builder.Services.AddScoped<IBookingRepo, BookingRepo>();
 builder.Services.AddScoped<IEventModelRepo, EventModelRepo>();
 builder.Services.AddScoped<IShoppingCartModelRepo, ShoppingCartModelRepo>();
 
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = "ShoppingCart";
+});
+
 
 using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider())
 {
@@ -116,6 +121,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 
