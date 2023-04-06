@@ -28,7 +28,7 @@
         </tr>
         <tr>
             <td>Tickets left</td>
-            @if (@Model.TicketsLeft < 1)
+            @if (@Model.EventManager.IsEventFullyBooked(Model.EventToShow))
             {
                 <td class="text-danger">@Model.TicketsLeft</td>
             }
@@ -37,7 +37,7 @@
             }
         </tr>
    </table>
-    @if (Model.TicketsLeft < 0)
+    @if (Model.EventManager.IsEventFullyBooked(Model.EventToShow))
     {
         <h4>Tickets are sold out</h4>
     }

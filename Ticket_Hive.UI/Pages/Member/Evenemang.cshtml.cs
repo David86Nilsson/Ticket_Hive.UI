@@ -37,11 +37,12 @@ namespace Ticket_Hive.UI.Pages.Member
         {
             Id = id;
             EventToShow = await eventRepo.GetEventByIdAsync(Id);
-            if (EventToShow != null)
+            if (EventToShow != null && EventManager != null)
             {
                 TicketsLeft = EventManager.TicketsLeft(EventToShow);
             }
 
+            // Get user
             string? userName = await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(HttpContext.User));
             if (string.IsNullOrEmpty(userName))
             {
@@ -49,28 +50,12 @@ namespace Ticket_Hive.UI.Pages.Member
             }
 
             //Get CookieInfo
-            CookieValue = Request.Cookies["ShoppingListCookie"];
-            if (string.IsNullOrEmpty(CookieValue))
+            if (AppUser != null)
             {
-                await CreateNewCookie();
-            }
-            else
-            {
-                bool IsValue = int.TryParse(CookieValue, out int cartId);
-                if (IsValue)
-                {
-                    ShoppingCart = await cartModelRepo.GetShoppingCartByIdAsync(cartId);
-                    if (ShoppingCart == null)
-                    {
-                        await CreateNewCookie();
-                    }
-                }
-                else
-                {
-                    await CreateNewCookie();
-                }
+                await GetCookieAsync();
             }
         }
+
 
 
         public async Task<IActionResult> OnPost()
@@ -88,7 +73,32 @@ namespace Ticket_Hive.UI.Pages.Member
             }
             return RedirectToPage();
         }
-        private async Task CreateNewCookie()
+
+        private async Task GetCookieAsync()
+        {
+            CookieValue = Request.Cookies[$"{AppUser.Username}_cart"];
+            if (string.IsNullOrEmpty(CookieValue))
+            {
+                await CreateNewCookieAsync();
+            }
+            else
+            {
+                bool IsValue = int.TryParse(CookieValue, out int cartId);
+                if (IsValue)
+                {
+                    ShoppingCart = await cartModelRepo.GetShoppingCartByIdAsync(cartId);
+                    if (ShoppingCart == null)
+                    {
+                        await CreateNewCookieAsync();
+                    }
+                }
+                else
+                {
+                    await CreateNewCookieAsync();
+                }
+            }
+        }
+        private async Task CreateNewCookieAsync()
         {
             if (AppUser != null)
             {
