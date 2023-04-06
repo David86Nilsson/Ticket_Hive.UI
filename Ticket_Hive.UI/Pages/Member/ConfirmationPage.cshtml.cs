@@ -6,8 +6,6 @@ namespace Ticket_Hive.UI.Pages.Member
 {
     public class ConfirmationPageModel : PageModel
     {
-
-
         public List<EventModel> Events { get; set; } = new()
         {
            new EventModel()
@@ -27,7 +25,6 @@ namespace Ticket_Hive.UI.Pages.Member
 
 		   }
 		};
-
 		public void OnGet()
         {
         }
