@@ -34,11 +34,11 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 builder.Services.AddScoped<IAppUserModelRepo, AppUserModelRepo>();
 builder.Services.AddScoped<IBookingRepo, BookingRepo>();
 builder.Services.AddScoped<IEventModelRepo, EventModelRepo>();
-builder.Services.AddScoped<IShoppingCartModelRepo, ShoppingCartModelRepo>();
 
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = "ShoppingCart";
+    options.Cookie.MaxAge = TimeSpan.FromMinutes(10);
 });
 
 
