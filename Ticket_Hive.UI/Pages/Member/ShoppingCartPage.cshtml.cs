@@ -44,13 +44,13 @@ namespace Ticket_Hive.UI.Pages.Member
             //var cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
             //var cartCookie = cartCookieList.FirstOrDefault(cc => cc.UserName == AppUser.Username);
             //ShoppingCart = cartCookie.ShoppingCart;
-            ShoppingCart = await cookieManager.GetShoppingCartFromCookie();
+            ShoppingCart = await cookieManager.GetShoppingCartFromCookieAsync();
         }
         public async Task<IActionResult> OnPost()
         {
             if (ModelState.IsValid)
             {
-                // Buy tickets
+                // Buy tickets and save to database
                 await eventManager.BuyTicketsAsync(ShoppingCart, bookingRepo, eventModelRepo, appUserModelRepo);
                 // Go To Confirmation Page
                 return RedirectToPage("/Member/ConfirmationPage");

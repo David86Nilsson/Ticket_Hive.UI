@@ -31,12 +31,11 @@ namespace Ticket_Hive.UI.Pages.Member
 
 
 
-        public EvenemangModel(SignInManager<IdentityUser> signInManager, IEventModelRepo eventRepo, IAppUserModelRepo appUserModelRepo, IShoppingCartModelRepo cartModelRepo, IBookingRepo bookingRepo)
+        public EvenemangModel(SignInManager<IdentityUser> signInManager, IEventModelRepo eventRepo, IAppUserModelRepo appUserModelRepo, IBookingRepo bookingRepo)
         {
             this.signInManager = signInManager;
             this.eventRepo = eventRepo;
             this.appUserModelRepo = appUserModelRepo;
-            this.cartModelRepo = cartModelRepo;
             this.bookingRepo = bookingRepo;
             EventManager = new();
             CookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
@@ -60,7 +59,7 @@ namespace Ticket_Hive.UI.Pages.Member
             //Get CookieInfo
             if (AppUser != null)
             {
-                ShoppingCart = await CookieManager.GetShoppingCartFromCookie();
+                ShoppingCart = await CookieManager.GetShoppingCartFromCookieAsync();
             }
         }
 
@@ -77,7 +76,7 @@ namespace Ticket_Hive.UI.Pages.Member
                     User = AppUser
                 };
                 ShoppingCart.Bookings.Add(newBooking);
-                await CookieManager.SetCookieAsync(ShoppingCart);
+                await CookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
             }
             return RedirectToPage();
         }
