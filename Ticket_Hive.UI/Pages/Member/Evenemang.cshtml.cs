@@ -14,6 +14,7 @@ namespace Ticket_Hive.UI.Pages.Member
         private readonly IEventModelRepo eventRepo;
         private readonly IAppUserModelRepo appUserModelRepo;
         private readonly IShoppingCartModelRepo cartModelRepo;
+        private readonly IBookingRepo bookingRepo;
 
         public int Id { get; set; }
         [BindProperty]
@@ -22,19 +23,23 @@ namespace Ticket_Hive.UI.Pages.Member
         public string? CookieValue { get; set; }
         public EventModel? EventToShow { get; set; }
         public EventManager? EventManager { get; set; }
+        public CookieManager? CookieManager { get; set; }
         public ShoppingCartModel? ShoppingCart { get; set; }
         public AppUserModel? AppUser { get; set; }
 
         public List<CartCookieModel> cartCookieList;
 
 
-        public EvenemangModel(SignInManager<IdentityUser> signInManager, IEventModelRepo eventRepo, IAppUserModelRepo appUserModelRepo, IShoppingCartModelRepo cartModelRepo)
+
+        public EvenemangModel(SignInManager<IdentityUser> signInManager, IEventModelRepo eventRepo, IAppUserModelRepo appUserModelRepo, IShoppingCartModelRepo cartModelRepo, IBookingRepo bookingRepo)
         {
             this.signInManager = signInManager;
             this.eventRepo = eventRepo;
             this.appUserModelRepo = appUserModelRepo;
             this.cartModelRepo = cartModelRepo;
+            this.bookingRepo = bookingRepo;
             EventManager = new();
+            CookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
         }
         public async Task OnGet(int id)
         {
@@ -55,7 +60,7 @@ namespace Ticket_Hive.UI.Pages.Member
             //Get CookieInfo
             if (AppUser != null)
             {
-                await GetCookieAsync();
+                ShoppingCart = await CookieManager.GetShoppingCartFromCookie();
             }
         }
 
@@ -72,7 +77,7 @@ namespace Ticket_Hive.UI.Pages.Member
                     User = AppUser
                 };
                 ShoppingCart.Bookings.Add(newBooking);
-                await SetCookieAsync(ShoppingCart);
+                await CookieManager.SetCookieAsync(ShoppingCart);
             }
             return RedirectToPage();
         }
