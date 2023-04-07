@@ -22,7 +22,8 @@ namespace Ticket_Hive.Logic
             this.signInManager = signInManager;
             this.httpContext = httpContext;
         }
-        public async Task SetCookieAsync(ShoppingCartModel cart)
+
+        public async Task SetShoppingCartToCookieAsync(ShoppingCartModel cart)
         {
             var cookie = httpContext.Session.GetString("ShoppingCart");
             var cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
@@ -40,7 +41,7 @@ namespace Ticket_Hive.Logic
             var cookieValue = JsonConvert.SerializeObject(cartCookieList);
             httpContext.Session.SetString("ShoppingCart", cookieValue);
         }
-        public async Task<ShoppingCartModel?> GetShoppingCartFromCookie()
+        public async Task<ShoppingCartModel?> GetShoppingCartFromCookieAsync()
         {
             AppUserModel? AppUser = null;
             string? userName = await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(httpContext.User));
