@@ -17,10 +17,16 @@ html {
   position: relative;
   min-height: 100%;
 }
+.btn {
+    background-color: #305076;
+    border-color: #305076;
+    color: #fbe89c;
+}
 
 body {
     margin-bottom: 60px;
     background-color: #fbe89c;
+
 }
 * {
     color: #305076;
