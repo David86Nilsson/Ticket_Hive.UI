@@ -28,9 +28,6 @@ namespace Ticket_Hive.UI.Pages.Member
             this.bookingRepo = bookingRepo;
             this.eventModelRepo = eventModelRepo;
             this.appUserModelRepo = appUserModelRepo;
-            cookieManager = new(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
-
-
         }
         public async Task OnGet()
         {
@@ -44,6 +41,7 @@ namespace Ticket_Hive.UI.Pages.Member
             //var cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
             //var cartCookie = cartCookieList.FirstOrDefault(cc => cc.UserName == AppUser.Username);
             //ShoppingCart = cartCookie.ShoppingCart;
+            cookieManager = new(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
             ShoppingCart = await cookieManager.GetShoppingCartFromCookieAsync();
         }
         public async Task<IActionResult> OnPost()

@@ -3,9 +3,10 @@ html {
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+        color: #305076;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -25,8 +26,49 @@ html {
 body {
     margin-bottom: 60px;
     background-color: #fbe89c;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+
 }
 * {
-    
+    color: #305076;
+}
+.btn {
+    background-color: #305076;
+    border-color: #305076;
+    color: #fbe89c;
+    margin-top: 10px;
+}
+.blueColor {
+    color: #305076;
+}
+
+.blackLogo {
+    max-width: 100px;
+}
+.margin-top {
+    margin-top: 10px;
+}
+.margin-right {
+    margin-right: 10px;
+}
+.margin-bottom {
+    margin-bottom: 10px;
+}
+.margin-left {
+    margin-left: 10px;
+}
+
+.logo {
+    margin: 50px auto;
+    display: block;
+    max-width: 400px;
+}
+.btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+}
+.pictureSizeBig {
+    width: 200px;
+    height: 200px;
 }

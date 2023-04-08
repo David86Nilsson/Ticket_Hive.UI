@@ -13,12 +13,10 @@ namespace Ticket_Hive.UI.Pages.Member
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly IEventModelRepo eventRepo;
         private readonly IAppUserModelRepo appUserModelRepo;
-        private readonly IShoppingCartModelRepo cartModelRepo;
         private readonly IBookingRepo bookingRepo;
 
         public int Id { get; set; }
-        [BindProperty]
-        public int Tickets { get; set; }
+
         public int TicketsLeft { get; set; }
         public string? CookieValue { get; set; }
         public EventModel? EventToShow { get; set; }
@@ -29,6 +27,9 @@ namespace Ticket_Hive.UI.Pages.Member
 
         public List<CartCookieModel> cartCookieList;
 
+        [BindProperty]
+        public int Tickets { get; set; }
+
 
 
         public EvenemangModel(SignInManager<IdentityUser> signInManager, IEventModelRepo eventRepo, IAppUserModelRepo appUserModelRepo, IBookingRepo bookingRepo)
@@ -38,11 +39,13 @@ namespace Ticket_Hive.UI.Pages.Member
             this.appUserModelRepo = appUserModelRepo;
             this.bookingRepo = bookingRepo;
             EventManager = new();
-            CookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
         }
         public async Task OnGet(int id)
         {
-            Id = id;
+            CookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
+            Id = 3;
+
+            //Id = id;
             EventToShow = await eventRepo.GetEventByIdAsync(Id);
             if (EventToShow != null && EventManager != null)
             {
@@ -50,8 +53,9 @@ namespace Ticket_Hive.UI.Pages.Member
             }
 
             // Get user
-            string? userName = await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(HttpContext.User));
-            if (string.IsNullOrEmpty(userName))
+            var user = await signInManager.UserManager.GetUserAsync(HttpContext.User);
+            string? userName = user.UserName;
+            if (!string.IsNullOrEmpty(userName))
             {
                 AppUser = await appUserModelRepo.GetUserByUserNameAsync(userName);
             }
@@ -61,24 +65,49 @@ namespace Ticket_Hive.UI.Pages.Member
             {
                 ShoppingCart = await CookieManager.GetShoppingCartFromCookieAsync();
             }
+
         }
-
-
-
         public async Task<IActionResult> OnPost()
         {
+            CookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
+
+            Id = 3;
+
+            //Id = id;
+            EventToShow = await eventRepo.GetEventByIdAsync(Id);
+            if (EventToShow != null && EventManager != null)
+            {
+                TicketsLeft = EventManager.TicketsLeft(EventToShow);
+            }
+
+            // Get user
+            var user = await signInManager.UserManager.GetUserAsync(HttpContext.User);
+            string? userName = user.UserName;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                AppUser = await appUserModelRepo.GetUserByUserNameAsync(userName);
+            }
+
+            //Get CookieInfo
+            if (AppUser != null)
+            {
+                ShoppingCart = await CookieManager.GetShoppingCartFromCookieAsync();
+            }
+
+
             if (ModelState.IsValid && AppUser != null && EventToShow != null && ShoppingCart != null && Tickets < TicketsLeft)
             {
                 BookingModel newBooking = new()
                 {
-                    Event = EventToShow!,
+                    Event = EventToShow,
                     NbrOfTickets = Tickets,
                     User = AppUser
                 };
                 ShoppingCart.Bookings.Add(newBooking);
                 await CookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
+                return RedirectToPage("/Member/ShoppingCartPage");
             }
-            return RedirectToPage();
+            return Page();
         }
 
         private async Task GetCookieAsync()
@@ -123,6 +152,7 @@ namespace Ticket_Hive.UI.Pages.Member
             {
                 cartCookieList.Add(new CartCookieModel() { UserName = AppUser.Username, ShoppingCart = cart });
             }
+
             else
             {
                 cartCookie.ShoppingCart = cart;
