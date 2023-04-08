@@ -12,7 +12,6 @@ namespace Ticket_Hive.UI.Pages.Member
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ApplicationDbContext _context;
 
         public ChangePasswordModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {

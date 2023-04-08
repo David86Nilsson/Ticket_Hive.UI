@@ -24,17 +24,17 @@ namespace Ticket_Hive.UI.Pages.Member
         public List<EventModel>? popularEvents { get; set; }
         public List<EventModel>? eventsBought { get; set; }
         public string SearchWord { get; set; }
+        public List<EventModel>? RecommendedEvents { get; set; }
+
 
 
         public async Task OnGetAsync()
         {
-            // Add your initialization code here, similar to what you have in OnInitializedAsync
-            // Hämtar alla populära events, sorterar dom och visar top 3 baserat på sålda biljetter
+          
             List<EventModel> allEvents = await EventsService.GetAllEventsAsync();
             List<EventModel> sortedPopularEvents = allEvents.OrderByDescending(s => s.TicketsSold).ToList();
             popularEvents = sortedPopularEvents.Take(3).ToList();
 
-            // Hämtar alla events som användaren har biljetter till
             var authState = await Provider.GetAuthenticationStateAsync();
             var name = authState.User.Identity.Name;
             eventsBought = await EventsService.GetAllEventsFromUserAsync(name);
