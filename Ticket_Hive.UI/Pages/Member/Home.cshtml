@@ -29,7 +29,7 @@
             <div class="row movie-list">
         @foreach (var eventToDisplay in Model.popularEvents)
         {
-            string eventImage = $"/Images/{eventToDisplay.Image}.png";
+            string eventImage = $"/Images/EventImages/{eventToDisplay.Image}.png";
                         <div class="image-container">
                         <h3>@eventToDisplay.Name</h3>
                         <img src="@eventImage"/>
@@ -45,7 +45,7 @@
         <div class="row movie-list">
         @foreach (var eventToDisplay in Model.RecommendedEvents)
         {
-            string eventImage = $"/Images/{eventToDisplay.Image}.png";
+            string eventImage = $"/Images/EventImages/{eventToDisplay.Image}.png";
                     <div class="image-container">
                         <h3>@eventToDisplay.Name</h3>
                         <img src="@eventImage" />
