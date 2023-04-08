@@ -3,50 +3,62 @@
 @{
 }
 
-<div>
-    <button class="btn btn-primary" asp-page="/Index">Home</button>
-</div>
-<div class="text-center">
-    <h1>@Model.EventToShow.Name</h1>
-    <img src="Model.Event.Image" />
-   <table>
-        <tr>
-            <td>Location</td>
-            <td>@Model.EventToShow.Location</td>
-        </tr>
-        <tr>
-            <td>Date</td>
-            <td>@Model.EventToShow.DateTime.ToShortDateString()</td>
-        </tr>
-        <tr>
-            <td>Price</td>
-            <td>@Model.EventToShow.Price</td>
-        </tr>
-        <tr>
-            <td>Capacity</td>
-            <td>@Model.EventToShow.Capacity</td>
-        </tr>
-        <tr>
-            <td>Tickets left</td>
-            @if (@Model.EventManager.IsEventFullyBooked(Model.EventToShow))
-            {
-                <td class="text-danger">@Model.TicketsLeft</td>
-            }
-            else{
-            <td>@Model.TicketsLeft</td>
-            }
-        </tr>
-   </table>
-    @if (Model.EventManager.IsEventFullyBooked(Model.EventToShow))
-    {
-        <h4>Tickets are sold out</h4>
-    }
-    else
-    {
-   <form method="post">
-        <input type="hidden" name="eventId" value="@Model.EventToShow.Id" />
-        <input type="number" max="@Model.TicketsLeft" min="1" name="amount" value="1" asp-for="Tickets"/>
-        <input type="submit" value="Add Tickets To Shopping Cart"/>
-   </form>
-    }
+<div class="container">
+    <div class="row">
+        <button class="btn btn-primary" asp-page="/Index">Home</button>
+    </div>
+    <div class="row text-center">
+        <h1>@Model.EventToShow.Name</h1>
+        </div>
+    <div class="row">
+            <div class="col-12 col-md-6 d-flex justify-content-end">
+                <img src="Model.Event.Image" class="pictureSizeBig"/>
+            </div>
+            <div class="col-12 col-md-6">
+               <table>
+                    <tr>
+                        <td>Location: </td>
+                        <td>@Model.EventToShow.Location</td>
+                    </tr>
+                    <tr>
+                        <td>Date: </td>
+                        <td>@Model.EventToShow.DateTime.ToShortDateString()</td>
+                    </tr>
+                    <tr>
+                        <td>Price: </td>
+                        <td>@Model.EventToShow.Price Kr</td>
+                    </tr>
+                    <tr>
+                        <td>Capacity: </td>
+                        <td>@Model.EventToShow.Capacity</td>
+                    </tr>
+                    <tr>
+                        <td>Tickets left: </td>
+                        @if (@Model.EventManager.IsEventFullyBooked(Model.EventToShow))
+                        {
+                            <td class="text-danger">@Model.TicketsLeft</td>
+                        }
+                        else{
+                        <td>@Model.TicketsLeft</td>
+                        }
+                    </tr>
+                 </table>
+            </div> 
+    </div>
+    <div class="row">
+        <div class="col-12 text-center">
+        @if (Model.EventManager.IsEventFullyBooked(Model.EventToShow))
+        {
+            <h4>Tickets are sold out</h4>
+        }
+        else
+        {
+
+        }
+        </div>
+    </div>
+    <form method="post">
+        <input type="number" max="@Model.TicketsLeft" min="1" value="1" asp-for="Tickets" />
+        <input type="submit" class="btn" value="Add Tickets To Shopping Cart" />
+    </form>
 </div>
