@@ -51,9 +51,6 @@ namespace Ticket_Hive.UI.Pages.Member
             cookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
             Shoppingcart = await cookieManager.GetShoppingCartFromCookieAsync();
 
-
-
-
             // Ta bort shoppingcart från cookie
 
             ShoppingCartModel emptyShoppingCart = new()
