@@ -14,9 +14,24 @@ namespace Ticket_Hive.Data
         public DbSet<AppUserModel> AppUsers { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<ShoppingCartModel> ShoppingCarts { get; set; }
+        public DbSet<UserEvent> UserEvents { get; set; } 
 
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UserEvent>(ue =>
+            {
+                ue.HasKey(x => new { x.UserId, x.EventId });
+
+                ue.HasOne(x => x.User)
+                    .WithMany(x => x.UserEvents)
+                    .HasForeignKey(x => x.UserId);
+
+                ue.HasOne(x => x.Event)
+                    .WithMany(x => x.UserEvents)
+                    .HasForeignKey(x => x.EventId);
+            });
+
             modelBuilder.Entity<AppUserModel>().HasData(
                 new AppUserModel()
                 {
@@ -28,7 +43,7 @@ namespace Ticket_Hive.Data
                     Id = 2,
                     Username = "user",
                 }
-                );
+            );
 
 
             modelBuilder.Entity<EventModel>().HasData(
