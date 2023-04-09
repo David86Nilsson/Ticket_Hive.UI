@@ -13,7 +13,7 @@ namespace Ticket_Hive.UI.Pages.Member
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly IEventModelRepo eventRepo;
         private readonly IAppUserModelRepo appUserModelRepo;
-        private readonly IShoppingCartModelRepo cartModelRepo;
+        //private readonly IShoppingCartModelRepo cartModelRepo;
         private readonly IBookingRepo bookingRepo;
 
         public int Id { get; set; }

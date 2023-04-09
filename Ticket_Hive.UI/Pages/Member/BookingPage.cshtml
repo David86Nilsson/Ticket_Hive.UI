@@ -2,66 +2,119 @@
 @using Ticket_Hive.Data.Models;
 @model Ticket_Hive.UI.Pages.Member.BookingPageModel
 @{
-	@if (!string.IsNullOrEmpty(Model.Name) || !string.IsNullOrEmpty(Model.EventType) || !string.IsNullOrEmpty(Model.Location))
-	{
-		if (Model.SearchResults.Any())
-		{
-			<h2>Search Results:</h2>
-			<ul>
-				@foreach (var result in Model.SearchResults)
-				{
-					  <li>
-                    <a href="@Url.Page("Member/Evenemang", new { id = result.Id })">@result.Name (@result.EventType) - @result.Location - @result.DateTime</a>
-                </li>
-				}
-			</ul>
-		}
-		else
-		{
-			<p>No results found.</p>
-		}
-	}
+	bool showSearchResults = !string.IsNullOrEmpty(Model.search);
 }
+<style>
+	body {
+		background-color: #fbe89c;
+	}
+	a:hover {
+		cursor: pointer;
+		
+	}
+	.sold-out{
+		background:red;
+	}
+
+	a {
+		text-decoration: none; 
+		color: #305076;
+	}
+
+</style>
+
 <form method="get">
-	<label for="name">Name:</label>
-	<input type="text" id="name" name="name" />
-
-	<label for="eventType">Event Type:</label>
-	<input type="text" id="eventType" name="eventType" />
-
-	<label for="location">Location:</label>
-	<input type="text" id="location" name="location" />
+	<label for="search">Search:</label>
+	<input type="text" id="search" name="search" />
 
 	<button type="submit">Search</button>
 </form>
 
 
-<div class="container">
-	@foreach (var ev in Model.Events)
-	{
-		if (ev.TicketsSold >= ev.Capacity)
+
+@if (showSearchResults)
+{
+	<h2>Search Results:</h2>
+	<div class="container">
+		@foreach (var result in Model.SearchResults)
 		{
-			<p>@ev.Name</p>
-			<p>@ev.EventType</p>
-			<p>@ev.Location</p>
-			<label>Sold out</label>
+			@if (result.TicketsSold >= result.Capacity)
+			{
+				<div>
+					<span class="sold-out">
+						<span>@result.Name</span>
+						<span>@result.EventType</span>
+						<span>@result.Location</span>
+						<span>SOLD OUT</span>
+					</span>
+				</div>
+			}
+			else
+			{
+				<div>
+					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
+						<span class="LeftInfo">
+							<span>@result.Name</span>
+							<span>@result.EventType</span>
+						</span>
+						<span class="RightInfo">
+							<span>@result.Location</span>
+							<span>@result.Price :-</span>
+							<span>@result.DateTime</span>
+						</span>
+					</a>
+				</div>
+
+
+			}
 		}
-		else
+
+	</div>
+}
+else
+{
+	<h2>All Events:</h2>
+	<div class="container">
+		@foreach (var result in Model.SearchResults)
 		{
-			<p>@ev.Name</p>
-			<p>@ev.EventType</p>
-			<p>@ev.Location</p>
-			<p>@ev.Price</p>
-			<p>@ev.DateTime</p>
-			<li>
-				<a href="@Url.Page("Events/Details", new { id = ev.Id })">Go To Event</a>
-			</li>
+			@if (result.TicketsSold >= result.Capacity)
+			{
+				<div>
+					<span class="sold-out">
+						<span>@result.Name</span>
+						<span>@result.EventType</span>
+						<span>@result.Location</span>
+						<span>SOLD OUT</span>
+					</span>
+				</div>
+			}
+			else
+			{
+				<div>
+					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
+						<span class="LeftInfo">
+							<span>@result.Name</span>
+							<span>@result.EventType</span>
+						</span>
+						<span class="RightInfo">
+							<span>@result.Location</span>
+							<span>@result.Price :-</span>
+							<span>@result.DateTime</span>
+						</span>
+					</a>
+				</div>
+			}
+
+
+
 		}
 
+	</div>
+}
 
-	}
-</div>
 
-	
+
+
+
 
 
