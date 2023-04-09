@@ -11,5 +11,6 @@
         public int Capacity { get; set; }
         public int TicketsSold { get; set; }
         public List<AppUserModel> Users { get; set; } = new();
+      
     }
 }
