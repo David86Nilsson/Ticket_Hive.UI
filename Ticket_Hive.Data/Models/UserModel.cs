@@ -11,5 +11,6 @@ namespace Ticket_Hive.Data.Models
         public int Id { get; set; }
         public string Username { get; set; } = null!;
         public List<EventModel> Events { get; set; } = new();
+        public ICollection<UserEvent> UserEvents { get; set; }// Andre
     }
 }
