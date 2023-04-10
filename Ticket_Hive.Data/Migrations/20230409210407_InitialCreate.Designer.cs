@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ticket_Hive.Data;
 
@@ -11,9 +12,11 @@ using Ticket_Hive.Data;
 namespace Ticket_Hive.Data.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    partial class EventDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230409210407_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,6 +148,7 @@ namespace Ticket_Hive.Data.Migrations
 
                     b.HasIndex("EventModelId");
 
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("Events");
 
@@ -153,7 +157,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 1,
                             Capacity = 100,
-
+                            DateTime = new DateTime(2023, 4, 19, 23, 4, 7, 69, DateTimeKind.Local).AddTicks(9156),
                             EventType = "Nightclub",
                             Location = "Lund",
                             Name = "Kareoke bowling",
@@ -164,7 +168,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 2,
                             Capacity = 300,
-
+                            DateTime = new DateTime(2023, 4, 14, 23, 4, 7, 69, DateTimeKind.Local).AddTicks(9205),
                             EventType = "Musical",
                             Location = "Malmö",
                             Name = "Mama Mia",
@@ -175,7 +179,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 3,
                             Capacity = 30000,
-
+                            DateTime = new DateTime(2023, 4, 29, 23, 4, 7, 69, DateTimeKind.Local).AddTicks(9208),
                             EventType = "Sport",
                             Location = "Stockholm",
                             Name = "AIK - Hammarby",
@@ -186,7 +190,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 4,
                             Capacity = 20,
-
+                            DateTime = new DateTime(2023, 4, 11, 23, 4, 7, 69, DateTimeKind.Local).AddTicks(9211),
                             EventType = "Övrigt",
                             Location = "Halmstad",
                             Name = "Gästföreläsning med Steve Jobs",
@@ -197,7 +201,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 5,
                             Capacity = 10,
-
+                            DateTime = new DateTime(2023, 5, 4, 23, 4, 7, 69, DateTimeKind.Local).AddTicks(9214),
                             EventType = "Sport",
                             Location = "Köpenhamn",
                             Name = "VM i Rally-Pingis",
@@ -308,6 +312,9 @@ namespace Ticket_Hive.Data.Migrations
                         .WithMany("RecommendedEvents")
                         .HasForeignKey("EventModelId");
 
+                    b.HasOne("Ticket_Hive.Data.Models.UserModel", null)
+                        .WithMany("Events")
+                        .HasForeignKey("UserModelId");
                 });
 
             modelBuilder.Entity("Ticket_Hive.Data.Models.ShoppingCartModel", b =>
@@ -355,7 +362,7 @@ namespace Ticket_Hive.Data.Migrations
                 {
                     b.Navigation("RecommendedEvents");
 
-
+                    b.Navigation("UserEvents");
                 });
 
             modelBuilder.Entity("Ticket_Hive.Data.Models.ShoppingCartModel", b =>
