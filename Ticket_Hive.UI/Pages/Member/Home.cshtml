@@ -25,18 +25,16 @@
 
 @if (Model.popularEvents != null)
 {
-        <h1 class="popular-events">Most popular events:</h1>
-        <div class="row movie-list">
+            <h1 class="popular-events">Most popular events:</h1>
+            <div class="row movie-list">
         @foreach (var eventToDisplay in Model.popularEvents)
-        {
-            string eventImage = $"/images/EventImages/{eventToDisplay.Image}.png";
-                <div class="image-container">
-                    <h3>@eventToDisplay.Name</h3>
-                    <img src="@eventImage"/>
-                    <button class="btn btn-primary" type="submit" asp-page-handler="ShowEvent" asp-route-id="@eventToDisplay.Id">Read more</button>
-                </div>
+        {         
+                        <div class="image-container">
+                            <h3>@eventToDisplay.Name</h3>                         
+                            <a class="btn btn-primary" asp-page="EventDetails" asp-route-id="@eventToDisplay.Id">Read more</a>
+                        </div>
         }
-        </div>
+            </div>
 }
 
 @if (Model.RecommendedEvents != null && Model.RecommendedEvents.Any())
@@ -45,11 +43,11 @@
         <div class="row movie-list">
         @foreach (var eventToDisplay in Model.RecommendedEvents)
         {
-            string eventImage = $"/images/EventImages/{eventToDisplay.Image}.png";
+            
                 <div class="image-container">
                     <h3>@eventToDisplay.Name</h3>
-                    <img src="@eventImage" />
-                    <button class="btn btn-primary" type="submit" asp-page-handler="ShowEvent" asp-route-id="@eventToDisplay.Id">Read more</button>
+                    
+                    <a class="btn btn-primary" asp-page="EventDetails" asp-route-id="@eventToDisplay.Id">Read more</a>
                 </div>
         }
         </div>
