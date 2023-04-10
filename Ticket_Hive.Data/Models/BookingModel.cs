@@ -8,5 +8,6 @@
         public int EventId { get; set; }
         public EventModel Event { get; set; } = null!;
         public AppUserModel User { get; set; } = null!;
+
     }
 }

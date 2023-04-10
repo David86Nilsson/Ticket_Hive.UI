@@ -7,6 +7,7 @@ using Ticket_Hive.UI.Data;
 
 namespace Ticket_Hive.UI.Pages.Member
 {
+    [Authorize]
     public class ChangePasswordModel : PageModel
     {
 
