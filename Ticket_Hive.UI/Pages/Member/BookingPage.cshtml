@@ -7,19 +7,72 @@
 <style>
 	body {
 		background-color: #fbe89c;
+		margin:10px;
 	}
+
 	a:hover {
 		cursor: pointer;
-		
 	}
-	.sold-out{
-		background:red;
+
+	.sold-out {
+		color: red;
 	}
 
 	a {
-		text-decoration: none; 
+		text-decoration: none;
 		color: #305076;
 	}
+
+	.EventInfo {
+		height: 40px;
+		padding: 0 30px;
+		font-size: 30px;
+		text-align: center;
+		
+	}
+	.MarginFix{
+		margin-bottom:25px;
+		margin-top:25px;
+		
+	}
+
+	.SortBar span {
+		display: inline-block;
+		width: 14%;
+		text-align: center;
+	}
+
+	.EventInfo .name {
+		width: 14%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	.EventInfo .type {
+		width: 14%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	.EventInfo .location {
+		width: 14%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	.EventInfo .price {
+		width: 14%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	.EventInfo .date {
+		width: 14%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	
 
 </style>
 
@@ -36,7 +89,7 @@
 {
 	<h2>Search Results:</h2>
 
-	<div class="container">
+	<div class="EventInfo">
 		@foreach (var result in Model.SearchResults)
 		{
 			@if (result.TicketsSold >= result.Capacity)
@@ -54,14 +107,12 @@
 			{
 				<div>
 					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
-						<span class="LeftInfo">
-							<span>@result.Name</span>
-							<span>@result.EventType</span>
-						</span>
-						<span class="RightInfo">
-							<span>@result.Location</span>
-							<span>@result.Price :-</span>
-							<span>@result.DateTime</span>
+						<span class="EventInfo">
+							<span class="name">@result.Name</span>
+							<span class="type">@result.EventType</span>
+							<span class="location">@result.Location</span>
+							<span class="price">@result.Price :-</span>
+							<span class="date">@result.DateTime</span>
 						</span>
 					</a>
 				</div>
@@ -75,42 +126,47 @@
 else
 {
 	<h2>All Events:</h2>
+	<div class="Eventinfo">
+		<span class="SortBar EventInfo">
+			<span>Name</span>
+			<span>EventType</span>
+			<span>Location</span>
+			<span>Price</span>
+			<span>Date</span>
+		</span>
+	</div>
 	<div class="container">
 		@foreach (var result in Model.SearchResults)
 		{
+			<hr />
 			@if (result.TicketsSold >= result.Capacity)
 			{
 				<div>
-					<span class="sold-out">
-						<span>@result.Name</span>
-						<span>@result.EventType</span>
-						<span>@result.Location</span>
+					<span class="sold-out EventInfo">
+						<span class="name">@result.Name</span>
+						<span class="type">@result.EventType</span>
+						<span class="location">@result.Location</span>
 						<span>SOLD OUT</span>
 					</span>
 				</div>
 			}
 			else
 			{
-				<div>
+				<div class="MarginFix">
 					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
-						<span class="LeftInfo">
-							<span>@result.Name</span>
-							<span>@result.EventType</span>
-						</span>
-						<span class="RightInfo">
-							<span>@result.Location</span>
-							<span>@result.Price :-</span>
-							<span>@result.DateTime</span>
+						<span class="EventInfo">
+							<span class="name">@result.Name</span>
+							<span class="type">@result.EventType</span>
+							<span class="location">@result.Location</span>
+							<span class="price">@result.Price :-</span>
+							<span class="date">@result.DateTime</span>
 						</span>
 					</a>
 				</div>
 			}
-
-
-
 		}
-
 	</div>
+
 }
 
 
