@@ -40,7 +40,7 @@ namespace Ticket_Hive.Data.Repos
 
         public async Task<AppUserModel?> GetUserByUserNameAsync(string userName)
         {
-            return await context.AppUsers.Include(a => a.Bookings).FirstOrDefaultAsync(appUser => appUser.Username.ToLower() == userName.ToLower());
+            return await context.AppUsers.Include(a => a.Bookings).FirstOrDefaultAsync(appUser => appUser.Username == userName);
         }
 
         public async Task<bool> UpdateAppUserAsync(AppUserModel updatedAppUser)
