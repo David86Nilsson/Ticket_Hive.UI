@@ -44,12 +44,11 @@ namespace Ticket_Hive.UI.Pages.Member
             this.appUserModelRepo = appUserModelRepo;
             this.bookingRepo = bookingRepo;
             eventManager = new();
-            cookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
         }
         public async Task OnGet()
         {
             // Hämta Shoppingcart från cookie
-
+            cookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
             Shoppingcart = await cookieManager.GetShoppingCartFromCookieAsync();
 
             // Ta bort shoppingcart från cookie

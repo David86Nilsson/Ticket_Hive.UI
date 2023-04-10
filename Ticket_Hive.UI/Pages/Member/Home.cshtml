@@ -1,0 +1,56 @@
+﻿@page
+@model Ticket_Hive.UI.Pages.Member.HomeModel
+@{
+}
+
+<h1 id="title">Search for your next event</h1>
+<div class="search">
+    <form method="post">
+        <input id="searchbar" type="text" asp-for="SearchWord" placeholder="Keyword" />
+        <button id="searchbtn" class="btn btn-primary" type="submit" asp-page-handler="SearchForEvent">Search</button>
+        <button id="eventbtn" class="btn btn-primary" type="submit" asp-page-handler="ShowAllEvents">Show all events</button>
+    </form>
+</div>
+@if (Model.eventsBought != null)
+{
+        <p class="attending">You are already attending: 
+
+        @foreach (var eventBought in Model.eventsBought)
+        {
+            string eventHref = $"/eventdetails/{eventBought.Id}";
+                <span><a href="@eventHref">@eventBought.Name</a>, </span>
+        }
+        </p>
+}
+
+@if (Model.popularEvents != null)
+{
+        <h1 class="popular-events">Most popular events:</h1>
+        <div class="row movie-list">
+        @foreach (var eventToDisplay in Model.popularEvents)
+        {
+            string eventImage = $"/images/EventImages/{eventToDisplay.Image}.png";
+                <div class="image-container">
+                    <h3>@eventToDisplay.Name</h3>
+                    <img src="@eventImage"/>
+                    <button class="btn btn-primary" type="submit" asp-page-handler="ShowEvent" asp-route-id="@eventToDisplay.Id">Read more</button>
+                </div>
+        }
+        </div>
+}
+
+@if (Model.RecommendedEvents != null && Model.RecommendedEvents.Any())
+{
+        <h1 class="recommended-events">Recommended events:</h1>
+        <div class="row movie-list">
+        @foreach (var eventToDisplay in Model.RecommendedEvents)
+        {
+            string eventImage = $"/images/EventImages/{eventToDisplay.Image}.png";
+                <div class="image-container">
+                    <h3>@eventToDisplay.Name</h3>
+                    <img src="@eventImage" />
+                    <button class="btn btn-primary" type="submit" asp-page-handler="ShowEvent" asp-route-id="@eventToDisplay.Id">Read more</button>
+                </div>
+        }
+        </div>
+}

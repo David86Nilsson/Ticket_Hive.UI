@@ -33,6 +33,7 @@ namespace Ticket_Hive.Logic
         }
 
 
+
         public bool IsEventFullyBooked(EventModel eventModel)
         {
             return eventModel.Capacity <= eventModel.TicketsSold;
