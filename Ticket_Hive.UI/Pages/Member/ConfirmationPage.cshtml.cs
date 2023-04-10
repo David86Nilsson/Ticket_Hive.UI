@@ -48,7 +48,8 @@ namespace Ticket_Hive.UI.Pages.Member
         public async Task OnGet()
         {
             // Hämta Shoppingcart från cookie
-            cookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
+            cookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
+
             Shoppingcart = await cookieManager.GetShoppingCartFromCookieAsync();
 
             // Ta bort shoppingcart från cookie
