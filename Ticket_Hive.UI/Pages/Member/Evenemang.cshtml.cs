@@ -44,9 +44,10 @@ namespace Ticket_Hive.UI.Pages.Member
         public async Task OnGet(int id)
         {
             CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
-            Id = 2; // new Random().Next(1, 6);
+            //Id = 2; // new Random().Next(1, 6);
 
-            //Id = id;
+            //Andre
+            Id = id;
             EventToShow = await eventRepo.GetEventByIdAsync(Id);
             if (EventToShow != null && EventManager != null)
             {
