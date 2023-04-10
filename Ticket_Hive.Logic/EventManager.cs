@@ -5,6 +5,15 @@ namespace Ticket_Hive.Logic
 {
     public class EventManager
     {
+        public decimal TotalPriceInShoopingCart(ShoppingCartModel cart)
+        {
+            decimal totalPrice = 0m;
+            foreach (BookingModel booking in cart.Bookings)
+            {
+                totalPrice += (booking.NbrOfTickets * booking.Event.Price);
+            }
+            return Math.Round(totalPrice, 2);
+        }
         public async Task BuyTicketsAsync(ShoppingCartModel? shoppingCart, IBookingRepo bookingRepo, IEventModelRepo eventModelRepo, IAppUserModelRepo appUserModelRepo)
         {
             List<BookingModel> bookings = shoppingCart.Bookings;

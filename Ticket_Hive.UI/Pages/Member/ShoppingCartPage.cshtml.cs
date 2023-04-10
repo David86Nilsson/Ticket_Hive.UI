@@ -24,6 +24,7 @@ namespace Ticket_Hive.UI.Pages.Member
         public ShoppingCartPageModel(SignInManager<IdentityUser> signInManager, IBookingRepo bookingRepo, IEventModelRepo eventModelRepo, IAppUserModelRepo appUserModelRepo)
         {
             eventManager = new();
+            cookieManager = new();
             this.signInManager = signInManager;
             this.bookingRepo = bookingRepo;
             this.eventModelRepo = eventModelRepo;
@@ -31,28 +32,30 @@ namespace Ticket_Hive.UI.Pages.Member
         }
         public async Task OnGet()
         {
-            // Get shoppingcart from cookie
-            //string? userName = await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(HttpContext.User));
-            //if (string.IsNullOrEmpty(userName))
-            //{
-            //    AppUser = await appUserModelRepo.GetUserByUserNameAsync(userName);
-            //}
-            //var cookie = HttpContext.Session.GetString("ShoppingCart");
-            //var cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
-            //var cartCookie = cartCookieList.FirstOrDefault(cc => cc.UserName == AppUser.Username);
-            //ShoppingCart = cartCookie.ShoppingCart;
-            cookieManager = new(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
+
+            cookieManager.SetAttributesToCookieManager(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
             ShoppingCart = await cookieManager.GetShoppingCartFromCookieAsync();
         }
         public async Task<IActionResult> OnPost()
         {
-            if (ModelState.IsValid)
+            // Remove bookings with 0 tickets
+            var bookings = ShoppingCart.Bookings;
+            for (int i = 0; i < ShoppingCart.Bookings.Count; i++)
             {
-                // Buy tickets and save to database
+                BookingModel booking = ShoppingCart.Bookings[i];
+                if (booking.NbrOfTickets == 0)
+                {
+                    ShoppingCart.Bookings.Remove(booking);
+                }
+            }
+            //await cookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
+            // Buy tickets and save to database
+            if (ShoppingCart.Bookings.Count > 0)
+            {
                 await eventManager.BuyTicketsAsync(ShoppingCart, bookingRepo, eventModelRepo, appUserModelRepo);
-                // Go To Confirmation Page
                 return RedirectToPage("/Member/ConfirmationPage");
             }
+
             return Page();
         }
 

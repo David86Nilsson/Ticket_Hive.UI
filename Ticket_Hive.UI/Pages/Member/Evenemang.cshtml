@@ -5,7 +5,7 @@
 
 <div class="container">
     <div class="row">
-        <button class="btn btn-primary" asp-page="/Index">Home</button>
+        <button class="btn" asp-page="/Member/Home">Home</button>
     </div>
     <div class="row text-center">
         <h1>@Model.EventToShow.Name</h1>
@@ -58,6 +58,13 @@
         </div>
     </div>
     <form method="post">
+        <input type="hidden" asp-for="EventToShow" />
+        <input type="hidden" asp-for="Id" />  
+        <input type="hidden" asp-for="TicketsLeft" />
+        <input type="hidden" asp-for="CookieManager" />
+        <input type="hidden" asp-for="EventManager" />
+        <input type="hidden" asp-for="ShoppingCart" />
+        <input type="hidden" asp-for="AppUser" />
         <input type="number" max="@Model.TicketsLeft" min="1" value="1" asp-for="Tickets" />
         <input type="submit" class="btn" value="Add Tickets To Shopping Cart" />
     </form>

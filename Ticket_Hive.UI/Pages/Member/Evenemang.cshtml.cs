@@ -7,6 +7,7 @@ using Ticket_Hive.Logic;
 
 namespace Ticket_Hive.UI.Pages.Member
 {
+    [BindProperties]
     public class EvenemangModel : PageModel
     {
         private readonly SignInManager<IdentityUser> signInManager;
@@ -26,7 +27,7 @@ namespace Ticket_Hive.UI.Pages.Member
 
         public List<CartCookieModel> cartCookieList;
 
-        [BindProperty]
+        //[BindProperty]
         public int Tickets { get; set; }
 
 
@@ -38,11 +39,12 @@ namespace Ticket_Hive.UI.Pages.Member
             this.appUserModelRepo = appUserModelRepo;
             this.bookingRepo = bookingRepo;
             EventManager = new();
+            CookieManager = new();
         }
         public async Task OnGet(int id)
         {
-            CookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
-            Id = 3;
+            CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
+            Id = 2; // new Random().Next(1, 6);
 
             //Id = id;
             EventToShow = await eventRepo.GetEventByIdAsync(Id);
@@ -68,43 +70,27 @@ namespace Ticket_Hive.UI.Pages.Member
         }
         public async Task<IActionResult> OnPost()
         {
-            CookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
 
-            Id = 3;
-
-            //Id = id;
-            EventToShow = await eventRepo.GetEventByIdAsync(Id);
-            if (EventToShow != null && EventManager != null)
+            if (AppUser != null && EventToShow != null && ShoppingCart != null && Tickets < TicketsLeft)
             {
-                TicketsLeft = EventManager.TicketsLeft(EventToShow);
-            }
-
-            // Get user
-            var user = await signInManager.UserManager.GetUserAsync(HttpContext.User);
-            string? userName = user.UserName;
-            if (!string.IsNullOrEmpty(userName))
-            {
-                AppUser = await appUserModelRepo.GetUserByUserNameAsync(userName);
-            }
-
-            //Get CookieInfo
-            if (AppUser != null)
-            {
-                ShoppingCart = await CookieManager.GetShoppingCartFromCookieAsync();
-            }
-
-
-            if (ModelState.IsValid && AppUser != null && EventToShow != null && ShoppingCart != null && Tickets < TicketsLeft)
-            {
-                BookingModel newBooking = new()
+                CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
+                BookingModel existingBooking = ShoppingCart.Bookings.FirstOrDefault(b => b.EventId == Id);
+                if (existingBooking != null)
                 {
-                    Event = EventToShow,
-                    NbrOfTickets = Tickets,
-                    User = AppUser
-                };
-                ShoppingCart.Bookings.Add(newBooking);
+                    existingBooking.NbrOfTickets += Tickets;
+                }
+                else
+                {
+                    BookingModel newBooking = new()
+                    {
+                        Event = EventToShow,
+                        NbrOfTickets = Tickets,
+                        User = AppUser
+                    };
+                    ShoppingCart.Bookings.Add(newBooking);
+                }
                 await CookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
-                return RedirectToPage("/Member/ShoppingCartPage");
+                return RedirectToPage("/Member/Home");
             }
             return Page();
         }

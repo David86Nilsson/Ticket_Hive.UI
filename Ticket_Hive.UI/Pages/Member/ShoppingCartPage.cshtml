@@ -4,23 +4,40 @@
 }
 
 
-<div class="text-center">
-    <div> 
-        <form method="post">
-        <table>
-            <tr>
-                <td>Event</td>
-                <td>NbrOfTickets</td>
-            </tr>
-            @foreach (var item in Model.ShoppingCart.Bookings)
-            {
-                <tr>
-                    <td>@item.Event.Name</td>
-                    <td><input type="number" min="0" max="@Model.eventManager.TicketsLeft(item.Event)" value="@item.NbrOfTickets" asp-for="@item.NbrOfTickets"/></td>
-                </tr>
-            }
-            <input type="submit" value="Go To Check Out" />
+<div class="row">
+    <div class="col-12 text-center">
+        <h1>Shopping Cart</h1>
+    </div>
+    <div class="col-12 d-flex">
+        <button class="btn" asp-page="/Member/Booking">To BookingPage</button>
+     </div>   
+    <div class="col-12 d-flex justify-content-center"> 
+        @if (Model.ShoppingCart.Bookings.Count > 0)
+        {
+            <form method="post">
+                <input type="hidden" value="@Model.ShoppingCart.Bookings" asp-for="ShoppingCart.Bookings">
+                <table>
+                    <tr>
+                        <td><strong>Event</strong></td>
+                        <td><strong>Number Of Tickets</strong></td>
+                    </tr>
+                    @foreach (var item in Model.ShoppingCart.Bookings)
+                    {
+                        <tr>
+                            <td>@item.Event.Name : </td>
+                            <td><input type="number" min="0" max="@Model.eventManager.TicketsLeft(item.Event)" value="@item.NbrOfTickets" asp-for="@item.NbrOfTickets"/></td>
+                        </tr>
+                    }
+                    <tr>
+                    <td>Total Price: </td>
+                    <td>@Model.eventManager.TotalPriceInShoopingCart(Model.ShoppingCart) Kr</td>
         </table>
-        </form>
+            <input type="submit" class="btn" value="Go To Check Out" />
+            </form>
+        }
+        else
+        {
+            <p>No items in Shopping Cart</p>
+        }
     </div>    
 </div>
