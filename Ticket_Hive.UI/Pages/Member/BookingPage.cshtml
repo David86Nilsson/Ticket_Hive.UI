@@ -76,30 +76,40 @@
 
 </style>
 
-<form method="get">
-	<label for="search">Search:</label>
-	<input type="text" id="search" name="search" />
+<form id="search-form">
+	<label for="query">Search:</label>
+	<input type="text" id="query" name="query />
 
 	<button type="submit">Search</button>
 </form>
 
-
+<div id="search.results"></div>
 
 @if (showSearchResults)
 {
 	<h2>Search Results:</h2>
-
-	<div class="EventInfo">
+	<div class="Eventinfo">
+		<span class="SortBar EventInfo">
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+	</div>
+	<div class="container">
 		@foreach (var result in Model.SearchResults)
 		{
+			<hr />
 			@if (result.TicketsSold >= result.Capacity)
 			{
 				<div>
-					<span class="sold-out">
-						<span>@result.Name</span>
-						<span>@result.EventType</span>
-						<span>@result.Location</span>
-						<span>SOLD OUT</span>
+					<span class="sold-out EventInfo">
+						<span class="name">@result.Name</span>
+						<span class="type">@result.EventType</span>
+						<span class="location">@result.Location</span>
+						<span class="price">SOLD OUT</span>
+						<span class="date">@result.DateTime</span>
 					</span>
 				</div>
 			}
@@ -135,7 +145,28 @@ else
 			<span>Date</span>
 		</span>
 	</div>
-	<div class="container">
+	
+
+}
+<script>
+	const searchForm = document.getElementById('search-form');
+	const searchResults = document.getElementById('search-results');
+
+	searchForm.addEventListener('submit', (event) => {
+		event.preventDefault(); // Prevent form submission
+
+		const query = document.getElementById('query').value;
+
+		fetch() // Send search request to the server
+			.then(response => response.json()) // Parse response as JSON
+			.then(data => {
+				// Update search results HTML
+				searchResults.innerHTML = '';
+
+				if (data.length > 0) {
+					data.forEach(event => {
+						searchResults.innerHTML += `
+				<div class="container">
 		@foreach (var result in Model.SearchResults)
 		{
 			<hr />
@@ -166,8 +197,19 @@ else
 			}
 		}
 	</div>
+			  `;
+					});
+				} else {
+					searchResults.innerHTML = 'No results found.';
+				}
+			})
+			.catch(error => {
+				console.error(error);
+				searchResults.innerHTML = 'An error occurred while searching.';
+			});
+	});
+</script>
 
-}
 
 
 
