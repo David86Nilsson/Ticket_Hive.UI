@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -44,10 +45,9 @@ namespace Ticket_Hive.UI.Pages.Member
         public async Task OnGet(int id)
         {
             CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
-            //Id = 2; // new Random().Next(1, 6);
+            Id = new Random().Next(1, 6);
 
-            //Andre
-            Id = id;
+            //Id = id;
             EventToShow = await eventRepo.GetEventByIdAsync(Id);
             if (EventToShow != null && EventManager != null)
             {
@@ -71,11 +71,33 @@ namespace Ticket_Hive.UI.Pages.Member
         }
         public async Task<IActionResult> OnPost()
         {
+            CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
+            //Id = id;
+            EventToShow = await eventRepo.GetEventByIdAsync(Id);
+            if (EventToShow != null && EventManager != null)
+            {
+                TicketsLeft = EventManager.TicketsLeft(EventToShow);
+            }
+
+            // Get user
+            var user = await signInManager.UserManager.GetUserAsync(HttpContext.User);
+            string? userName = user.UserName;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                AppUser = await appUserModelRepo.GetUserByUserNameAsync(userName);
+            }
+
+            //Get CookieInfo
+            if (AppUser != null)
+            {
+                ShoppingCart = await CookieManager.GetShoppingCartFromCookieAsync();
+            }
 
             if (AppUser != null && EventToShow != null && ShoppingCart != null && Tickets < TicketsLeft)
             {
-                CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
-                BookingModel existingBooking = ShoppingCart.Bookings.FirstOrDefault(b => b.EventId == Id);
+
+                // Check if evnt is already booked
+                BookingModel existingBooking = ShoppingCart.Bookings.FirstOrDefault(b => b.Event.Id == Id);
                 if (existingBooking != null)
                 {
                     existingBooking.NbrOfTickets += Tickets;
@@ -86,7 +108,6 @@ namespace Ticket_Hive.UI.Pages.Member
                     {
                         Event = EventToShow,
                         NbrOfTickets = Tickets,
-                        User = AppUser
                     };
                     ShoppingCart.Bookings.Add(newBooking);
                 }
@@ -94,6 +115,11 @@ namespace Ticket_Hive.UI.Pages.Member
                 return RedirectToPage("/Member/Home");
             }
             return Page();
+        }
+
+        private void GetData()
+        {
+
         }
     }
 }
