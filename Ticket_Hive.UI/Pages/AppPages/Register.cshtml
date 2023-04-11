@@ -2,22 +2,6 @@
 @model Ticket_Hive.UI.Pages.RegistreringsSidaModel
 @{
 }
-
-<style>
-	body {
-		background-color: #fbe89c;
-	}
-	.btn-primary {
-		background-color: #305076;
-		border-color: #305076;
-		color: #fbe89c;
-		margin-top: 10px;
-	}
-	.blueColor{
-		color: #305076;
-	}
-	</style>
-
 	<div class="container">
     <h1 class="display-3 mt-3 blueColor">Register</h1>
 	<form method="post" onsubmit="return validateForm()">
@@ -33,7 +17,7 @@
 			<span asp-validation-for="@Model.Password" class="text-danger"></span>
 			<br />
 
-			<button type="submit" class="btn btn-primary">Register</button>
+			<button type="submit" class="btn margin-top">Register</button>
 		</div>
 	</form>
 	</div>

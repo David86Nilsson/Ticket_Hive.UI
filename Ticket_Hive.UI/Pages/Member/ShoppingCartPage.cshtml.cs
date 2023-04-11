@@ -20,43 +20,66 @@ namespace Ticket_Hive.UI.Pages.Member
         private readonly IAppUserModelRepo appUserModelRepo;
 
         public AppUserModel? AppUser { get; set; }
+        [BindProperty]
+        public int NewQuantity { get; set; }
+        [BindProperty]
+        public int EventId { get; set; }
 
         public ShoppingCartPageModel(SignInManager<IdentityUser> signInManager, IBookingRepo bookingRepo, IEventModelRepo eventModelRepo, IAppUserModelRepo appUserModelRepo)
         {
             eventManager = new();
+            cookieManager = new();
             this.signInManager = signInManager;
             this.bookingRepo = bookingRepo;
             this.eventModelRepo = eventModelRepo;
             this.appUserModelRepo = appUserModelRepo;
-            cookieManager = new(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
-
-
         }
         public async Task OnGet()
         {
-            // Get shoppingcart from cookie
-            //string? userName = await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(HttpContext.User));
-            //if (string.IsNullOrEmpty(userName))
-            //{
-            //    AppUser = await appUserModelRepo.GetUserByUserNameAsync(userName);
-            //}
-            //var cookie = HttpContext.Session.GetString("ShoppingCart");
-            //var cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
-            //var cartCookie = cartCookieList.FirstOrDefault(cc => cc.UserName == AppUser.Username);
-            //ShoppingCart = cartCookie.ShoppingCart;
+            cookieManager.SetAttributesToCookieManager(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
             ShoppingCart = await cookieManager.GetShoppingCartFromCookieAsync();
         }
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPostBuy()
         {
-            if (ModelState.IsValid)
+            cookieManager.SetAttributesToCookieManager(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
+            ShoppingCart = await cookieManager.GetShoppingCartFromCookieAsync();
+            // Remove bookings with 0 tickets
+            var bookings = ShoppingCart.Bookings;
+            for (int i = 0; i < ShoppingCart.Bookings.Count; i++)
             {
-                // Buy tickets and save to database
-                await eventManager.BuyTicketsAsync(ShoppingCart, bookingRepo, eventModelRepo, appUserModelRepo);
-                // Go To Confirmation Page
+                BookingModel booking = ShoppingCart.Bookings[i];
+                if (booking.NbrOfTickets == 0)
+                {
+                    ShoppingCart.Bookings.Remove(booking);
+                }
+            }
+            //await cookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
+            // Buy tickets and save to database
+            if (ShoppingCart.Bookings.Count > 0)
+            {
+                await eventManager.BuyTicketsAsync(ShoppingCart, bookingRepo, eventModelRepo, appUserModelRepo, ShoppingCart.User);
                 return RedirectToPage("/Member/ConfirmationPage");
             }
+            //comment
             return Page();
         }
 
+        public async Task<IActionResult> OnPostCookie()
+        {
+            cookieManager.SetAttributesToCookieManager(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
+            ShoppingCart = await cookieManager.GetShoppingCartFromCookieAsync();
+            BookingModel booking = ShoppingCart.Bookings.FirstOrDefault(b => b.Event.Id == EventId);
+            if (booking != null)
+            {
+                booking.NbrOfTickets = NewQuantity;
+            }
+            await cookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
+
+            return Page();
+        }
     }
 }
+
+
+
+

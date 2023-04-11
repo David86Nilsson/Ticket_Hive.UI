@@ -60,5 +60,35 @@ namespace Ticket_Hive.Data.Repos
 
             return false;
         }
+
+        public async Task<List<EventModel>?> GetAllEventsFromUserAsync(string username)
+        {
+            AppUserModel user = await context.AppUsers
+                .Include(u => u.Events)
+                .FirstOrDefaultAsync(u => u.Username == username);
+
+            if (user != null)
+            {
+                return user.Events; 
+            }
+
+            return null;
+        }
+
+        public async Task<bool> AddEventToUserAsync(string username, int eventId)
+        {
+            AppUserModel user = await context.AppUsers.FirstOrDefaultAsync(u => u.Username == username);
+            EventModel eventModel = await context.Events.FirstOrDefaultAsync(e => e.Id == eventId);
+
+            if (user != null && eventModel != null)
+            {
+                user.Events.Add(eventModel); 
+                await context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
     }
+
 }

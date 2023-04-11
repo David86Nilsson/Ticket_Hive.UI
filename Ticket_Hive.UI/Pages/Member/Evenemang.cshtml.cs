@@ -1,13 +1,14 @@
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
 using Ticket_Hive.Data.Models;
 using Ticket_Hive.Data.Repos;
 using Ticket_Hive.Logic;
 
 namespace Ticket_Hive.UI.Pages.Member
 {
+    [BindProperties]
     public class EvenemangModel : PageModel
     {
         private readonly SignInManager<IdentityUser> signInManager;
@@ -16,8 +17,7 @@ namespace Ticket_Hive.UI.Pages.Member
         private readonly IBookingRepo bookingRepo;
 
         public int Id { get; set; }
-        [BindProperty]
-        public int Tickets { get; set; }
+
         public int TicketsLeft { get; set; }
         public string? CookieValue { get; set; }
         public EventModel? EventToShow { get; set; }
@@ -28,6 +28,9 @@ namespace Ticket_Hive.UI.Pages.Member
 
         public List<CartCookieModel> cartCookieList;
 
+        //[BindProperty]
+        public int Tickets { get; set; }
+
 
 
         public EvenemangModel(SignInManager<IdentityUser> signInManager, IEventModelRepo eventRepo, IAppUserModelRepo appUserModelRepo, IBookingRepo bookingRepo)
@@ -37,11 +40,14 @@ namespace Ticket_Hive.UI.Pages.Member
             this.appUserModelRepo = appUserModelRepo;
             this.bookingRepo = bookingRepo;
             EventManager = new();
-            CookieManager = new(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
+            CookieManager = new();
         }
         public async Task OnGet(int id)
         {
-            Id = id;
+            CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
+            Id = new Random().Next(1, 6);
+
+            //Id = id;
             EventToShow = await eventRepo.GetEventByIdAsync(Id);
             if (EventToShow != null && EventManager != null)
             {
@@ -49,8 +55,9 @@ namespace Ticket_Hive.UI.Pages.Member
             }
 
             // Get user
-            string? userName = await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(HttpContext.User));
-            if (string.IsNullOrEmpty(userName))
+            var user = await signInManager.UserManager.GetUserAsync(HttpContext.User);
+            string? userName = user.UserName;
+            if (!string.IsNullOrEmpty(userName))
             {
                 AppUser = await appUserModelRepo.GetUserByUserNameAsync(userName);
             }
@@ -60,76 +67,58 @@ namespace Ticket_Hive.UI.Pages.Member
             {
                 ShoppingCart = await CookieManager.GetShoppingCartFromCookieAsync();
             }
+
         }
-
-
-
         public async Task<IActionResult> OnPost()
         {
-            if (ModelState.IsValid && AppUser != null && EventToShow != null && ShoppingCart != null && Tickets < TicketsLeft)
+            CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
+            //Id = id;
+            EventToShow = await eventRepo.GetEventByIdAsync(Id);
+            if (EventToShow != null && EventManager != null)
             {
-                BookingModel newBooking = new()
-                {
-                    Event = EventToShow!,
-                    NbrOfTickets = Tickets,
-                    User = AppUser
-                };
-                ShoppingCart.Bookings.Add(newBooking);
-                await CookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
+                TicketsLeft = EventManager.TicketsLeft(EventToShow);
             }
-            return RedirectToPage();
+
+            // Get user
+            var user = await signInManager.UserManager.GetUserAsync(HttpContext.User);
+            string? userName = user.UserName;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                AppUser = await appUserModelRepo.GetUserByUserNameAsync(userName);
+            }
+
+            //Get CookieInfo
+            if (AppUser != null)
+            {
+                ShoppingCart = await CookieManager.GetShoppingCartFromCookieAsync();
+            }
+
+            if (AppUser != null && EventToShow != null && ShoppingCart != null && Tickets < TicketsLeft)
+            {
+
+                // Check if evnt is already booked
+                BookingModel existingBooking = ShoppingCart.Bookings.FirstOrDefault(b => b.Event.Id == Id);
+                if (existingBooking != null)
+                {
+                    existingBooking.NbrOfTickets += Tickets;
+                }
+                else
+                {
+                    BookingModel newBooking = new()
+                    {
+                        Event = EventToShow,
+                        NbrOfTickets = Tickets,
+                    };
+                    ShoppingCart.Bookings.Add(newBooking);
+                }
+                await CookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
+                return RedirectToPage("/Member/Home");
+            }
+            return Page();
         }
 
-        private async Task GetCookieAsync()
+        private void GetData()
         {
-            var cookie = HttpContext.Session.GetString("ShoppingCart");
-            if (string.IsNullOrEmpty(cookie))
-            {
-                ShoppingCart = new()
-                {
-                    User = AppUser
-                };
-                cartCookieList = new();
-            }
-            else
-            {
-                cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
-                if (cartCookieList != null)
-                {
-                    foreach (CartCookieModel cartCookieModel in cartCookieList)
-                    {
-                        if (cartCookieModel.UserName == AppUser.Username)
-                        {
-                            ShoppingCart = cartCookieModel.ShoppingCart;
-                            break;
-                        }
-                    }
-                }
-                else if (ShoppingCart == null)
-                {
-                    cartCookieList = new();
-                    ShoppingCart = new()
-                    {
-                        User = AppUser
-                    };
-                }
-            }
-        }
-        private async Task SetCookieAsync(ShoppingCartModel cart)
-        {
-            CartCookieModel? cartCookie = cartCookieList.FirstOrDefault(cookie => cookie.UserName == cart.User.Username);
-            if (cartCookie == null)
-            {
-                cartCookieList.Add(new CartCookieModel() { UserName = AppUser.Username, ShoppingCart = cart });
-            }
-            else
-            {
-                cartCookie.ShoppingCart = cart;
-            }
-            CookieOptions options = new();
-            options.Expires = DateTime.Now.AddMinutes(10);
-            var cookieValue = JsonConvert.SerializeObject(cartCookieList);
-            HttpContext.Session.SetString("ShoppingCart", cookieValue);
 
         }
     }

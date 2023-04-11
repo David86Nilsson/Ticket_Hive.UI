@@ -4,23 +4,74 @@
 }
 
 
-<div class="text-center">
-    <div> 
-        <form method="post">
-        <table>
-            <tr>
-                <td>Event</td>
-                <td>NbrOfTickets</td>
-            </tr>
-            @foreach (var item in Model.ShoppingCart.Bookings)
-            {
-                <tr>
-                    <td>@item.Event.Name</td>
-                    <td><input type="number" min="0" max="@Model.eventManager.TicketsLeft(item.Event)" value="@item.NbrOfTickets" asp-for="@item.NbrOfTickets"/></td>
-                </tr>
-            }
-            <input type="submit" value="Go To Check Out" />
-        </table>
-        </form>
-    </div>    
+<div class="row">
+    <div class="col-12 text-center">
+        <h1>Shopping Cart</h1>
+    </div>
+    <div class="col-12 d-flex">
+        <button class="btn" asp-page="/Member/Booking">To BookingPage</button>
+    </div>
+    <div class="col-12 d-flex justify-content-center">
+        @if (Model.ShoppingCart.Bookings.Count > 0)
+        {
+            <form id="event-form" method="post" asp-page-handler="Cookie">
+                <input id="new-quantity-input" type="hidden" value="" asp-for="NewQuantity">
+                <input id="event-id-input" type="hidden" value="" asp-for="EventId">
+
+                <table>
+                    <tr>
+                        <td><strong>Event</strong></td>
+                        <td><strong>Number Of Tickets</strong></td>
+                    </tr>
+                    @foreach (var item in Model.ShoppingCart.Bookings)
+                    {
+                        <tr>
+                            <td>@item.Event.Name : </td>
+                            <td>
+                                @*<input type="hidden" asp-for="@item.User">*@
+                                <input id="@item.Event.Id" class="@item.Id quantity w-25" type="number" min="0" max="@Model.eventManager.TicketsLeft(item.Event)" value="@item.NbrOfTickets" asp-for="@item.NbrOfTickets" />
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>Total Price: </td>
+                        <td>@Model.eventManager.TotalPriceInShoopingCart(Model.ShoppingCart) Kr</td>
+                    </tr>
+                </table>
+            </form>
+            <form method="post" asp-page-handler="Buy" class="margin-left">
+                <input type="submit" class="btn" value="Go To Check Out" />
+            </form>
+        }
+        else
+        {
+            <p>No items in Shopping Cart</p>
+        }
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        //let input = document.querySelector("#quantity-input");
+
+        document.addEventListener("change", function (event) {
+            if (event.target.classList.contains('quantity')) {
+                console.log(event.target.value);
+                let form = document.querySelector("#event-form");
+
+                // Ny kvanitet
+                let newQuantity = event.target.value;
+                // Vilket event?
+                let eventId = event.target.id;
+                console.log(eventId);
+                let newQuantityInput = document.querySelector("#new-quantity-input");
+                let eventIdInput = document.querySelector("#event-id-input");
+
+                newQuantityInput.value = newQuantity;
+                eventIdInput.value = eventId;
+
+                form.submit();
+            }
+        });
+    </script>
+}

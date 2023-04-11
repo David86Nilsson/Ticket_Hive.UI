@@ -8,13 +8,16 @@ namespace Ticket_Hive.Logic
 {
     public class CookieManager
     {
-        private readonly IAppUserModelRepo appUserModelRepo;
-        private readonly IEventModelRepo eventModelRepo;
-        private readonly IBookingRepo bookingModelRepo;
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly HttpContext httpContext;
+        private IAppUserModelRepo? appUserModelRepo;
+        private IEventModelRepo? eventModelRepo;
+        private IBookingRepo? bookingModelRepo;
+        private SignInManager<IdentityUser>? signInManager;
+        private HttpContext? httpContext;
 
-        public CookieManager(IAppUserModelRepo appUserModelRepo, IEventModelRepo eventModelRepo, IBookingRepo bookingModelRepo, SignInManager<IdentityUser> signInManager, HttpContext httpContext)
+        public CookieManager()
+        {
+        }
+        public void SetAttributesToCookieManager(IAppUserModelRepo appUserModelRepo, IEventModelRepo eventModelRepo, IBookingRepo bookingModelRepo, SignInManager<IdentityUser> signInManager, HttpContext httpContext)
         {
             this.appUserModelRepo = appUserModelRepo;
             this.eventModelRepo = eventModelRepo;
@@ -25,13 +28,17 @@ namespace Ticket_Hive.Logic
 
         public async Task SetShoppingCartToCookieAsync(ShoppingCartModel cart)
         {
+            var userName = await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(httpContext.User));
+
             var cookie = httpContext.Session.GetString("ShoppingCart");
-            var cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
-            CartCookieModel? cartCookie = cartCookieList.FirstOrDefault(cookie => cookie.UserName == cart.User.Username);
+            List<CartCookieModel> cartCookieList;
+            if (cookie == null) cartCookieList = new();
+            else cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
+
+            CartCookieModel? cartCookie = cartCookieList.FirstOrDefault(c => c.UserName == userName);
             if (cartCookie == null)
             {
-                AppUserModel? appUser = await appUserModelRepo.GetUserByUserNameAsync(await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(httpContext.User)));
-                cartCookieList.Add(new CartCookieModel() { UserName = appUser.Username, ShoppingCart = cart });
+                cartCookieList.Add(new CartCookieModel() { UserName = userName, ShoppingCart = cart });
             }
             else
             {
@@ -44,29 +51,34 @@ namespace Ticket_Hive.Logic
         public async Task<ShoppingCartModel?> GetShoppingCartFromCookieAsync()
         {
             AppUserModel? AppUser = null;
-            string? userName = await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(httpContext.User));
-            if (string.IsNullOrEmpty(userName))
+            var user = await signInManager.UserManager.GetUserAsync(httpContext.User);
+            string? userName = user.UserName;
+            if (!string.IsNullOrEmpty(userName))
             {
-                AppUser = await appUserModelRepo.GetUserByUserNameAsync(userName);
-                if (AppUser == null)
-                {
-                    return null;
-                }
-
                 var cookie = httpContext.Session.GetString("ShoppingCart");
                 if (string.IsNullOrEmpty(cookie))
                 {
-                    return new();
+                    return new()
+                    {
+                        User = userName
+                    };
                 }
                 var cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
                 if (cartCookieList == null)
                 {
-                    return new();
+                    return new()
+                    {
+
+                        User = userName
+                    };
                 }
-                var cartCookie = cartCookieList.FirstOrDefault(cc => cc.UserName == AppUser.Username);
+                var cartCookie = cartCookieList.FirstOrDefault(cc => cc.UserName == user.UserName);
                 if (cartCookie == null)
                 {
-                    return new();
+                    return new()
+                    {
+                        User = userName
+                    };
                 }
                 return cartCookie.ShoppingCart;
             }

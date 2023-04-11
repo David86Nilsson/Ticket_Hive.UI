@@ -38,7 +38,8 @@ builder.Services.AddScoped<IEventModelRepo, EventModelRepo>();
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = "ShoppingCart";
-    options.Cookie.MaxAge = TimeSpan.FromMinutes(10);
+    options.Cookie.MaxAge = TimeSpan.FromDays(1);
+
 });
 
 
@@ -100,6 +101,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -123,7 +125,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseSession();
-
 app.MapRazorPages();
 
 app.Run();
