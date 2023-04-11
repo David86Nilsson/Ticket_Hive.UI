@@ -44,6 +44,7 @@ namespace Ticket_Hive.UI.Pages.Member
             this.appUserModelRepo = appUserModelRepo;
             this.bookingRepo = bookingRepo;
             eventManager = new();
+            cookieManager = new();
         }
         public async Task OnGet()
         {
