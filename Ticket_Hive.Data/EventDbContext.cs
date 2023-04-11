@@ -16,6 +16,8 @@ namespace Ticket_Hive.Data
         public DbSet<ShoppingCartModel> ShoppingCarts { get; set; }
         public DbSet<UserEvent> UserEvents { get; set; } 
 
+
+
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
