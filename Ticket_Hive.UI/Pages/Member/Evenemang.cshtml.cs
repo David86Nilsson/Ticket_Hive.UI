@@ -47,7 +47,7 @@ namespace Ticket_Hive.UI.Pages.Member
             CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
             Id = new Random().Next(1, 6);
 
-            //Id = id;
+            Id = id; //Andre - gör så det visar korrekt evenmang när man klickar på read more  i HomePage
             EventToShow = await eventRepo.GetEventByIdAsync(Id);
             if (EventToShow != null && EventManager != null)
             {

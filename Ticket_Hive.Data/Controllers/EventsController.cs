@@ -4,25 +4,25 @@ using Ticket_Hive.Data.Repos;
 
 namespace Ticket_Hive.Data.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EventsController : ControllerBase
-    {
-        private readonly IEventModelRepo _repository;
+    //[Route("api/[controller]")]
+    //[ApiController]
+    //public class EventsController : ControllerBase
+    //{
+    //    private readonly IEventModelRepo _repository;
 
-        public EventsController(IEventModelRepo repository)
-        {
-            _repository = repository;
-        }
+    //    public EventsController(IEventModelRepo repository)
+    //    {
+    //        _repository = repository;
+    //    }
 
-        // GET api/events
-        [HttpGet]
-        public ActionResult<IEnumerable<EventModel>> GetAllEvents()
-        {
-            var eventItems = _repository.GetAllEventsAsync();
+    //    // GET api/events
+    //    [HttpGet]
+    //    public ActionResult<IEnumerable<EventModel>> GetAllEvents()
+    //    {
+    //        var eventItems = _repository.GetAllEventsAsync();
 
-            return Ok(eventItems);
-        }
+    //        return Ok(eventItems);
+    //    }
 
-    }
+    //}
 }
