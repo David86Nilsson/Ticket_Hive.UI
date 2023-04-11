@@ -28,17 +28,17 @@ namespace Ticket_Hive.Logic
 
         public async Task SetShoppingCartToCookieAsync(ShoppingCartModel cart)
         {
-            AppUserModel? appUser = await appUserModelRepo.GetUserByUserNameAsync(await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(httpContext.User)));
+            var userName = await signInManager.UserManager.GetUserNameAsync(await signInManager.UserManager.GetUserAsync(httpContext.User));
 
             var cookie = httpContext.Session.GetString("ShoppingCart");
             List<CartCookieModel> cartCookieList;
             if (cookie == null) cartCookieList = new();
             else cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
 
-            CartCookieModel? cartCookie = cartCookieList.FirstOrDefault(c => c.UserName == appUser.Username);
+            CartCookieModel? cartCookie = cartCookieList.FirstOrDefault(c => c.UserName == userName);
             if (cartCookie == null)
             {
-                cartCookieList.Add(new CartCookieModel() { UserName = appUser.Username, ShoppingCart = cart });
+                cartCookieList.Add(new CartCookieModel() { UserName = userName, ShoppingCart = cart });
             }
             else
             {
@@ -55,19 +55,12 @@ namespace Ticket_Hive.Logic
             string? userName = user.UserName;
             if (!string.IsNullOrEmpty(userName))
             {
-                AppUser = await appUserModelRepo.GetUserByUserNameAsync(userName);
-                if (AppUser == null)
-                {
-                    return null;
-                }
-
                 var cookie = httpContext.Session.GetString("ShoppingCart");
                 if (string.IsNullOrEmpty(cookie))
                 {
                     return new()
                     {
-                        User = AppUser
-                        //wrong code
+
                     };
                 }
                 var cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
@@ -76,7 +69,7 @@ namespace Ticket_Hive.Logic
                     return new()
                     {
 
-                        User = AppUser
+                        User = userName
                     };
                 }
                 var cartCookie = cartCookieList.FirstOrDefault(cc => cc.UserName == user.UserName);
@@ -84,7 +77,7 @@ namespace Ticket_Hive.Logic
                 {
                     return new()
                     {
-                        User = AppUser
+                        User = userName
                     };
                 }
                 return cartCookie.ShoppingCart;
