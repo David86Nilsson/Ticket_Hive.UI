@@ -60,7 +60,7 @@ namespace Ticket_Hive.Logic
                 {
                     return new()
                     {
-
+                        User = userName
                     };
                 }
                 var cartCookieList = JsonConvert.DeserializeObject<List<CartCookieModel>>(cookie);
