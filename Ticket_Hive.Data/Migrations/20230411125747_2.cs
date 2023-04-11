@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ticket_Hive.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class _1 : Migration
+    public partial class _2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,26 +53,6 @@ namespace Ticket_Hive.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShoppingCarts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ShoppingCarts_AppUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AppUserModelEventModel",
                 columns: table => new
                 {
@@ -97,30 +77,6 @@ namespace Ticket_Hive.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserEvents",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserEvents", x => new { x.UserId, x.EventId });
-                    table.ForeignKey(
-                        name: "FK_UserEvents_AppUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserEvents_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Bookings",
                 columns: table => new
                 {
@@ -129,8 +85,7 @@ namespace Ticket_Hive.Data.Migrations
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NbrOfTickets = table.Column<int>(type: "int", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ShoppingCartModelId = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -147,11 +102,6 @@ namespace Ticket_Hive.Data.Migrations
                         principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Bookings_ShoppingCarts_ShoppingCartModelId",
-                        column: x => x.ShoppingCartModelId,
-                        principalTable: "ShoppingCarts",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -168,11 +118,11 @@ namespace Ticket_Hive.Data.Migrations
                 columns: new[] { "Id", "Capacity", "DateTime", "EventModelId", "EventType", "Image", "Location", "Name", "Price", "TicketsSold" },
                 values: new object[,]
                 {
-                    { 1, 100, new DateTime(2023, 4, 21, 11, 34, 51, 959, DateTimeKind.Local).AddTicks(8620), null, "Nightclub", null, "Lund", "Kareoke bowling", 100m, 0 },
-                    { 2, 300, new DateTime(2023, 4, 16, 11, 34, 51, 959, DateTimeKind.Local).AddTicks(8685), null, "Musical", null, "Malmö", "Mama Mia", 200m, 0 },
-                    { 3, 30000, new DateTime(2023, 5, 1, 11, 34, 51, 959, DateTimeKind.Local).AddTicks(8689), null, "Sport", null, "Stockholm", "AIK - Hammarby", 500m, 0 },
-                    { 4, 20, new DateTime(2023, 4, 13, 11, 34, 51, 959, DateTimeKind.Local).AddTicks(8692), null, "Övrigt", null, "Halmstad", "Gästföreläsning med Steve Jobs", 10m, 20 },
-                    { 5, 10, new DateTime(2023, 5, 6, 11, 34, 51, 959, DateTimeKind.Local).AddTicks(8697), null, "Sport", null, "Köpenhamn", "VM i Rally-Pingis", 25m, 0 }
+                    { 1, 100, new DateTime(2023, 4, 21, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3016), null, "Nightclub", null, "Lund", "Kareoke bowling", 100m, 0 },
+                    { 2, 300, new DateTime(2023, 4, 16, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3085), null, "Musical", null, "Malmö", "Mama Mia", 200m, 0 },
+                    { 3, 30000, new DateTime(2023, 5, 1, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3088), null, "Sport", null, "Stockholm", "AIK - Hammarby", 500m, 0 },
+                    { 4, 20, new DateTime(2023, 4, 13, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3091), null, "Övrigt", null, "Halmstad", "Gästföreläsning med Steve Jobs", 10m, 20 },
+                    { 5, 10, new DateTime(2023, 5, 6, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3094), null, "Sport", null, "Köpenhamn", "VM i Rally-Pingis", 25m, 0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -186,11 +136,6 @@ namespace Ticket_Hive.Data.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_ShoppingCartModelId",
-                table: "Bookings",
-                column: "ShoppingCartModelId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Bookings_UserId",
                 table: "Bookings",
                 column: "UserId");
@@ -199,16 +144,6 @@ namespace Ticket_Hive.Data.Migrations
                 name: "IX_Events_EventModelId",
                 table: "Events",
                 column: "EventModelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ShoppingCarts_UserId",
-                table: "ShoppingCarts",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserEvents_EventId",
-                table: "UserEvents",
-                column: "EventId");
         }
 
         /// <inheritdoc />
@@ -221,16 +156,10 @@ namespace Ticket_Hive.Data.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "UserEvents");
-
-            migrationBuilder.DropTable(
-                name: "ShoppingCarts");
+                name: "AppUsers");
 
             migrationBuilder.DropTable(
                 name: "Events");
-
-            migrationBuilder.DropTable(
-                name: "AppUsers");
         }
     }
 }
