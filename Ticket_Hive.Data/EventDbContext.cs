@@ -13,12 +13,10 @@ namespace Ticket_Hive.Data
         public DbSet<EventModel> Events { get; set; }
         public DbSet<AppUserModel> AppUsers { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
-        public DbSet<ShoppingCartModel> ShoppingCarts { get; set; }
-        //public DbSet<UserEvent> UserEvents { get; set; } 
 
 
 
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<UserEvent>(ue =>
