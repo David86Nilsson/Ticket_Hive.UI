@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Ticket_Hive.Data.Models
 {
-    public class UserEvent
-    {
-        public int UserId { get; set; }
-        public AppUserModel User { get; set; }
-        public int EventId { get; set; }
-        public EventModel Event { get; set; }
-    }
+    //public class UserEvent
+    //{
+    //    public int UserId { get; set; }
+    //    public AppUserModel User { get; set; }
+    //    public int EventId { get; set; }
+    //    public EventModel Event { get; set; }
+    //}
 }
