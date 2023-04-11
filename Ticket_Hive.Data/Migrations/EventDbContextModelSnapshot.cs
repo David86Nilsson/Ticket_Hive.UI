@@ -138,13 +138,9 @@ namespace Ticket_Hive.Data.Migrations
                     b.Property<int>("TicketsSold")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserModelId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EventModelId");
-
 
                     b.ToTable("Events");
 
@@ -153,7 +149,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 1,
                             Capacity = 100,
-
+                            DateTime = new DateTime(2023, 4, 21, 11, 34, 51, 959, DateTimeKind.Local).AddTicks(8620),
                             EventType = "Nightclub",
                             Location = "Lund",
                             Name = "Kareoke bowling",
@@ -164,7 +160,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 2,
                             Capacity = 300,
-
+                            DateTime = new DateTime(2023, 4, 16, 11, 34, 51, 959, DateTimeKind.Local).AddTicks(8685),
                             EventType = "Musical",
                             Location = "Malmö",
                             Name = "Mama Mia",
@@ -175,7 +171,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 3,
                             Capacity = 30000,
-
+                            DateTime = new DateTime(2023, 5, 1, 11, 34, 51, 959, DateTimeKind.Local).AddTicks(8689),
                             EventType = "Sport",
                             Location = "Stockholm",
                             Name = "AIK - Hammarby",
@@ -186,7 +182,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 4,
                             Capacity = 20,
-
+                            DateTime = new DateTime(2023, 4, 13, 11, 34, 51, 959, DateTimeKind.Local).AddTicks(8692),
                             EventType = "Övrigt",
                             Location = "Halmstad",
                             Name = "Gästföreläsning med Steve Jobs",
@@ -197,7 +193,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 5,
                             Capacity = 10,
-
+                            DateTime = new DateTime(2023, 5, 6, 11, 34, 51, 959, DateTimeKind.Local).AddTicks(8697),
                             EventType = "Sport",
                             Location = "Köpenhamn",
                             Name = "VM i Rally-Pingis",
@@ -235,33 +231,11 @@ namespace Ticket_Hive.Data.Migrations
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AppUserModelId")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId", "EventId");
-
-                    b.HasIndex("AppUserModelId");
 
                     b.HasIndex("EventId");
 
                     b.ToTable("UserEvents");
-                });
-
-            modelBuilder.Entity("Ticket_Hive.Data.Models.UserModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserModel");
                 });
 
             modelBuilder.Entity("AppUserModelEventModel", b =>
@@ -307,7 +281,6 @@ namespace Ticket_Hive.Data.Migrations
                     b.HasOne("Ticket_Hive.Data.Models.EventModel", null)
                         .WithMany("RecommendedEvents")
                         .HasForeignKey("EventModelId");
-
                 });
 
             modelBuilder.Entity("Ticket_Hive.Data.Models.ShoppingCartModel", b =>
@@ -323,17 +296,13 @@ namespace Ticket_Hive.Data.Migrations
 
             modelBuilder.Entity("Ticket_Hive.Data.Models.UserEvent", b =>
                 {
-                    b.HasOne("Ticket_Hive.Data.Models.AppUserModel", null)
-                        .WithMany("UserEvents")
-                        .HasForeignKey("AppUserModelId");
-
                     b.HasOne("Ticket_Hive.Data.Models.EventModel", "Event")
                         .WithMany("UserEvents")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Ticket_Hive.Data.Models.UserModel", "User")
+                    b.HasOne("Ticket_Hive.Data.Models.AppUserModel", "User")
                         .WithMany("UserEvents")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -355,19 +324,12 @@ namespace Ticket_Hive.Data.Migrations
                 {
                     b.Navigation("RecommendedEvents");
 
-
+                    b.Navigation("UserEvents");
                 });
 
             modelBuilder.Entity("Ticket_Hive.Data.Models.ShoppingCartModel", b =>
                 {
                     b.Navigation("Bookings");
-                });
-
-            modelBuilder.Entity("Ticket_Hive.Data.Models.UserModel", b =>
-                {
-                    b.Navigation("Events");
-
-                    b.Navigation("UserEvents");
                 });
 #pragma warning restore 612, 618
         }
