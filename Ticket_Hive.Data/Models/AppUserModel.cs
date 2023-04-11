@@ -6,7 +6,7 @@
         public string Username { get; set; } = null!;
         public List<BookingModel> Bookings { get; set; } = new();
         public List<EventModel> Events { get; set; } = new();
-        public ICollection<UserEvent> UserEvents { get; set; }
+        //public ICollection<UserEvent> UserEvents { get; set; }
 
 
     }

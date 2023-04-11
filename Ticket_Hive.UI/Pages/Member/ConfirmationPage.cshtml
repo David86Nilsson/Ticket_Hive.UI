@@ -19,6 +19,13 @@
         <p>Capacity: @ev.Capacity</p>
         <hr />
     }
+    @foreach (var item in Model.Shoppingcart.Bookings)
+    {
+        <p>Event: @item.Event.Name</p>
+        <p>Number Of Tickets: @item.NbrOfTickets</p>
+        <hr />
+    }
+
     <a class="btn btn-primary">Booking Page</a>
 </div>
 

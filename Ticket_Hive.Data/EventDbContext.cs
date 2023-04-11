@@ -13,24 +13,24 @@ namespace Ticket_Hive.Data
         public DbSet<EventModel> Events { get; set; }
         public DbSet<AppUserModel> AppUsers { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
-        public DbSet<ShoppingCartModel> ShoppingCarts { get; set; }
-        public DbSet<UserEvent> UserEvents { get; set; } 
+        //public DbSet<ShoppingCartModel> ShoppingCarts { get; set; }
+        //public DbSet<UserEvent> UserEvents { get; set; }
 
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserEvent>(ue =>
-            {
-                ue.HasKey(x => new { x.UserId, x.EventId });
+            //modelBuilder.Entity<UserEvent>(ue =>
+            //{
+            //    ue.HasKey(x => new { x.UserId, x.EventId });
 
-                ue.HasOne(x => x.User)
-                    .WithMany(x => x.UserEvents)
-                    .HasForeignKey(x => x.UserId);
+            //    ue.HasOne(x => x.User)
+            //        .WithMany(x => x.UserEvents)
+            //        .HasForeignKey(x => x.UserId);
 
-                ue.HasOne(x => x.Event)
-                    .WithMany(x => x.UserEvents)
-                    .HasForeignKey(x => x.EventId);
-            });
+            //    ue.HasOne(x => x.Event)
+            //        .WithMany(x => x.UserEvents)
+            //        .HasForeignKey(x => x.EventId);
+            //});
 
             modelBuilder.Entity<AppUserModel>().HasData(
                 new AppUserModel()
@@ -57,6 +57,7 @@ namespace Ticket_Hive.Data
                     Price = 100m,
                     Capacity = 100,
                     TicketsSold = 0,
+                    Image = "/Images/EventImages/Image 1.png"
                 },
                 new EventModel()
                 {
@@ -68,6 +69,7 @@ namespace Ticket_Hive.Data
                     Price = 200m,
                     Capacity = 300,
                     TicketsSold = 0,
+                    Image = "/Images/EventImages/Image 2.png"
                 },
                 new EventModel()
                 {
@@ -79,6 +81,7 @@ namespace Ticket_Hive.Data
                     Price = 500m,
                     Capacity = 30000,
                     TicketsSold = 0,
+                    Image = "/Images/EventImages/Image 3.png"
                 },
                 new EventModel()
                 {
@@ -90,6 +93,7 @@ namespace Ticket_Hive.Data
                     Price = 10m,
                     Capacity = 20,
                     TicketsSold = 20,
+                    Image = "/Images/EventImages/Image 4.png"
                 },
                 new EventModel()
                 {
@@ -101,6 +105,7 @@ namespace Ticket_Hive.Data
                     Price = 25m,
                     Capacity = 10,
                     TicketsSold = 0,
+                    Image = "/Images/EventImages/Image 5.png"
                 }
              );
         }

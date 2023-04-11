@@ -9,6 +9,7 @@ namespace Ticket_Hive.Data.Repos
         public Task AddBookingAsync(BookingModel newBooking);
         public Task<bool> UpdateBookingAsync(BookingModel updatedBooking);
         public Task DeleteBookingAsync(BookingModel bookingToDelete);
+        public Task SaveAsync();
 
     }
 }
