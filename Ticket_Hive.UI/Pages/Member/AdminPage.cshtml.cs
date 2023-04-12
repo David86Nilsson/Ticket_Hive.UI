@@ -8,5 +8,14 @@ namespace Ticket_Hive.UI.Pages.Member
         public void OnGet()
         {
         }
+
+        public IActionResult OnPost()
+        {
+           
+
+            return RedirectToPage("/AppPages/CreateEvent");
+        }
+
+
     }
 }

@@ -8,5 +8,14 @@ namespace Ticket_Hive.UI.Pages.AppPages
         public void OnGet()
         {
         }
+
+
+
+        public IActionResult OnPost()
+        {
+        
+
+            return RedirectToPage("/AppPages/DeleteEvent");
+        }
     }
 }
