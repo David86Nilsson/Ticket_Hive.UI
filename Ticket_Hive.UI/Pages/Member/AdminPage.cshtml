@@ -36,8 +36,50 @@
             </form>
         </div>
         <div class="col-md-12 col-6">
-            <h2>Events</h2>
+            <h3>Events</h3>
+            <form method="post" asp-page-handler="Delete" id="event-form">
+                <input id="event-id-input" type="hidden" value="" asp-for="EventToDelete">
+                <table>
+                    <tr>
+                        <td><strong>Event</strong></td>
+                        <td><strong>Date</strong></td>
+                        <td></td>
+                    </tr>
+                    @foreach (var item in Model.Events)
+                    {
+                        <tr>
+                            <td>@item.Name : </td>
+                            <td>@item.DateTime.ToShortDateString()</td>
+                            <td>
+                                @*<input type="hidden" asp-for="@item.User">*@
+                                <input id="@item.Id" class="@item.Id DeleteButton w-25" type="button"  value="Delete"/>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </form>
         </div>
        
 </div>
 
+    @section Scripts {
+        <script>
+            //let input = document.querySelector("#quantity-input");
+
+            document.addEventListener("click", function (event) {
+                if (event.target.classList.contains('DeleteButton')) {
+                    let form = document.querySelector("#event-form");
+
+                    // Ny kvanitet
+                    let newQuantity = event.target.value;
+                    // Vilket event?
+                    let eventId = event.target.id;
+                    console.log(eventId);
+                    let eventIdInput = document.querySelector("#event-id-input");
+                    eventIdInput.value = eventId;
+
+                    form.submit();
+                }
+            });
+        </script>
+    }
