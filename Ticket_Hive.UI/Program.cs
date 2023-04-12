@@ -13,7 +13,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AuthorizePage("/Admin", "AdminPolicy");
+    options.Conventions.AuthorizePage("/Member/Admin", "AdminPolicy");
     options.Conventions.AuthorizeFolder("/Member");
 });
 
