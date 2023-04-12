@@ -52,7 +52,7 @@
                             <td>@item.DateTime.ToShortDateString()</td>
                             <td>
                                 @*<input type="hidden" asp-for="@item.User">*@
-                                <input id="@item.Id" class="@item.Id DeleteButton btn margin-left" type="button"  value="Delete"/>
+                                <input id="@item.Id" class="@item.Id DeleteButton btn margin-left" type="button" onclick="return confirm('Are you sure?')" value="Delete" />
                             </td>
                         </tr>                     
                     }
