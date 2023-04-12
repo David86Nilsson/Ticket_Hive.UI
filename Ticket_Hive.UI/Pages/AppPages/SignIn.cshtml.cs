@@ -34,7 +34,8 @@ namespace Ticket_Hive.UI.Pages.AppPages
         {
             if (ModelState.IsValid)
             {
-                var signInResult = await signInManager.PasswordSignInAsync(UserName, "Password1234!", false, false);
+                //bytade Password1234! till Password för att kunna logga in med sitt nya lösenord efter det är bytat
+                var signInResult = await signInManager.PasswordSignInAsync(UserName, Password, false, false);
                 if (signInResult.Succeeded)
                 {
                     return RedirectToPage("/Member/Home");
