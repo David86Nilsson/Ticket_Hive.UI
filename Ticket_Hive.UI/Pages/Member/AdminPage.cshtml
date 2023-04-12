@@ -1,6 +1,14 @@
 ﻿@page
 @model Ticket_Hive.UI.Pages.Member.AdminPageModel
 @{
+    ViewData["Title"] = "Admin Page";
 }
 <h1>Admin</h1>
+
+<!--Button Create Event & Delete Event-->
+
+<a href="@Url.Page("CreateEvent")" class="btn btn-primary">Create Events</a>
+
+<a href="@Url.Page("DeleteEvent")" class="btn btn-primary">Delete Events</a>
+
 
