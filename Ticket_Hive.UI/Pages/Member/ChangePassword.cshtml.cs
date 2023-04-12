@@ -1,3 +1,4 @@
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,82 +11,73 @@ namespace Ticket_Hive.UI.Pages.Member
     [Authorize]
     public class ChangePasswordModel : PageModel
     {
-
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ILogger<ChangePasswordModel> _logger;
 
-        public ChangePasswordModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public ChangePasswordModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
+        [BindProperty]
+        public InputModel Input { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Current Password")]
-        public string OldPassword { get; set; }
+        public string AlertMessage { get; set; }
+        public string AlertType { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "New Password")]
-        public string NewPassword { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm new Password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
-
-        public string? StatusMessage { get; set; }
-
-        public void OnGet()
+        public class InputModel
         {
+            [Required]
+            [DataType(DataType.Password)]
+            public string CurrentPassword { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long.", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            public string NewPassword { get; set; }
+
+            [DataType(DataType.Password)]
+            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            public string ConfirmPassword { get; set; }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                return Page();
-            }
-
-            if (string.IsNullOrEmpty(OldPassword))
-            {
-                ModelState.AddModelError(nameof(OldPassword), "Old password cannot be empty.");
+                _logger.LogInformation("Model state is not valid");
                 return Page();
             }
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
+                _logger.LogInformation("User not found");
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            // Check if the old password is correct
-            bool isOldPasswordValid = await _userManager.CheckPasswordAsync(user, OldPassword);
-            if (!isOldPasswordValid)
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.CurrentPassword, Input.NewPassword);
+            if (changePasswordResult.Succeeded)
             {
-                ModelState.AddModelError("OldPassword", "The old password is incorrect.");
+                _logger.LogInformation("Password change succeeded");
+                await _signInManager.RefreshSignInAsync(user);
+                AlertMessage = "Password changed successfully!";
+                AlertType = "success";
                 return Page();
             }
-
-            // Proceed with the password change
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, OldPassword, NewPassword);
-            if (!changePasswordResult.Succeeded)
+            else
             {
+                _logger.LogInformation("Password change failed");
                 foreach (var error in changePasswordResult.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
                 return Page();
             }
-
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your password has been changed. Click the button below to return to the home page.";
-
-            return Page();
         }
     }
-
+ 
 }
