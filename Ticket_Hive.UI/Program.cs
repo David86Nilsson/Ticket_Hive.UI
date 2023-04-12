@@ -11,11 +11,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
 });
 
-//builder.Services.AddRazorPages(options =>
-//{
-//    options.Conventions.AuthorizePage("/Admin", "AdminPolicy");
-//    options.Conventions.AuthorizeFolder("/Member");
-//});
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizePage("/Admin", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/Member");
+});
 
 
 // Add services to the container.
@@ -91,8 +91,8 @@ using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider()
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Index";
-    options.AccessDeniedPath = "/Index";
+    options.LoginPath = "/Home";
+    options.AccessDeniedPath = "/AppPages/SignIn";
 });
 
 
