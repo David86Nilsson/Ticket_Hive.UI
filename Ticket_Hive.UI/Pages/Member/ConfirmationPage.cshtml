@@ -12,14 +12,16 @@
 <hr />
 
 <div class="container">
-    @foreach (var ev in Model.Events)
+    @foreach (var booking in Model.Shoppingcart.Bookings)
     {
-        <p>Location: @ev.Location</p>
-        <p>Price: @ev.Price</p>
-        <p>Capacity: @ev.Capacity</p>
+        <p>Event: @booking.Event.Name</p>
+        <p>Date: @booking.Event.DateTime.ToShortDateString()</p>
+        <p>Number of tickets: @booking.NbrOfTickets</p>
+        <p>Price per Ticket: @booking.Event.Price</p>
         <hr />
     }
-    <a class="btn btn-primary">Booking Page</a>
+    <p>Total Price: @Model.eventManager.TotalPriceInShoopingCart(Model.Shoppingcart)</p>
+    <a class="btn btn-primary" asp-page="/Member/BookingPage">Booking Page</a>
 </div>
 
 

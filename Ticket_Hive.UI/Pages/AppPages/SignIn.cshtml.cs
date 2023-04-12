@@ -31,7 +31,7 @@ namespace Ticket_Hive.UI.Pages.AppPages
         {
             if (ModelState.IsValid)
             {
-                var signInResult = await signInManager.PasswordSignInAsync("user", "Password1234!", false, false);
+                var signInResult = await signInManager.PasswordSignInAsync(UserName, "Password1234!", false, false);
                 if (signInResult.Succeeded)
                 {
                     return RedirectToPage("/Member/Home");
