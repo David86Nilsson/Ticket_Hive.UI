@@ -20,12 +20,15 @@ namespace Ticket_Hive.UI.Pages.AppPages
         [Required(ErrorMessage = "Wrong Password, please try again")]
         public string Password { get; set; }
 
+        public string FailedLogIn;
+
         public SignInModel(SignInManager<IdentityUser> signInManager)
         {
             this.signInManager = signInManager;
         }
         public void OnGet()
         {
+            FailedLogIn = "";
         }
         public async Task<IActionResult> OnPostAsync()
         {
@@ -35,6 +38,10 @@ namespace Ticket_Hive.UI.Pages.AppPages
                 if (signInResult.Succeeded)
                 {
                     return RedirectToPage("/Member/Home");
+                }
+                else
+                {
+                    FailedLogIn = "Wrong Username or Password";
                 }
             }
             return Page();

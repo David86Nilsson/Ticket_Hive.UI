@@ -18,6 +18,7 @@
         <label style="font-weight:bold" for="password-input">Password:</label>
         <input id="password-input" type="password" asp-for="@Model.Password" />
         <span class="text-danger" asp-validation-for="Password"></span>
+        <span class="text-danger">@Model.FailedLogIn</span>
         <input class="mt-5 rounded-2" type="submit" style="background-color:#305076; color: #fbe89c" value="Sign in" />
-    </form>
+    </form>   
 </body>
