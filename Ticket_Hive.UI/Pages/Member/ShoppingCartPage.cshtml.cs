@@ -71,9 +71,16 @@ namespace Ticket_Hive.UI.Pages.Member
             BookingModel booking = ShoppingCart.Bookings.FirstOrDefault(b => b.Event.Id == EventId);
             if (booking != null)
             {
-                booking.NbrOfTickets = NewQuantity;
+                if (NewQuantity == 0)
+                {
+                    ShoppingCart.Bookings.Remove(booking);
+                }
+                else
+                {
+                    booking.NbrOfTickets = NewQuantity;
+                }
+                await cookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
             }
-            await cookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
 
             return Page();
         }
