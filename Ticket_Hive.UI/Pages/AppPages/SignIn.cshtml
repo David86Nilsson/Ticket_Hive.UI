@@ -1,5 +1,23 @@
 ﻿@page "/SignIn"
 @model Ticket_Hive.UI.Pages.AppPages.SignInModel
 @{
+    ViewData["Title"] = "SignIn Page";
 }
-<h1>Sign In</h1>
+
+
+
+
+<body class="d-flex justify-content-center align-items-center" style="background-color:#fbe89c">
+
+    <form class="d-flex flex-column justify-content-center align-items-center mt-5 mt-5" method="post">
+
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <label style="font-weight:bold" for="username-input">Username:</label>
+        <input class="inlogform" id="username-input" type="text" asp-for="@Model.UserName" />
+        <span class="text-danger" asp-validation-for="UserName"> </span>
+        <label style="font-weight:bold" for="password-input">Password:</label>
+        <input id="password-input" type="password" asp-for="@Model.Password" />
+        <span class="text-danger" asp-validation-for="Password"></span>
+        <input class="mt-5 rounded-2" type="submit" style="background-color:#305076; color: #fbe89c" value="Sign in" />
+    </form>
+</body>
