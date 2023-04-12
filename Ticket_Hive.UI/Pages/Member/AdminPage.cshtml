@@ -6,13 +6,13 @@
     <div class="row">
         <a class="btn w-25" asp-page="/Member/Home">Home</a>
     </div>
-    <div class="row">
+    <div class="row text-center">
         <div class="col-12">
             <h1>Admin Page</h1>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 col-6">
+        <div class="col-12 col-sm-6 d-flex flex-column">
             <form method="post" asp-page-handler="Add">
                 <label for="input-name">Name:</label>
                 <input type="text" id="input-name" asp-for="Name"/>
@@ -35,7 +35,7 @@
                 <input type="submit" class="btn" value="Add Event" />
             </form>
         </div>
-        <div class="col-md-12 col-6">
+        <div class="col-12 col-sm-6">
             <h3>Events</h3>
             <form method="post" asp-page-handler="Delete" id="event-form">
                 <input id="event-id-input" type="hidden" value="" asp-for="EventToDelete">
@@ -47,14 +47,14 @@
                     </tr>
                     @foreach (var item in Model.Events)
                     {
-                        <tr>
+                        <tr class="border">
                             <td>@item.Name : </td>
                             <td>@item.DateTime.ToShortDateString()</td>
                             <td>
                                 @*<input type="hidden" asp-for="@item.User">*@
-                                <input id="@item.Id" class="@item.Id DeleteButton w-25" type="button"  value="Delete"/>
+                                <input id="@item.Id" class="@item.Id DeleteButton btn margin-left" type="button"  value="Delete"/>
                             </td>
-                        </tr>
+                        </tr>                     
                     }
                 </table>
             </form>
