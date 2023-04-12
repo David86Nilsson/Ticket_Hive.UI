@@ -1,0 +1,219 @@
+﻿@page
+@using Ticket_Hive.Data.Models;
+@model Ticket_Hive.UI.Pages.Member.BookingPageModel
+@{
+	bool showSearchResults = !string.IsNullOrEmpty(Model.search);
+}
+<style>
+	body {
+		background-color: #fbe89c;
+		margin:10px;
+	}
+
+	a:hover {
+		cursor: pointer;
+	}
+
+	.sold-out {
+		color: red;
+	}
+
+	a {
+		text-decoration: none;
+		color: #305076;
+	}
+
+	.EventInfo {
+		height: 40px;
+		padding: 0 30px;
+		font-size: 30px;
+		text-align: center;
+		
+	}
+	.MarginFix{
+		margin-bottom:25px;
+		margin-top:25px;
+		
+	}
+
+	.SortBar span {
+		display: inline-block;
+		width: 14%;
+		text-align: center;
+	}
+
+	.EventInfo .name {
+		width: 14%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	.EventInfo .type {
+		width: 14%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	.EventInfo .location {
+		width: 14%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	.EventInfo .price {
+		width: 14%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	.EventInfo .date {
+		width: 14%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	
+
+</style>
+
+<form id="search-form">
+	<label for="query">Search:</label>
+	<input type="text" id="query" name="query />
+
+	<button type="submit">Search</button>
+</form>
+
+<div id="search.results"></div>
+
+@if (showSearchResults)
+{
+	<h2>Search Results:</h2>
+	<div class="Eventinfo">
+		<span class="SortBar EventInfo">
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+	</div>
+	<div class="container">
+		@foreach (var result in Model.SearchResults)
+		{
+			<hr />
+			@if (result.TicketsSold >= result.Capacity)
+			{
+				<div>
+					<span class="sold-out EventInfo">
+						<span class="name">@result.Name</span>
+						<span class="type">@result.EventType</span>
+						<span class="location">@result.Location</span>
+						<span class="price">SOLD OUT</span>
+						<span class="date">@result.DateTime</span>
+					</span>
+				</div>
+			}
+			else
+			{
+				<div>
+					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
+						<span class="EventInfo">
+							<span class="name">@result.Name</span>
+							<span class="type">@result.EventType</span>
+							<span class="location">@result.Location</span>
+							<span class="price">@result.Price :-</span>
+							<span class="date">@result.DateTime</span>
+						</span>
+					</a>
+				</div>
+
+
+			}
+		}
+
+	</div>
+}
+else
+{
+	<h2>All Events:</h2>
+	<div class="Eventinfo">
+		<span class="SortBar EventInfo">
+			<span>Name</span>
+			<span>EventType</span>
+			<span>Location</span>
+			<span>Price</span>
+			<span>Date</span>
+		</span>
+	</div>
+	
+
+}
+<script>
+	const searchForm = document.getElementById('search-form');
+	const searchResults = document.getElementById('search-results');
+
+	searchForm.addEventListener('submit', (event) => {
+		event.preventDefault(); // Prevent form submission
+
+		const query = document.getElementById('query').value;
+
+		fetch() // Send search request to the server
+			.then(response => response.json()) // Parse response as JSON
+			.then(data => {
+				// Update search results HTML
+				searchResults.innerHTML = '';
+
+				if (data.length > 0) {
+					data.forEach(event => {
+						searchResults.innerHTML += `
+				<div class="container">
+		@foreach (var result in Model.SearchResults)
+		{
+			<hr />
+			@if (result.TicketsSold >= result.Capacity)
+			{
+				<div>
+					<span class="sold-out EventInfo">
+						<span class="name">@result.Name</span>
+						<span class="type">@result.EventType</span>
+						<span class="location">@result.Location</span>
+						<span>SOLD OUT</span>
+					</span>
+				</div>
+			}
+			else
+			{
+				<div class="MarginFix">
+					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
+						<span class="EventInfo">
+							<span class="name">@result.Name</span>
+							<span class="type">@result.EventType</span>
+							<span class="location">@result.Location</span>
+							<span class="price">@result.Price :-</span>
+							<span class="date">@result.DateTime</span>
+						</span>
+					</a>
+				</div>
+			}
+		}
+	</div>
+			  `;
+					});
+				} else {
+					searchResults.innerHTML = 'No results found.';
+				}
+			})
+			.catch(error => {
+				console.error(error);
+				searchResults.innerHTML = 'An error occurred while searching.';
+			});
+	});
+</script>
+
+
+
+
+
+
+
+

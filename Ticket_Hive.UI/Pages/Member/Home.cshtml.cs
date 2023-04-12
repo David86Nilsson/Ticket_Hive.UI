@@ -58,7 +58,7 @@ namespace Ticket_Hive.UI.Pages.Member
 
         public IActionResult OnPostShowAllEvents()
         {
-            return RedirectToPage("/Events");
+            return RedirectToPage("/Member/BookingPage");
         }
 
         public IActionResult OnPostSearchForEvent()
