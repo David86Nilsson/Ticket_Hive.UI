@@ -1,18 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 using Ticket_Hive.Data.Models;
 using Ticket_Hive.Data.Repos;
 
 namespace Ticket_Hive.UI.Pages.Member
 {
     [BindProperties]
-    public class AdminModel : PageModel
+    public class AdminPageModel : PageModel
     {
         private readonly IEventModelRepo eventModelRepo;
 
+        [Required(ErrorMessage = "Please enter name")]
         public string Name { get; set; }
         public int Capacity { get; set; }
+        [Required(ErrorMessage = "Please enter location")]
         public string Location { get; set; }
+        [Required(ErrorMessage = "Please enter event type")]
         public string EventType { get; set; }
         public DateTime DateTime { get; set; }
         public decimal Price { get; set; }
@@ -54,7 +58,7 @@ namespace Ticket_Hive.UI.Pages.Member
 
         public IActionResult OnPost()
         {
-           
+
 
             return RedirectToPage("/AppPages/CreateEvent");
         }

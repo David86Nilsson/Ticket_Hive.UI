@@ -17,7 +17,7 @@
 
         @if (Model.IsAdmin && User.Identity.IsAuthenticated)
         {
-        <a asp-page="./AdminPage" class="btn btn-primary">Admin Page</a>
+        <a asp-page="/AppPages/Admin" class="btn btn-primary">Admin Page</a>
         }
         else
         {
