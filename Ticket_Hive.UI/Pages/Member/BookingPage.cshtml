@@ -2,7 +2,7 @@
 @using Ticket_Hive.Data.Models;
 @model Ticket_Hive.UI.Pages.Member.BookingPageModel
 @{
-
+	bool showSearchResults = !string.IsNullOrEmpty(Model.search);
 }
 <style>
 	body {
@@ -14,10 +14,7 @@
 		cursor: pointer;
 	}
 
-	.sold-out {
-		color: red;
-	}
-
+	
 	a {
 		text-decoration: none;
 		color: #305076;
@@ -76,59 +73,67 @@
 <form id="search-form">
 	<label for="query">Search:</label>
 	<input type="text" id="event-search" name="Search" />
+	<button type="submit">Search</button>
 </form>
-
-<h2>All Events:</h2>
-<div class="Eventinfo">
-	<span class="SortBar EventInfo">
-		<span>Name</span>
-		<span>EventType</span>
-		<span>Location</span>
-		<span>Price</span>
-		<span>Date</span>
-	</span>
-</div>
-<button id="getEvents">Get Events</button>
-<div id="output"></div>
-
-
-<script>
-	function GetEvents() {
-		fetch("/api/Events")
-			.then(res => res.json())
-			.then(data => {
-				console.log(data);
-				let output = '<h2>Events</h2>';
-				data.forEach(function (event) {
-					output += `
-							<span class="EventInfo">
-								<span class="name">${event.Name}</span>
-								<span class="type">${event.EventType}</span>
-								<span class="location">${event.Location}</span>
-								<span class="price">${event.Price :-}</span>
-								<span class="date">${event.DateTime}</span>
-							</span>
-						`;
-				});
-				document.getElementById('output').innerHTML = output;
-			});
-	}
-
-	</script>
-
-
-
-
-@*@if (showSearchResults)
+@if (showSearchResults)
 {
 	<h2>Search Results:</h2>
 	<div class="Eventinfo">
 		<span class="SortBar EventInfo">
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
+			<span>Name</span>
+			<span>EventType</span>
+			<span>Location</span>
+			<span>Price</span>
+			<span>Date</span>
+		</span>
+	</div>
+	<div class="container">
+		@foreach (var result in Model.SearchResults)
+		{
+			<hr />
+			@if (result.TicketsSold >= result.Capacity)
+			{
+				<div>
+					<span class="EventInfo text-danger">
+						<span class="name">@result.Name</span>
+						<span class="type">@result.EventType</span>
+						<span class="location">@result.Location</span>
+						<span class="price sold-out">SOLD OUT</span>
+						<span class="date">@result.DateTime</span>
+					</span>
+				</div>
+			}
+			else
+			{
+				<div>
+					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
+						<span class="EventInfo">
+							<span class="name">@result.Name</span>
+							<span class="type">@result.EventType</span>
+							<span class="location">@result.Location</span>
+							<span class="price">@result.Price :-</span>
+							<span class="date">@result.DateTime</span>
+						</span>
+					</a>
+				</div>
+
+
+			}
+		}
+
+	</div>
+}
+else
+{
+	
+	<h2>All Events:</h2>
+	<div class="Eventinfo">
+		<span class="SortBar EventInfo">
+			<span>Name</span>
+			<span>EventType</span>
+			<span>Location</span>
+			<span>Price</span>
+			<span>Date</span>
 		</span>
 	</div>
 	<div class="container">
@@ -160,15 +165,40 @@
 						</span>
 					</a>
 				</div>
-
-
 			}
 		}
 
 	</div>
 }
-else
-{*@
+
+@*<script>
+		function GetEvents() {
+			fetch("/api/Events")
+				.then(res => res.json())
+				.then(data => {
+					console.log(data);
+					let output = '<h2>Events</h2>';
+					data.forEach(function (event) {
+						output += `
+								<span class="EventInfo">
+									<span class="name">${event.Name}</span>
+									<span class="type">${event.EventType}</span>
+									<span class="location">${event.Location}</span>
+									<span class="price">${event.Price :-}</span>
+									<span class="date">${event.DateTime}</span>
+								</span>
+							`;
+					});
+					document.getElementById('output').innerHTML = output;
+				});
+		}
+
+		</script>*@
+@*<button id="getEvents">Get Events</button>
+	<div id="output"></div>
+*@
+
+
 
 
 

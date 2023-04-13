@@ -31,6 +31,9 @@ body {
 * {
     color: #305076;
 }
+.sold-out {
+    color: red;
+}
 .btn {
     background-color: #305076;
     border-color: #305076;
