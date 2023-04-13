@@ -13,50 +13,46 @@ namespace Ticket_Hive.UI.Pages.Member
 {
 	public class BookingPageModel : PageModel
 	{
-		private readonly SignInManager<IdentityUser> signInManager;
+		
 		private readonly IEventModelRepo eventRepo;
-		private readonly IAppUserModelRepo appUserModelRepo;
-
-		public string search;
 
 
 		public List<EventModel> SearchResults { get; set; }
 
 		public List<EventModel> Events { get; set; } = new();
 
-		public BookingPageModel(SignInManager<IdentityUser> signInManager, IEventModelRepo eventRepo, IAppUserModelRepo appUserModelRepo)
+		public BookingPageModel(IEventModelRepo eventRepo)
 		{
-			this.signInManager = signInManager;
+			
 			this.eventRepo = eventRepo;
-			this.appUserModelRepo = appUserModelRepo;
 		}
 
 		public async Task OnGetAsync(string sortOrder)
 		{
 
-			Events = await eventRepo.GetAllEventsAsync();
-			SearchResults = Events;
+			//Events = await eventRepo.GetAllEventsAsync();
+			//SearchResults = Events;
 
 
-			var searchQuery = Request.Query["search"].ToString();
-			if (!string.IsNullOrEmpty(searchQuery))
-			{
+			//var searchQuery = Request.Query["search"].ToString();
+			//if (!string.IsNullOrEmpty(searchQuery))
+			//{
 
-				var searchTerms = searchQuery.Split(' ');
-
-
-				search = searchTerms.FirstOrDefault();
+			//	var searchTerms = searchQuery.Split(' ');
 
 
-				SearchResults = SearchResults
-					.Where(e =>
-						(string.IsNullOrEmpty(search) ||
-						e.Name.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-						e.EventType.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-						e.Location.Contains(search, StringComparison.OrdinalIgnoreCase)))
-					.ToList();
+			//	search = searchTerms.FirstOrDefault();
 
-			}
+
+			//	SearchResults = SearchResults
+			//		.Where(e =>
+			//			(string.IsNullOrEmpty(search) ||
+			//			e.Name.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+			//			e.EventType.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+			//			e.Location.Contains(search, StringComparison.OrdinalIgnoreCase)))
+			//		.ToList();
+
+			//}
 		}
 	}
 }
