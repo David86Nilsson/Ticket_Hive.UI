@@ -13,25 +13,21 @@ namespace Ticket_Hive.UI.Pages.Member
 {
 	public class BookingPageModel : PageModel
 	{
-		private readonly SignInManager<IdentityUser> signInManager;
+		
 		private readonly IEventModelRepo eventRepo;
-		private readonly IAppUserModelRepo appUserModelRepo;
 
-		public string search;
-
-
+		
 		public List<EventModel> SearchResults { get; set; }
-
 		public List<EventModel> Events { get; set; } = new();
+        public string search { get; set; }
 
-		public BookingPageModel(SignInManager<IdentityUser> signInManager, IEventModelRepo eventRepo, IAppUserModelRepo appUserModelRepo)
+        public BookingPageModel(IEventModelRepo eventRepo)
 		{
-			this.signInManager = signInManager;
+			
 			this.eventRepo = eventRepo;
-			this.appUserModelRepo = appUserModelRepo;
 		}
 
-		public async Task OnGetAsync(string sortOrder)
+		public async Task OnGetAsync()
 		{
 
 			Events = await eventRepo.GetAllEventsAsync();

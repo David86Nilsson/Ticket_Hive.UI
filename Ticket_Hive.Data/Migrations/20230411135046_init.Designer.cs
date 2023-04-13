@@ -12,8 +12,8 @@ using Ticket_Hive.Data;
 namespace Ticket_Hive.Data.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    [Migration("20230411125747_2")]
-    partial class _2
+    [Migration("20230411135046_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -147,7 +147,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 1,
                             Capacity = 100,
-                            DateTime = new DateTime(2023, 4, 21, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3016),
+                            DateTime = new DateTime(2023, 4, 21, 15, 50, 46, 435, DateTimeKind.Local).AddTicks(5100),
                             EventType = "Nightclub",
                             Location = "Lund",
                             Name = "Kareoke bowling",
@@ -158,7 +158,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 2,
                             Capacity = 300,
-                            DateTime = new DateTime(2023, 4, 16, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3085),
+                            DateTime = new DateTime(2023, 4, 16, 15, 50, 46, 435, DateTimeKind.Local).AddTicks(5160),
                             EventType = "Musical",
                             Location = "Malmö",
                             Name = "Mama Mia",
@@ -169,7 +169,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 3,
                             Capacity = 30000,
-                            DateTime = new DateTime(2023, 5, 1, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3088),
+                            DateTime = new DateTime(2023, 5, 1, 15, 50, 46, 435, DateTimeKind.Local).AddTicks(5163),
                             EventType = "Sport",
                             Location = "Stockholm",
                             Name = "AIK - Hammarby",
@@ -180,7 +180,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 4,
                             Capacity = 20,
-                            DateTime = new DateTime(2023, 4, 13, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3091),
+                            DateTime = new DateTime(2023, 4, 13, 15, 50, 46, 435, DateTimeKind.Local).AddTicks(5166),
                             EventType = "Övrigt",
                             Location = "Halmstad",
                             Name = "Gästföreläsning med Steve Jobs",
@@ -191,7 +191,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 5,
                             Capacity = 10,
-                            DateTime = new DateTime(2023, 5, 6, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3094),
+                            DateTime = new DateTime(2023, 5, 6, 15, 50, 46, 435, DateTimeKind.Local).AddTicks(5168),
                             EventType = "Sport",
                             Location = "Köpenhamn",
                             Name = "VM i Rally-Pingis",

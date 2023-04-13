@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ticket_Hive.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class _2 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -118,11 +118,11 @@ namespace Ticket_Hive.Data.Migrations
                 columns: new[] { "Id", "Capacity", "DateTime", "EventModelId", "EventType", "Image", "Location", "Name", "Price", "TicketsSold" },
                 values: new object[,]
                 {
-                    { 1, 100, new DateTime(2023, 4, 21, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3016), null, "Nightclub", null, "Lund", "Kareoke bowling", 100m, 0 },
-                    { 2, 300, new DateTime(2023, 4, 16, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3085), null, "Musical", null, "Malmö", "Mama Mia", 200m, 0 },
-                    { 3, 30000, new DateTime(2023, 5, 1, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3088), null, "Sport", null, "Stockholm", "AIK - Hammarby", 500m, 0 },
-                    { 4, 20, new DateTime(2023, 4, 13, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3091), null, "Övrigt", null, "Halmstad", "Gästföreläsning med Steve Jobs", 10m, 20 },
-                    { 5, 10, new DateTime(2023, 5, 6, 14, 57, 47, 167, DateTimeKind.Local).AddTicks(3094), null, "Sport", null, "Köpenhamn", "VM i Rally-Pingis", 25m, 0 }
+                    { 1, 100, new DateTime(2023, 4, 21, 15, 50, 46, 435, DateTimeKind.Local).AddTicks(5100), null, "Nightclub", null, "Lund", "Kareoke bowling", 100m, 0 },
+                    { 2, 300, new DateTime(2023, 4, 16, 15, 50, 46, 435, DateTimeKind.Local).AddTicks(5160), null, "Musical", null, "Malmö", "Mama Mia", 200m, 0 },
+                    { 3, 30000, new DateTime(2023, 5, 1, 15, 50, 46, 435, DateTimeKind.Local).AddTicks(5163), null, "Sport", null, "Stockholm", "AIK - Hammarby", 500m, 0 },
+                    { 4, 20, new DateTime(2023, 4, 13, 15, 50, 46, 435, DateTimeKind.Local).AddTicks(5166), null, "Övrigt", null, "Halmstad", "Gästföreläsning med Steve Jobs", 10m, 20 },
+                    { 5, 10, new DateTime(2023, 5, 6, 15, 50, 46, 435, DateTimeKind.Local).AddTicks(5168), null, "Sport", null, "Köpenhamn", "VM i Rally-Pingis", 25m, 0 }
                 });
 
             migrationBuilder.CreateIndex(

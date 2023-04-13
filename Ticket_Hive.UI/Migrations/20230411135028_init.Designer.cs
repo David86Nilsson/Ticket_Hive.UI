@@ -12,8 +12,8 @@ using Ticket_Hive.UI.Data;
 namespace Ticket_Hive.UI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230411092602_1")]
-    partial class _1
+    [Migration("20230411135028_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
