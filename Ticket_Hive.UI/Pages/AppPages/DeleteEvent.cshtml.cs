@@ -1,21 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Ticket_Hive.UI.Pages.Member
+namespace Ticket_Hive.UI.Pages.AppPages
 {
-    public class AdminPageModel : PageModel
+    public class DeleteEventModel : PageModel
     {
         public void OnGet()
         {
         }
 
+
+
         public IActionResult OnPost()
         {
-           
+        
 
-            return RedirectToPage("/AppPages/CreateEvent");
+            return RedirectToPage("/AppPages/DeleteEvent");
         }
-
-
     }
 }
