@@ -3,99 +3,116 @@
 @{
 }
 
-<div class="container">
-    <div class="row">
-        <a class="btn w-25" asp-page="/Member/Home">Home</a>
-    </div>
-    <div class="row text-center">
-        <div class="col-12">
-            <h1>Admin Page</h1>
+<div class="HolderContainer d-flex flex-row">
+
+
+    <div class="container">
+        <div class="row">
+            <a class="btn w-25" asp-page="/Member/Home">Home</a>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12 col-sm-6 d-flex flex-column">
-            <form method="post" asp-page-handler="Add">
-                <label for="input-name">Name:</label>
-                <input type="text" id="input-name" asp-for="Name" />
-                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        <form method="post" asp-page-handler="Add">
+            <div class="row text-center">
+                <div class="col-12 col-sm-6 text-center">
+                    <h3>Admin Page</h3>
+                </div>
+                <div class="form-group row">
+                    <label style="font-weight:bold" for="eventName" class="col-sm-3 col-form-label">Event Name:</label>
+                    <div class="col-sm-3">
+                        <input type="text" id="eventName" class="form-control" style="width:200px;" asp-for="Name"/>
+                        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                    </div>
+                </div>
 
-                <label for="input-type">Type:</label>
-                <input type="text" id="input-type" asp-for="EventType" />
-                <span asp-validation-for="@Model.EventType" class="text-danger"></span>
-                
-                
-                <label for="input-location">Location:</label>
-                <input type="text" id="input-location" asp-for="Location" />
-                <span asp-validation-for="@Model.Location" class="text-danger"></span>
-                
-                
-                <label for="input-Year">Year:</label>
-                <input type="number" id="input-Year" min="@DateTime.Now.Year" max="2025" asp-for="Year"/> 
-                <label for="input-Month">Month:</label>
-                <input type="number" id="input-Month" min="1" max="12" value="@DateTime.Now.Month" asp-for="Month" />                
-                <label for="input-Day">Day:</label>
-                <input type="number" id="input-Day" min="1" max="@DateTime.DaysInMonth(Model.Year,Model.Month)" value="@DateTime.Now.Day" asp-for="Day" />
-                
-                <label for="input-Hour">Time:</label>
-                <input type="number" id="input-Hour" min="0" max="23" value="@DateTime.Now.Hour" asp-for="Hour" />               
-                <label for="input-Minute">:</label>
-                <input type="number" id="input-Minute" min="0" max="59" asp-for="Minute" />
-                
-                <label for="input-price">Price:</label>
-                <input type="number" id="input-price" asp-for="Price" />
+                <div class="form-group row mt-2">
+                    <label style="font-weight:bold" for="eventType" class="col-sm-3 col-form-label">Event Type:</label>
+                    <div class="col-sm-3">
+                        <input type="text" id="eventType"  class="form-control" style="width:200px;" asp-for="EventType" />
+                        <span asp-validation-for="@Model.EventType" class="text-danger"></span>
+                    </div>
+                </div>
 
-                <label for="input-capacity">Capacity:</label>
-                <input type="number" id="input-capacity" asp-for="Capacity" />
+                <div class="form-group row mt-2">
+                    <label style="font-weight:bold" for="eventDate" class="col-sm-3 col-form-label">Event Date:</label>
+                    <div class="col-sm-3">
+                        <input type="date" id="eventDate" min="@DateTime.Now" value="@DateTime.Now"  class="form-control" style="width:200px;" asp-for="DateTime" />
+                    </div>
+                </div>
 
-                <input type="submit" class="btn" value="Add Event" />
-            </form>
-        </div>
-        <div class="col-12 col-sm-6">
-            <h3>Events</h3>
-            <form method="post" asp-page-handler="Delete" id="event-form">
-                <input id="event-id-input" type="hidden" value="" asp-for="EventToDelete">
-                <table>
-                    <tr>
-                        <td><strong>Event</strong></td>
-                        <td><strong>Date</strong></td>
-                        <td></td>
-                    </tr>
-                    @foreach (var item in Model.Events)
-                    {
-                        <tr class="border">
-                            <td>@item.Name : </td>
-                            <td>@item.DateTime.ToShortDateString()</td>
-                            <td>
-                                @*<input type="hidden" asp-for="@item.User">*@
-                                <input id="@item.Id" class="@item.Id DeleteButton btn margin-left" type="button" onclick="return confirm('Are you sure?')" value="Delete" />
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </form>
-        </div>
+                <div class="form-group row mt-2">
+                    <label style="font-weight:bold" for="eventTime" class="col-sm-3 col-form-label">Event Time:</label>
+                    <div class="col-sm-3">
+                        <input type="time" id="eventTime" class="form-control" style="width:200px;" asp-for="EventTime" />
+                    </div>
+                </div>
+                
+                <div class="form-group row mt-2">
+                    <label style="font-weight:bold" for="eventLocation" class="col-sm-3 col-form-label">Event Location:</label>
+                    <div class="col-sm-3">
+                        <input type="text" id="eventLocation" class="form-control" style="width:200px;" asp-for="Location"/>
+                        <span asp-validation-for="@Model.Location" class="text-danger"></span>
+                    </div>
+                </div>
 
+                <div class="form-group row mt-2">
+                    <label style="font-weight:bold" for="ticketPrice" class="col-sm-3 col-form-label">Ticket Price:</label>
+                    <div class="col-sm-3">
+                        <input type="number" id="ticketPrice" class="form-control" style="width:200px;" asp-for="Price"/>
+                        <span asp-validation-for="@Model.Price" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-2">
+                    <label style="font-weight:bold" for="eventCapacity" class="col-sm-3 col-form-label">Event Capacity:</label>
+                    <div class="col-sm-3">
+                        <input type="number" id="eventCapacity" class="form-control" style="width:200px;" asp-for="Capacity" />
+                        <span asp-validation-for="@Model.Capacity" class="text-danger"></span>
+                        <input type="submit" class="btn" value="Add Event" />
+                    </div>
+                </div>
+        </form>
     </div>
 </div>
 
-    @section Scripts {
-        <script>
-            //let input = document.querySelector("#quantity-input");
+<div class="col-12 col-sm-6 d-flex flex-column align-items-center" style="padding-top:100px;">
+    <h3>Events</h3>
+    <form method="post" asp-page-handler="Delete" id="event-form">
+        <input id="event-id-input" type="hidden" value="" asp-for="EventToDelete">
+        <table>
+            <tr>
+                <td><strong>Event</strong></td>
+                <td><strong>Date</strong></td>
+                <td></td>
+            </tr>
+            @foreach (var item in Model.Events)
+            {
+                <tr class="border">
+                    <td> @item.Name : </td>
+                    <td>@item.DateTime.ToShortDateString()</td>
+                    <td>
+                        @*<input type="hidden" asp-for="@item.User">*@
+                        <input id="@item.Id" class="@item.Id DeleteButton btn margin-left" type="button" onclick="return confirm('Are you sure?')" value="Delete" />
+                    </td>
+                </tr>
+            }
+        </table>
+    </form>
+</div>
 
-            document.addEventListener("click", function (event) {
-                if (event.target.classList.contains('DeleteButton')) {
-                    let form = document.querySelector("#event-form");
-
-                    // Ny kvanitet
-                    let newQuantity = event.target.value;
-                    // Vilket event?
-                    let eventId = event.target.id;
-                    console.log(eventId);
-                    let eventIdInput = document.querySelector("#event-id-input");
-                    eventIdInput.value = eventId;
-
-                    form.submit();
-                }
-            });
-        </script>
+@section Scripts {
+    <script>
+        //let input = document.querySelector("#quantity-input");
+        document.addEventListener("click", function (event) {
+            if (event.target.classList.contains('DeleteButton')) {
+                let form = document.querySelector("#event-form");
+                // Ny kvanitet
+                let newQuantity = event.target.value;
+                // Vilket event?
+                let eventId = event.target.id;
+                console.log(eventId);
+                let eventIdInput = document.querySelector("#event-id-input");
+                eventIdInput.value = eventId;
+                form.submit();
+            }
+        });
+    </script>
     }
