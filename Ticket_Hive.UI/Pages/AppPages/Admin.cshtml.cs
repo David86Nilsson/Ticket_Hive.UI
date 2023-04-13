@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Ticket_Hive.Data.Models;
 using Ticket_Hive.Data.Repos;
 
-namespace Ticket_Hive.UI.Pages.Member
+namespace Ticket_Hive.UI.Pages.AppPages
 {
     [BindProperties]
     public class AdminModel : PageModel
@@ -21,7 +21,7 @@ namespace Ticket_Hive.UI.Pages.Member
 
         public int EventToDelete { get; set; }
 
-        public AdminPageModel(IEventModelRepo eventModelRepo)
+        public AdminModel(IEventModelRepo eventModelRepo)
         {
             this.eventModelRepo = eventModelRepo;
         }
