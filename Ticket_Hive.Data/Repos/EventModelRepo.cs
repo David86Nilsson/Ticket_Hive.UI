@@ -30,7 +30,7 @@ namespace Ticket_Hive.Data.Repos
 
         public async Task<List<EventModel>?> GetAllEventsAsync()
         {
-            return await context.Events.Include(e => e.Users).ToListAsync();
+            return await context.Events.Include(e => e.Users).OrderBy(e => e.DateTime).ToListAsync();
 
         }
 
@@ -69,7 +69,7 @@ namespace Ticket_Hive.Data.Repos
 
             if (user != null)
             {
-                return user.Events; 
+                return user.Events;
             }
 
             return null;
@@ -82,7 +82,7 @@ namespace Ticket_Hive.Data.Repos
 
             if (user != null && eventModel != null)
             {
-                user.Events.Add(eventModel); 
+                user.Events.Add(eventModel);
                 await context.SaveChangesAsync();
                 return true;
             }

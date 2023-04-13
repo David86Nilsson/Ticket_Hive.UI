@@ -17,6 +17,11 @@ html {
   position: relative;
   min-height: 100%;
 }
+input {
+    border: 2px;
+    border-color: #305076;
+    border-radius: 10px;
+}
 .btn {
     background-color: #305076;
     border-color: #305076;
