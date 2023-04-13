@@ -8,6 +8,11 @@ using Ticket_Hive.UI.Data;
 
 namespace Ticket_Hive.UI.Pages.Member
 {
+
+    /// <summary>
+    /// ChangePasswordModel-klassen som ärver från PageModel.
+    ///  kräver att användaren är auktoriserad.
+    /// </summary>
     [Authorize]
     public class ChangePasswordModel : PageModel
     {
@@ -15,6 +20,12 @@ namespace Ticket_Hive.UI.Pages.Member
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
+        /// <summary>
+        /// Skapar en ny instans av ChangePasswordModel-klassen.
+        /// </summary>
+        /// <param name="userManager">En instans av UserManager för hantering av användare.</param>
+        /// <param name="signInManager">En instans av SignInManager för hantering av inloggning.</param>
+        /// <param name="logger">En instans av ILogger för att logga händelser.</param>
         public ChangePasswordModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
@@ -25,9 +36,19 @@ namespace Ticket_Hive.UI.Pages.Member
         [BindProperty]
         public InputModel Input { get; set; }
 
+        /// <summary>
+        /// Hämtar eller sätter meddelandet för varningsmeddelandet.
+        /// </summary>
         public string AlertMessage { get; set; }
+
+        /// <summary>
+        /// Hämtar eller sätter typen av varningsmeddelande.
+        /// </summary>
         public string AlertType { get; set; }
 
+        /// <summary>
+        /// Representerar en klass för att binda inputfält i change password form.
+        /// </summary>
         public class InputModel
         {
             [Required]
@@ -44,6 +65,10 @@ namespace Ticket_Hive.UI.Pages.Member
             public string ConfirmPassword { get; set; }
         }
 
+        /// <summary>
+        /// Hanterar POST-begäran för att ändra lösenordet.
+        /// </summary>
+        /// <returns>En IActionResult som representerar resultatet av operationen.</returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
