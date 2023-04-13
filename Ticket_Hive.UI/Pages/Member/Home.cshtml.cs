@@ -16,12 +16,14 @@ namespace Ticket_Hive.UI.Pages.Member
     {
         public IEventModelRepo EventsService { get; }
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
 
-        public HomeModel(IEventModelRepo eventsService, UserManager<IdentityUser> userManager)
+        public HomeModel(IEventModelRepo eventsService, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             EventsService = eventsService;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public List<EventModel>? popularEvents { get; set; }
@@ -64,6 +66,12 @@ namespace Ticket_Hive.UI.Pages.Member
         public IActionResult OnPostSearchForEvent()
         {
             return RedirectToPage("/Booking", new { searchWord = SearchWord });
+        }
+
+        public async Task<IActionResult> OnPostSignOutAsync()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToPage("/Index");
         }
     }
 

@@ -13,7 +13,11 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddRazorPages(options =>
 {
+
     options.Conventions.AuthorizePage("/AppPages/Admin", "AdminPolicy");
+=======
+    options.Conventions.AuthorizePage("/Member/Admin", "AdminPolicy");
+
     options.Conventions.AuthorizeFolder("/Member");
 });
 
@@ -91,8 +95,8 @@ using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider()
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Index";
-    options.AccessDeniedPath = "/Index";
+    options.LoginPath = "/Home";
+    options.AccessDeniedPath = "/AppPages/SignIn";
 });
 
 

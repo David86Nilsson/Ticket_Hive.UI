@@ -17,7 +17,6 @@ namespace Ticket_Hive.UI.Pages
         {
             //Test
             //Test login
-            var signInResult = await signInManager.PasswordSignInAsync("admin", "Password1234!", false, false);
             //Implement
         }
         protected void btnSignIn_Click(object sender, EventArgs e)

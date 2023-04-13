@@ -51,5 +51,14 @@ namespace Ticket_Hive.UI.Pages.Member
             Events = await eventModelRepo.GetAllEventsAsync();
             return Page();
         }
+
+        public IActionResult OnPost()
+        {
+           
+
+            return RedirectToPage("/AppPages/CreateEvent");
+        }
+
+
     }
 }

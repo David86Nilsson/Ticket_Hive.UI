@@ -1,6 +1,7 @@
 ﻿@page
 @model Ticket_Hive.UI.Pages.Member.AdminPageModel
 @{
+    ViewData["Title"] = "Admin Page";
 }
 <div class="container">
     <div class="row">
@@ -62,24 +63,3 @@
        
 </div>
 
-    @section Scripts {
-        <script>
-            //let input = document.querySelector("#quantity-input");
-
-            document.addEventListener("click", function (event) {
-                if (event.target.classList.contains('DeleteButton')) {
-                    let form = document.querySelector("#event-form");
-
-                    // Ny kvanitet
-                    let newQuantity = event.target.value;
-                    // Vilket event?
-                    let eventId = event.target.id;
-                    console.log(eventId);
-                    let eventIdInput = document.querySelector("#event-id-input");
-                    eventIdInput.value = eventId;
-
-                    form.submit();
-                }
-            });
-        </script>
-    }

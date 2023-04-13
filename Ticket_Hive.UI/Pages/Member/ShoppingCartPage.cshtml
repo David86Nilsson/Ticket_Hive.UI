@@ -9,7 +9,7 @@
         <h1>Shopping Cart</h1>
     </div>
     <div class="col-12 d-flex">
-        <button class="btn" asp-page="/Member/Booking">To BookingPage</button>
+        <a class="btn" asp-page="/Member/BookingPage">To BookingPage</a>
     </div>
     <div class="col-12 d-flex justify-content-center">
         @if (Model.ShoppingCart.Bookings.Count > 0)
@@ -32,6 +32,7 @@
                                 <input id="@item.Event.Id" class="@item.Id quantity w-25" type="number" min="0" max="@Model.eventManager.TicketsLeft(item.Event)" value="@item.NbrOfTickets" asp-for="@item.NbrOfTickets" />
                             </td>
                         </tr>
+                        <hr />  
                     }
                     <tr>
                         <td>Total Price: </td>
