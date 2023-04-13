@@ -17,21 +17,20 @@ namespace Ticket_Hive.UI.Pages.Member
         public IEventModelRepo EventsService { get; }
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IBookingRepo bookingRepo;
 
 
-        public HomeModel(IEventModelRepo eventsService, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public HomeModel(IEventModelRepo eventsService, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IBookingRepo bookingRepo)
         {
             EventsService = eventsService;
             _userManager = userManager;
             _signInManager = signInManager;
+            this.bookingRepo = bookingRepo;
         }
 
         public List<EventModel>? popularEvents { get; set; }
-        public List<EventModel>? eventsBought { get; set; }
-        public string SearchWord { get; set; }
-        public List<EventModel>? RecommendedEvents { get; set; }
         public bool IsAdmin { get; set; }
-
+        public List<BookingModel>? ConfirmedBookings { get; set; }
 
 
         public async Task OnGetAsync()
@@ -47,25 +46,13 @@ namespace Ticket_Hive.UI.Pages.Member
             popularEvents = sortedPopularEvents.Take(3).ToList();
          
             var name = User.Identity.Name;
-            eventsBought = await EventsService.GetAllEventsFromUserAsync(name);
 
-            RecommendedEvents = eventsBought.Take(3).ToList();
+            if (User.Identity.IsAuthenticated)
+            {
+                var userName = User.Identity.Name;
+                ConfirmedBookings = await bookingRepo.GetConfirmedBookingsByUserNameAsync(userName);
+            }
 
-        }
-
-        public IActionResult OnPostShowEvent(int id)
-        {
-            return RedirectToPage("/EventDetails", new { id });
-        }
-
-        public IActionResult OnPostShowAllEvents()
-        {
-            return RedirectToPage("/Member/BookingPage");
-        }
-
-        public IActionResult OnPostSearchForEvent()
-        {
-            return RedirectToPage("/Booking", new { searchWord = SearchWord });
         }
 
         public async Task<IActionResult> OnPostSignOutAsync()

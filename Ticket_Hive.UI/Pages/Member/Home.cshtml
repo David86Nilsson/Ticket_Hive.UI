@@ -2,11 +2,9 @@
 @model Ticket_Hive.UI.Pages.Member.HomeModel
 @{
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 </head>
 <body>
 <h1 id="title">Search for your next event</h1>
@@ -47,34 +45,22 @@
                 </div>
     }
 
-    @if (Model.RecommendedEvents != null && Model.RecommendedEvents.Any())
+    @if (Model.ConfirmedBookings != null && Model.ConfirmedBookings.Any())
     {
-                <h1 class="recommended-events">Recommended events:</h1>
-                <div class="row movie-list">
-            @foreach (var eventToDisplay in Model.RecommendedEvents)
-            {
-                                <div class="image-container">
-                                    <h3>@eventToDisplay.Name</h3>
-                                    <a class="btn btn-primary" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
-                                </div>
-            }
-                </div>
-    }
-
-    @if (Model.eventsBought != null && Model.eventsBought.Any())
-    {
-            <h1 class="booked-events">Your booked events:</h1>
+        <div class="confirmed-bookings-container">
+            <h1 class="booked-events">Your confirmed bookings:</h1>
             <div class="row movie-list">
-            @foreach (var eventToDisplay in Model.eventsBought)
-            {
-                            <div class="image-container">
-                                <h3>@eventToDisplay.Name</h3>
-                                <a class="btn btn-primary" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
-                            </div>
-            }
+                @foreach (var booking in Model.ConfirmedBookings)
+                {
+                        <div class="image-container">
+                            <h3>@booking.Event.Name</h3>
+                            <p>Event Date: @booking.Event.DateTime.ToShortDateString()</p>
+                             <p>Tickets booked: @booking.NbrOfTickets</p>
+                        </div>
+                }
             </div>
+        </div>
     }
-
     <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const searchbar = document.getElementById('searchbar');
