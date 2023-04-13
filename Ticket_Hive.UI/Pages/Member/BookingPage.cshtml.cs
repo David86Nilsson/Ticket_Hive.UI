@@ -75,10 +75,7 @@ namespace Ticket_Hive.UI.Pages.Member
 					break;
 			}
 		}
-		public IActionResult OnPostGoToHome()
-		{
-			return RedirectToPage("/Member/Home");
-		}
+		
 	}
 }
 
