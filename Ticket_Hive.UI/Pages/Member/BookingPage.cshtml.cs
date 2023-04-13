@@ -27,18 +27,18 @@ namespace Ticket_Hive.UI.Pages.Member
 			this.eventRepo = eventRepo;
 		}
 
-		public async Task OnGetAsync()
+		public async Task OnGetAsync(string nameSearch)
 		{
 
 			Events = await eventRepo.GetAllEventsAsync();
 			SearchResults = Events;
 
 
-			var searchQuery = Request.Query["search"].ToString();
-			if (!string.IsNullOrEmpty(searchQuery))
+			nameSearch = Request.Query["search"].ToString();
+			if (!string.IsNullOrEmpty(nameSearch))
 			{
 
-				var searchTerms = searchQuery.Split(' ');
+				var searchTerms = nameSearch.Split(' ');
 
 
 				search = searchTerms.FirstOrDefault();
@@ -51,8 +51,33 @@ namespace Ticket_Hive.UI.Pages.Member
 						e.EventType.Contains(search, StringComparison.OrdinalIgnoreCase) ||
 						e.Location.Contains(search, StringComparison.OrdinalIgnoreCase)))
 					.ToList();
-
+				
 			}
+			var sortField = Request.Query["sortField"].ToString().ToLower();
+			switch (sortField)
+			{
+				case "name":
+					SearchResults = SearchResults.OrderBy(e => e.Name).ToList();
+					break;
+				case "eventtype":
+					SearchResults = SearchResults.OrderBy(e => e.EventType).ToList();
+					break;
+				case "location":
+					SearchResults = SearchResults.OrderBy(e => e.Location).ToList();
+					break;
+				case "price":
+					SearchResults = SearchResults.OrderBy(e => e.Price).ToList();
+					break;
+				case "date":
+					SearchResults = SearchResults.OrderBy(e => e.DateTime).ToList();
+					break;
+				default:
+					break;
+			}
+		}
+		public IActionResult OnPostGoToHome()
+		{
+			return RedirectToPage("/Member/Home");
 		}
 	}
 }

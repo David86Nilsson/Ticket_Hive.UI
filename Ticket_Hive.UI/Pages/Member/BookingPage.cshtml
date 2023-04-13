@@ -14,7 +14,7 @@
 		cursor: pointer;
 	}
 
-	
+
 	a {
 		text-decoration: none;
 		color: #305076;
@@ -69,24 +69,32 @@
 	}
 
 </style>
-
 <form id="search-form">
 	<label for="query">Search:</label>
 	<input type="text" id="event-search" name="Search" />
 	<button type="submit">Search</button>
+	
 </form>
+<<<<<<< Updated upstream
 <a asp-page="/Member/Home" class="btn btn-primary">Home</a>
+=======
+
+<button type="submit" asp-page-handler="GoToHome">Home</button>
+
+
+
+>>>>>>> Stashed changes
 
 @if (showSearchResults)
 {
 	<h2>Search Results:</h2>
 	<div class="Eventinfo">
 		<span class="SortBar EventInfo">
-			<span>Name</span>
-			<span>EventType</span>
-			<span>Location</span>
-			<span>Price</span>
-			<span>Date</span>
+			<span><a asp-page-handler="Sort" asp-route-sortField="name">Name</a></span>
+			<span><a asp-page-handler="Sort" asp-route-sortField="eventType">EventType</a></span>
+			<span><a asp-page-handler="Sort" asp-route-sortField="location">Location</a></span>
+			<span><a asp-page-handler="Sort" asp-route-sortField="price">Price</a></span>
+			<span><a asp-page-handler="Sort" asp-route-sortField="date">Date</a></span>
 		</span>
 	</div>
 	<div class="container">
@@ -127,15 +135,15 @@
 }
 else
 {
-	
+
 	<h2>All Events:</h2>
 	<div class="Eventinfo">
 		<span class="SortBar EventInfo">
-			<span>Name</span>
-			<span>EventType</span>
-			<span>Location</span>
-			<span>Price</span>
-			<span>Date</span>
+			<span><a asp-page-handler="Sort" asp-route-sortField="name">Name</a></span>
+			<span><a asp-page-handler="Sort" asp-route-sortField="eventType">EventType</a></span>
+			<span><a asp-page-handler="Sort" asp-route-sortField="location">Location</a></span>
+			<span><a asp-page-handler="Sort" asp-route-sortField="price">Price</a></span>
+			<span><a asp-page-handler="Sort" asp-route-sortField="date">Date</a></span>
 		</span>
 	</div>
 	<div class="container">
