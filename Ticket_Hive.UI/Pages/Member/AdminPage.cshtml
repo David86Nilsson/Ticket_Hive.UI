@@ -17,6 +17,7 @@
             <form method="post" asp-page-handler="Add">
                 <label for="input-name">Name:</label>
                 <input type="text" id="input-name" asp-for="Name"/>
+                <span asp-validation-for="Name"></span>
                 
                 <label for="input-type">Type:</label>
                 <input type="text" id="input-type" asp-for="EventType"/>

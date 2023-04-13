@@ -17,16 +17,30 @@
             <form method="post" asp-page-handler="Add">
                 <label for="input-name">Name:</label>
                 <input type="text" id="input-name" asp-for="Name" />
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
 
                 <label for="input-type">Type:</label>
                 <input type="text" id="input-type" asp-for="EventType" />
-
+                <span asp-validation-for="@Model.EventType" class="text-danger"></span>
+                
+                
                 <label for="input-location">Location:</label>
                 <input type="text" id="input-location" asp-for="Location" />
-
-                <label for="input-date">Date:</label>
-                <input type="datetime" id="input-date" asp-for="DateTime" />
-
+                <span asp-validation-for="@Model.Location" class="text-danger"></span>
+                
+                
+                <label for="input-Year">Year:</label>
+                <input type="number" id="input-Year" min="@DateTime.Now.Year" max="2025" asp-for="Year"/> 
+                <label for="input-Month">Month:</label>
+                <input type="number" id="input-Month" min="1" max="12" value="@DateTime.Now.Month" asp-for="Month" />                
+                <label for="input-Day">Day:</label>
+                <input type="number" id="input-Day" min="1" max="@DateTime.DaysInMonth(Model.Year,Model.Month)" value="@DateTime.Now.Day" asp-for="Day" />
+                
+                <label for="input-Hour">Time:</label>
+                <input type="number" id="input-Hour" min="0" max="23" value="@DateTime.Now.Hour" asp-for="Hour" />               
+                <label for="input-Minute">:</label>
+                <input type="number" id="input-Minute" min="0" max="59" asp-for="Minute" />
+                
                 <label for="input-price">Price:</label>
                 <input type="number" id="input-price" asp-for="Price" />
 
