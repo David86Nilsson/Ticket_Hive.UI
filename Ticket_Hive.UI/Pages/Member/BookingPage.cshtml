@@ -14,7 +14,7 @@
 		cursor: pointer;
 	}
 
-	
+
 	a {
 		text-decoration: none;
 		color: #305076;
@@ -70,11 +70,11 @@
 
 </style>
 
-<form id="search-form">
+@*<form id="search-form">
 	<label for="query">Search:</label>
 	<input type="text" id="event-search" name="Search" />
-	<button type="submit">Search</button>
-</form>
+	<button type="submit">Search</button>*@
+@*</form>
 @if (showSearchResults)
 {
 	<h2>Search Results:</h2>
@@ -125,7 +125,7 @@
 }
 else
 {
-	
+
 	<h2>All Events:</h2>
 	<div class="Eventinfo">
 		<span class="SortBar EventInfo">
@@ -169,34 +169,134 @@ else
 		}
 
 	</div>
-}
+}*@
 
-@*<script>
-		function GetEvents() {
-			fetch("/api/Events")
-				.then(res => res.json())
-				.then(data => {
-					console.log(data);
-					let output = '<h2>Events</h2>';
-					data.forEach(function (event) {
-						output += `
-								<span class="EventInfo">
-									<span class="name">${event.Name}</span>
-									<span class="type">${event.EventType}</span>
-									<span class="location">${event.Location}</span>
-									<span class="price">${event.Price :-}</span>
-									<span class="date">${event.DateTime}</span>
-								</span>
-							`;
-					});
-					document.getElementById('output').innerHTML = output;
-				});
-		}
+<input id="search-bar" type="text">
+<div><button id="sort-button">Sort by Name</button></div>
+<div><button id="sortprice-button">Sort by Price</button></div>
+<div id="output"></div>
 
-		</script>*@
-@*<button id="getEvents">Get Events</button>
-	<div id="output"></div>
-*@
+
+<script>
+	// Variables
+	let allEvents;
+
+	// Selectors
+	let searchBar = document.querySelector("#search-bar");
+	let sortButton = document.querySelector("#sort-button");
+	let sortPriceButton = document.querySelector("#sortprice-button");
+
+	// Event listeners
+	searchBar.addEventListener("input", filterEvents)
+	
+    sortButton.addEventListener("click", sortEvents);
+	sortButton.addEventListener("click", sortPriceEvents);
+
+	// Function calls
+	getEvents();
+
+	// Functions
+	function sortEvents() {
+		allEvents.sort((a, b) => a.name.localeCompare(b.name));
+		displayData(allEvents);
+	}
+
+	function sortPriceEvents() {
+		allEvents.sort((a, b) => a.price.localeCompare(b.price));
+		displayData(allEvents);
+	}
+
+	function filterEvents(e) 
+	{
+		let searchTerm = e.target.value.toLowerCase();
+
+		let filteredEvents = allEvents.filter(e => 
+		{
+			if(e.name.toLowerCase().includes(searchTerm) || e.location.toLowerCase().includes(searchTerm) || e.eventType.toLowerCase().includes(searchTerm)) 
+			{
+				return true;
+			}
+		})
+
+		displayData(filteredEvents);
+	}
+
+	function getEvents() {
+		fetch("/api/events").then(res => res.json()).then(data => 
+		{ 
+			allEvents = data;
+			displayData(allEvents); 
+		});
+	}
+
+	function displayData(events) {
+
+
+		let output = '<h2>Events</h2>';
+		events.forEach(function (event) {
+			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
+			output += `
+							<div class="p-3 m-2 border border-2 border-dark">
+								<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
+							<div>
+								<label class="fw-bold">Type:</label>
+								<p class="">${event.eventType}</p>
+							</div>
+							<div>
+								<label class="fw-bold">Location:</label>
+								<p class="">${event.location}</p>
+							</div>
+							<div>
+								<label class="fw-bold">Price:</label>
+								<p class="">${event.price}</p>
+							</div>
+							<div>
+								<label class="fw-bold">Date:</label>
+								<p class="">${eventDate}</p>
+							</div>
+						</div>`
+
+		});
+
+		document.getElementById('output').innerHTML = output;
+
+		// Add event listener to each event div
+		let eventDivs = document.querySelectorAll(".event-name");
+		eventDivs.forEach(function (div) {
+			div.addEventListener("click", function () {
+				let eventId = this.getAttribute("data-id");
+				window.location.href = "/member/evenemang?id=" + eventId;
+			});
+		});
+	}
+
+
+			//function GetEvents() {
+			//	fetch("/api/events")
+			//		.then(res => res.json())
+			//		.then(data => {
+			//			console.log(data);
+			//			let output = '<h2>Events</h2>';
+			//			data.forEach(function (event) {
+			//				output += `
+			//								<span class="EventInfo">
+			//									<span class="name">${event.Name}</span>
+			//									<span class="type">${event.EventType}</span>
+			//									<span class="location">${event.Location}</span>
+			//									<span class="price">${event.Price : -} < /span>
+			//				< span class= "date" > ${ event.DateTime } < /span>
+			//			< /span>
+			//				`;
+			//					});
+			//					document.getElementById('output').innerHTML = output;
+			//				});
+			//		}
+
+</script>
+
+
+
+
 
 
 

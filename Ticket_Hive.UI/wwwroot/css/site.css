@@ -34,6 +34,9 @@ body {
 .sold-out {
     color: red;
 }
+.event-name {
+    cursor: pointer;
+}
 .btn {
     background-color: #305076;
     border-color: #305076;
