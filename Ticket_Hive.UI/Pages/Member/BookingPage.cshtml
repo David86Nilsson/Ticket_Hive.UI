@@ -155,11 +155,11 @@
 
 
 		let output = '<h2>Events</h2>';
+		output += '<div class="events-container">';	
 		events.forEach(function (event) {
 			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
 			output += `
 			<div class="event-card">
-							<div class="p-3 m-2 border border-2 border-dark">
 								<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
 							<div>
 								<label class="fw-bold">Type:</label>
