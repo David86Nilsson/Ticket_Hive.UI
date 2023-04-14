@@ -79,4 +79,19 @@ body {
 .pictureSizeBig {
     width: 200px;
     height: 200px;
+<<<<<<< Updated upstream
+=======
+}
+
+.confirmed-bookings-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 30%;
+            padding-right: 20px;
+        }
+a:hover {
+    transition: 0.5s;
+    transform: scale(1.2);
+>>>>>>> Stashed changes
 }
