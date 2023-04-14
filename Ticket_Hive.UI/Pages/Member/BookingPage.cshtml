@@ -68,108 +68,21 @@
 		text-align: center;
 	}
 
+	.events-container {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+
+	.event-card {
+		flex-basis: 33.33%;
+		max-width: 300px;
+		padding: 10px;
+		box-sizing: border-box;
+	}
+
 </style>
 
-@*<form id="search-form">
-	<label for="query">Search:</label>
-	<input type="text" id="event-search" name="Search" />
-	<button type="submit">Search</button>*@
-@*</form>
-@if (showSearchResults)
-{
-	<h2>Search Results:</h2>
-	<div class="Eventinfo">
-		<span class="SortBar EventInfo">
-			<span>Name</span>
-			<span>EventType</span>
-			<span>Location</span>
-			<span>Price</span>
-			<span>Date</span>
-		</span>
-	</div>
-	<div class="container">
-		@foreach (var result in Model.SearchResults)
-		{
-			<hr />
-			@if (result.TicketsSold >= result.Capacity)
-			{
-				<div>
-					<span class="EventInfo text-danger">
-						<span class="name">@result.Name</span>
-						<span class="type">@result.EventType</span>
-						<span class="location">@result.Location</span>
-						<span class="price sold-out">SOLD OUT</span>
-						<span class="date">@result.DateTime</span>
-					</span>
-				</div>
-			}
-			else
-			{
-				<div>
-					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
-						<span class="EventInfo">
-							<span class="name">@result.Name</span>
-							<span class="type">@result.EventType</span>
-							<span class="location">@result.Location</span>
-							<span class="price">@result.Price :-</span>
-							<span class="date">@result.DateTime</span>
-						</span>
-					</a>
-				</div>
-
-
-			}
-		}
-
-	</div>
-}
-else
-{
-
-	<h2>All Events:</h2>
-	<div class="Eventinfo">
-		<span class="SortBar EventInfo">
-			<span>Name</span>
-			<span>EventType</span>
-			<span>Location</span>
-			<span>Price</span>
-			<span>Date</span>
-		</span>
-	</div>
-	<div class="container">
-		@foreach (var result in Model.SearchResults)
-		{
-			<hr />
-			@if (result.TicketsSold >= result.Capacity)
-			{
-				<div>
-					<span class="sold-out EventInfo">
-						<span class="name">@result.Name</span>
-						<span class="type">@result.EventType</span>
-						<span class="location">@result.Location</span>
-						<span class="price">SOLD OUT</span>
-						<span class="date">@result.DateTime</span>
-					</span>
-				</div>
-			}
-			else
-			{
-				<div>
-					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
-						<span class="EventInfo">
-							<span class="name">@result.Name</span>
-							<span class="type">@result.EventType</span>
-							<span class="location">@result.Location</span>
-							<span class="price">@result.Price :-</span>
-							<span class="date">@result.DateTime</span>
-						</span>
-					</a>
-				</div>
-			}
-		}
-
-	</div>
-}*@
 
 <input id="search-bar" type="text">
 <div><button id="sort-button">Sort by Name</button></div>
@@ -186,11 +99,20 @@ else
 	let sortButton = document.querySelector("#sort-button");
 	let sortPriceButton = document.querySelector("#sortprice-button");
 
+	let eventDivs = document.querySelectorAll(".event-name");
+	eventDivs.forEach(function (div) {
+		div.addEventListener("click", function () {
+			let eventId = this.getAttribute("data-id");
+			window.location.href = "/member/evenemang?id=" + eventId;
+		});
+	});
 	// Event listeners
 	searchBar.addEventListener("input", filterEvents)
 	
     sortButton.addEventListener("click", sortEvents);
 	sortButton.addEventListener("click", sortPriceEvents);
+
+	
 
 	// Function calls
 	getEvents();
@@ -236,6 +158,7 @@ else
 		events.forEach(function (event) {
 			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
 			output += `
+			<div class="event-card">
 							<div class="p-3 m-2 border border-2 border-dark">
 								<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
 							<div>
@@ -258,40 +181,13 @@ else
 
 		});
 
+		output += '</div>';
+
 		document.getElementById('output').innerHTML = output;
 
-		// Add event listener to each event div
-		let eventDivs = document.querySelectorAll(".event-name");
-		eventDivs.forEach(function (div) {
-			div.addEventListener("click", function () {
-				let eventId = this.getAttribute("data-id");
-				window.location.href = "/member/evenemang?id=" + eventId;
-			});
-		});
-	}
-
-
-			//function GetEvents() {
-			//	fetch("/api/events")
-			//		.then(res => res.json())
-			//		.then(data => {
-			//			console.log(data);
-			//			let output = '<h2>Events</h2>';
-			//			data.forEach(function (event) {
-			//				output += `
-			//								<span class="EventInfo">
-			//									<span class="name">${event.Name}</span>
-			//									<span class="type">${event.EventType}</span>
-			//									<span class="location">${event.Location}</span>
-			//									<span class="price">${event.Price : -} < /span>
-			//				< span class= "date" > ${ event.DateTime } < /span>
-			//			< /span>
-			//				`;
-			//					});
-			//					document.getElementById('output').innerHTML = output;
-			//				});
-			//		}
-
+		
+		
+	}			
 </script>
 
 
