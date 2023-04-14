@@ -5,6 +5,9 @@ namespace Ticket_Hive.Logic
 {
     public class EventManager
     {
+        /// <summary>
+        /// Calculates the total price of all bookings in the shopping cart
+        /// </summary>
         public decimal TotalPriceInShoopingCart(ShoppingCartModel cart)
         {
             decimal totalPrice = 0m;
@@ -14,6 +17,10 @@ namespace Ticket_Hive.Logic
             }
             return Math.Round(totalPrice, 2);
         }
+
+        /// <summary>
+        /// Completes bookings in shoppingcart and saves to database
+        /// </summary>
         public async Task BuyTicketsAsync(ShoppingCartModel? shoppingCart, IBookingRepo bookingRepo, IEventModelRepo eventModelRepo, IAppUserModelRepo appUserModelRepo, string buyerName)
         {
             List<BookingModel> bookings = shoppingCart.Bookings;
@@ -32,6 +39,9 @@ namespace Ticket_Hive.Logic
 
             }
         }
+        /// <summary>
+        /// Completes booking and saves to Database
+        /// </summary>
         public async Task CompleteBookingAsync(BookingModel bookingModel, IBookingRepo bookingRepo, IEventModelRepo eventModelRepo, IAppUserModelRepo appUserModelRepo, string buyerName)
         {
             EventModel? eventToBook = await eventModelRepo.GetEventByIdAsync(bookingModel.Event.Id);
@@ -46,11 +56,16 @@ namespace Ticket_Hive.Logic
         }
 
 
-
+        /// <summary>
+        /// checks if Event is fully booked
+        /// </summary>
         public bool IsEventFullyBooked(EventModel eventModel)
         {
             return eventModel.Capacity <= eventModel.TicketsSold;
         }
+        /// <summary>
+        /// Returns number of tickets left to buy in Event
+        /// </summary>
         public int TicketsLeft(EventModel eventModel)
         {
             return eventModel.Capacity - eventModel.TicketsSold;
