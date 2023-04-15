@@ -168,6 +168,7 @@
 			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
 			output += `
 					<div class="event-card p-3 m-2 border border-2 border-dark">
+						<img class="card-img-top" src="${event.image}" alt="Card image cap">
 								<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
 							<div>
 								<label class="fw-bold">Type:</label>
