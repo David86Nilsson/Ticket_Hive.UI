@@ -75,22 +75,65 @@
 	}
 
 	.event-card {
-		flex-basis: 33.33%;
-		max-width: 300px;
-		padding: 10px;
-		box-sizing: border-box;
-	}
-	.searchbar-size{
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+     background-image: url('${event.image}');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+.event-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.event-card h2.event-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    color: #fff;
+    text-shadow: 1px 1px #000;
+}
+
+.event-card div {
+    margin-top: 0.5em;
+    color: #fff;
+    text-shadow: 1px 1px #000;
+}
+
+.event-card label {
+    font-weight: bold;
+}
+
+.event-card p {
+    margin: 0;
+}
+
+.events-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.events-container > * {
+    flex-basis: calc(33.33% - 2em);
+    margin: 1em;
+}
+
+
+
+	.searchbar-size {
 		width: 500px;
 		height: 50px;
-		text-size-adjust:auto;
-
+		text-size-adjust: auto;
 	}
 
 </style>
 
 
-<input class="searchbar-size"id="search-bar" type="text">
+<input class="searchbar-size" id="search-bar" type="text">
 <div><button id="sort-button">Sort by Name</button></div>
 <div><button id="sortprice-button">Sort by Price</button></div>
 @*<div><button id="sortdate-button">Sort by Date</button></div>
@@ -107,15 +150,15 @@
 	let sortPriceButton = document.querySelector("#sortprice-button");
 	let sortDateButton = document.querySelector("#sortdate-button")
 
-	
+
 	// Event listeners
 	searchBar.addEventListener("input", filterEvents)
-	
-    sortButton.addEventListener("click", sortEvents);
+
+	sortButton.addEventListener("click", sortEvents);
 	sortPriceButton.addEventListener("click", sortPriceEvents);
 	//sortDateButton.addEventListener("click", sortDateEvents);
 
-	
+
 
 	// Function calls
 	getEvents();
@@ -136,14 +179,11 @@
 	//	displayData(allEvents);
 	//}
 
-	function filterEvents(e) 
-	{
+	function filterEvents(e) {
 		let searchTerm = e.target.value.toLowerCase();
 
-		let filteredEvents = allEvents.filter(e => 
-		{
-			if(e.name.toLowerCase().includes(searchTerm) || e.location.toLowerCase().includes(searchTerm) || e.eventType.toLowerCase().includes(searchTerm)) 
-			{
+		let filteredEvents = allEvents.filter(e => {
+			if (e.name.toLowerCase().includes(searchTerm) || e.location.toLowerCase().includes(searchTerm) || e.eventType.toLowerCase().includes(searchTerm)) {
 				return true;
 			}
 		})
@@ -152,10 +192,9 @@
 	}
 
 	function getEvents() {
-		fetch("/api/events").then(res => res.json()).then(data => 
-		{ 
+		fetch("/api/events").then(res => res.json()).then(data => {
 			allEvents = data;
-			displayData(allEvents); 
+			displayData(allEvents);
 		});
 	}
 
@@ -163,30 +202,29 @@
 
 
 		let output = '<h2>Events</h2>';
-		output += '<div class="events-container">';	
+		output += '<div class="events-container">';
 		events.forEach(function (event) {
 			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
 			output += `
-					<div class="event-card p-3 m-2 border border-2 border-dark">
-						<img class="card-img-top" src="${event.image}" alt="Card image cap">
-								<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
-							<div>
-								<label class="fw-bold">Type:</label>
-								<p class="">${event.eventType}</p>
-							</div>
-							<div>
-								<label class="fw-bold">Location:</label>
-								<p class="">${event.location}</p>
-							</div>
-							<div>
-								<label class="fw-bold">Price:</label>
-								<p class="">${event.price}</p>
-							</div>
-							<div>
-								<label class="fw-bold">Date:</label>
-								<p class="">${eventDate}</p>
-							</div>
-						</div>`
+							<div class="event-card p-3 m-2 border border-2 border-dark" style="background-image: url('${event.image}')">	
+									<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
+								<div>
+									<label class="fw-bold">Type:</label>
+									<p class="">${event.eventType}</p>
+								</div>
+								<div>
+									<label class="fw-bold">Location:</label>
+									<p class="">${event.location}</p>
+								</div>
+								<div>
+									<label class="fw-bold">Price:</label>
+									<p class="">${event.price}</p>
+								</div>
+								<div>
+									<label class="fw-bold">Date:</label>
+									<p class="">${eventDate}</p>
+								</div>
+							</div>`
 
 		});
 
@@ -194,7 +232,7 @@
 
 		document.getElementById('output').innerHTML = output;
 
-		
+
 		let eventDivs = document.querySelectorAll(".event-name");
 		eventDivs.forEach(function (div) {
 			div.addEventListener("click", function () {
@@ -202,7 +240,7 @@
 				window.location.href = "/member/evenemang?id=" + eventId;
 			});
 		});
-	}			
+	}
 </script>
 
 
