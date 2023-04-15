@@ -80,14 +80,21 @@
 		padding: 10px;
 		box-sizing: border-box;
 	}
+	.searchbar-size{
+		width: 500px;
+		height: 50px;
+		text-size-adjust:auto;
+
+	}
 
 </style>
 
 
-<input id="search-bar" type="text">
+<input class="searchbar-size"id="search-bar" type="text">
 <div><button id="sort-button">Sort by Name</button></div>
 <div><button id="sortprice-button">Sort by Price</button></div>
-<div id="output"></div>
+@*<div><button id="sortdate-button">Sort by Date</button></div>
+*@<div id="output"></div>
 
 
 <script>
@@ -98,19 +105,15 @@
 	let searchBar = document.querySelector("#search-bar");
 	let sortButton = document.querySelector("#sort-button");
 	let sortPriceButton = document.querySelector("#sortprice-button");
+	let sortDateButton = document.querySelector("#sortdate-button")
 
-	let eventDivs = document.querySelectorAll(".event-name");
-	eventDivs.forEach(function (div) {
-		div.addEventListener("click", function () {
-			let eventId = this.getAttribute("data-id");
-			window.location.href = "/member/evenemang?id=" + eventId;
-		});
-	});
+	
 	// Event listeners
 	searchBar.addEventListener("input", filterEvents)
 	
     sortButton.addEventListener("click", sortEvents);
-	sortButton.addEventListener("click", sortPriceEvents);
+	sortPriceButton.addEventListener("click", sortPriceEvents);
+	//sortDateButton.addEventListener("click", sortDateEvents);
 
 	
 
@@ -124,9 +127,14 @@
 	}
 
 	function sortPriceEvents() {
-		allEvents.sort((a, b) => a.price.localeCompare(b.price));
+		allEvents.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
 		displayData(allEvents);
 	}
+
+	//function sortDateEvents() {
+	//	allEvents.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+	//	displayData(allEvents);
+	//}
 
 	function filterEvents(e) 
 	{
@@ -159,7 +167,7 @@
 		events.forEach(function (event) {
 			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
 			output += `
-			<div class="event-card">
+					<div class="event-card p-3 m-2 border border-2 border-dark">
 								<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
 							<div>
 								<label class="fw-bold">Type:</label>
@@ -186,7 +194,13 @@
 		document.getElementById('output').innerHTML = output;
 
 		
-		
+		let eventDivs = document.querySelectorAll(".event-name");
+		eventDivs.forEach(function (div) {
+			div.addEventListener("click", function () {
+				let eventId = this.getAttribute("data-id");
+				window.location.href = "/member/evenemang?id=" + eventId;
+			});
+		});
 	}			
 </script>
 
