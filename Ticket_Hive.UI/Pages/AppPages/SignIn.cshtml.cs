@@ -11,13 +11,13 @@ namespace Ticket_Hive.UI.Pages.AppPages
 
         [BindProperty]
 
-        [Required(ErrorMessage = "Invalid Username, please try again")]
+        [Required(ErrorMessage = "No username, please try again")]
         public string UserName { get; set; }
 
 
         [BindProperty]
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Wrong Password, please try again")]
+        [Required(ErrorMessage = "No password, please try again")]
         public string Password { get; set; }
 
         public string FailedLogIn;
