@@ -5,40 +5,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <h1 id="title">TicketHive</h1>
+
 </head>
 <body>
-<h1 id="title">Search for your next event</h1>
-    <div class="search">
-        <form id="searchForm" method="get" asp-page="/Member/BookingPage">
-            <input id="searchbar" type="text" name="search" placeholder="Keyword" />
-            <button class="btn btn-primary" type="submit">Search</button>
-        </form>        
-        <a asp-page="./BookingPage" class="btn btn-primary">Show Events</a>
-        <a asp-page="./ShoppingCartPage" class="btn btn-primary">Shopping Cart</a>
-        <a asp-page="./ChangePassword" class="btn btn-primary">User Page</a>
+
+    <nav class="navbar navbar-expand-sm">
+        <a asp-page="./BookingPage" class="btn btn-primary me-1">Show Events</a>
+        <a asp-page="./ShoppingCartPage" class="btn btn-primary me-1">Shopping Cart</a>
+        <a asp-page="./ChangePassword" class="btn btn-primary me-1">User Page</a>
 
         @if (Model.IsAdmin && User.Identity.IsAuthenticated)
         {
-                    <a asp-page="/AppPages/Admin" class="btn btn-primary">Admin Page</a>
+            <a asp-page="/AppPages/Admin" class="btn btn-primary me-1">Admin Page</a>
         }
         else
         {
-                    <button class="btn btn-primary" disabled>Admin Page</button>
+            <button class="btn btn-primary me-1" disabled>Admin Page</button>
         }
 
         <form method="post" asp-page-handler="SignOut">
             <button class="btn btn-primary" type="submit">Sign Out</button>
         </form>
-    </div>
+        </div>
+    </nav>
+
+    <div class="search container ">
+        <form id="searchForm" method="get" asp-page="/Member/BookingPage">
+            <input id="searchbar" type="text" name="search" placeholder="Keyword" />
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>        
+    
 
     @if (Model.popularEvents != null)
     {
-                <h1 class="popular-events">Most popular events:</h1>
+                <h2 class="popular-events">What's Hot</h2>
+                <hr />
                 <div class="row movie-list">
             @foreach (var eventToDisplay in Model.popularEvents)
             {         
-                                <div class="image-container">
-                                    <h3>@eventToDisplay.Name</h3>                         
+                                <div class="image-container col-4">
+                                    <h3>@eventToDisplay.Name</h3>
+                                    <img class="pictureSizeBig" src="@eventToDisplay.Image" />
+                                    <br>
                                     <a class="btn btn-primary" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
                                 </div>
             }
