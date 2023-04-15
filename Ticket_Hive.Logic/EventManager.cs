@@ -26,8 +26,8 @@ namespace Ticket_Hive.Logic
             List<BookingModel> bookings = shoppingCart.Bookings;
             foreach (BookingModel booking in bookings)
             {
-                int eventId = booking.EventId;
-                EventModel eventModel = booking.Event;
+                int eventId = booking.Event.Id;
+                EventModel eventModel = await eventModelRepo.GetEventByIdAsync(eventId);
                 if (TicketsLeft(eventModel) < booking.NbrOfTickets)
                 {
                     booking.NbrOfTickets = 0;
