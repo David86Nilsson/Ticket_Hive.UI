@@ -2,16 +2,19 @@
 @model Ticket_Hive.UI.Pages.Member.HomeModel
 @{
 }
-<nav class="navbar " style="b>
-    <h1 id="title" class=" mt-2">TicketHive</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+<nav class="navbar ">
+    <h1 id="title" class="mt-2">TicketHive</h1>
     <div class="search">
-        <form method="post" class="d-flex">
-
-            <button id="eventbtn" class="btn btn-primary me-1" type="submit" asp-page-handler="ShowAllEvents">All Events</button>
-            <a asp-page="/Member/ShoppingCartPage" class="btn btn-primary me-1">Shopping Cart</a>
-
-            <a asp-page="./ChangePassword" class="btn btn-primary me-1">User Page</a>
-
+        <form method="get" asp-page="/Member/BookingPage" class="d-inline">
+            <button id="eventbtn" class="btn btn-primary me-1" type="submit">All Events</button>
+        </form>
+        <a asp-page="/Member/ShoppingCartPage" class="btn btn-primary me-1">Shopping Cart</a>
+        <a asp-page="./ChangePassword" class="btn btn-primary me-1">User Page</a>
 
             @if (Model.IsAdmin && User.Identity.IsAuthenticated)
             {
@@ -21,45 +24,66 @@
             {
                 <button class="btn btn-primary me-1" disabled>Admin Page</button>
             }
+        <form method="post" class="d-inline">
             <button class="btn btn-primary me-5" type="submit" asp-page-handler="SignOut">Sign Out</button>
-            <input class="form-control mt-3" id="searchbar" type="text" asp-for="SearchWord" placeholder="Search" />
-             <a asp-page="/Member/BookingPage" class="btn btn-primary me-1" type="submit" asp-route-search="@Model.SearchWord">Search</a>
-          
+        </form>
+        <!-- Replace the search function here -->
+        <form id="searchForm" method="get" asp-page="/Member/BookingPage" class="d-inline d-flex">
+            <input id="searchbar" class="form-control mt-3" type="text" name="search" placeholder="Keyword" />
+            <button class="btn btn-primary me-1" type="submit">Search</button>
         </form>
     </div>
 </nav>
 
+    @if (Model.popularEvents != null)
+    {
+        <br />
+        <h2 class="popular-events">What's Hot</h2>
+        <hr />
+        <div class="row movie-list">
+            @foreach (var eventToDisplay in Model.popularEvents)
+            {
+                    <div class="image-container">
+                        <h4>@eventToDisplay.Name</h4>
+                        <a class="btn btn-primary mb-4" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
+                        <hr>
+                    </div>
+            }
+        </div>
+    }
 
-@if (Model.popularEvents != null)
-{
-    <br />
-    <h2 class="popular-events">What's Hot</h2>
+    @if (Model.ConfirmedBookings != null && Model.ConfirmedBookings.Any())
+    {
+        <br />
+        <h2 class="booked-events">Your Booked Events:</h2>
+        <hr />
+        <div class="row row-cols-1 row-cols-sm-2">
+            @foreach (var booking in Model.ConfirmedBookings)
+            {
+                    <div class="col mb-4">
+                                <div class="card h-100 custom-card ">
+                            <div class="card-body">
+                                <h3>@booking.Event.Name</h3>
+                                <p>Event Date: @booking.Event.DateTime.ToShortDateString()</p>
+                                <p>Tickets booked: @booking.NbrOfTickets</p>
+                            </div>
+                        </div>
+                    </div>
+            }
+        </div>
+    }
 
-    <hr />
-    <div class="row movie-list">
-        @foreach (var eventToDisplay in Model.popularEvents)
-        {
-            <div class="image-container">
-                <h4>@eventToDisplay.Name</h4>
-                <a class="btn btn-primary mb-4" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
-                <hr>
-            </div>
-        }
-    </div>
-}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchbar = document.getElementById('searchbar');
+        const searchForm = document.getElementById('searchForm');
 
-@if (Model.RecommendedEvents != null && Model.RecommendedEvents.Any())
-{
-    <h1 class="recommended-events">Recommended events:</h1>
-    <div class="row movie-list">
-        @foreach (var eventToDisplay in Model.RecommendedEvents)
-        {
-
-            <div class="image-container">
-                <h4>@eventToDisplay.Name</h4>
-                <a class="btn btn-primary" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
-
-            </div>
-        }
-    </div>
-}
+        searchForm.addEventListener('submit', function(e) {
+            if (searchbar.value.trim() === '') {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+</body>
+</html>
