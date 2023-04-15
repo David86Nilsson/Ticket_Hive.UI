@@ -79,8 +79,6 @@ body {
 .pictureSizeBig {
     width: 200px;
     height: 200px;
-<<<<<<< Updated upstream
-=======
 }
 
 .confirmed-bookings-container {
@@ -93,5 +91,6 @@ body {
 a:hover {
     transition: 0.5s;
     transform: scale(1.2);
->>>>>>> Stashed changes
+
 }
+
