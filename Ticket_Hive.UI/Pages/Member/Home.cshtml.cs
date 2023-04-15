@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -26,6 +22,9 @@ namespace Ticket_Hive.UI.Pages.Member
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IBookingRepo bookingRepo;
 
+        [BindProperty]
+        public string SearchWord { get; set; }
+
         /// <summary>
         /// Skapar en ny instans av HomeModel-klassen.
         /// </summary>
@@ -40,6 +39,7 @@ namespace Ticket_Hive.UI.Pages.Member
             _signInManager = signInManager;
             this.bookingRepo = bookingRepo;
         }
+        public List<EventModel> RecommendedEvents { get; set; }
 
         /// <summary>
         /// Hämtar eller sätter en lista med populära events.
@@ -71,7 +71,7 @@ namespace Ticket_Hive.UI.Pages.Member
             List<EventModel> allEvents = await EventsService.GetAllEventsAsync();
             List<EventModel> sortedPopularEvents = allEvents.OrderByDescending(s => s.TicketsSold).ToList();
             popularEvents = sortedPopularEvents.Take(3).ToList();
-         
+
             var name = User.Identity.Name;
 
             if (User.Identity.IsAuthenticated)

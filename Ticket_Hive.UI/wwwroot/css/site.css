@@ -27,6 +27,10 @@ input {
     border-color: #305076;
     color: #fbe89c;
 }
+    .btn:hover {
+        transition: 0.5s;
+        transform: scale(1.2);
+    }
 
 body {
     margin-bottom: 60px;

@@ -47,11 +47,15 @@ namespace Ticket_Hive.UI.Pages.Member
                 }
             }
         }
+        /// <summary>
+        /// Saves bookings in users Shoopinglist to database
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostBuy()
         {
             cookieManager.SetAttributesToCookieManager(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
             ShoppingCart = await cookieManager.GetShoppingCartFromCookieAsync();
-            // Remove bookings with 0 tickets or if not enough tickets left
+            // Remove bookings with 0 tickets or if not enough tickets left in event
             var bookings = ShoppingCart.Bookings;
             for (int i = 0; i < ShoppingCart.Bookings.Count; i++)
             {
@@ -60,9 +64,7 @@ namespace Ticket_Hive.UI.Pages.Member
                 {
                     ShoppingCart.Bookings.Remove(booking);
                 }
-
             }
-            //await cookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
             // Buy tickets and save to database
             if (ShoppingCart.Bookings.Count > 0)
             {
@@ -70,10 +72,13 @@ namespace Ticket_Hive.UI.Pages.Member
                 await eventManager.BuyTicketsAsync(ShoppingCart, bookingRepo, eventModelRepo, appUserModelRepo, ShoppingCart.User);
                 return RedirectToPage("/Member/ConfirmationPage");
             }
-            //comment
             return Page();
         }
 
+        /// <summary>
+        /// Updates the quantity of tickets in the shopping cart to Cookie
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostCookie()
         {
             cookieManager.SetAttributesToCookieManager(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
