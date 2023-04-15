@@ -36,6 +36,9 @@ namespace Ticket_Hive.UI.Pages.AppPages
         public async Task OnGet()
         {
             Events = await eventModelRepo.GetAllEventsAsync();
+            Capacity = 1;
+            Price = 1;
+
         }
         public async Task<IActionResult> OnPostAdd()
         {

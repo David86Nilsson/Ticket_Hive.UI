@@ -107,6 +107,7 @@ namespace Ticket_Hive.Data
                     TicketsSold = 0,
                     Image = "/Images/EventImages/image 5.png"
                 }
+
              );
         }
 

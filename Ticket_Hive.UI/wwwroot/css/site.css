@@ -88,3 +88,9 @@ body {
             width: 30%;
             padding-right: 20px;
         }
+a:hover {
+    transition: 0.5s;
+    transform: scale(1.2);
+
+}
+
