@@ -9,6 +9,9 @@ using Ticket_Hive.Logic;
 namespace Ticket_Hive.UI.Pages.Member
 {
     [BindProperties]
+    /// <summary>
+    /// Represents the page model for the event details page.
+    /// </summary>
     public class EvenemangModel : PageModel
     {
         private readonly SignInManager<IdentityUser> signInManager;
@@ -32,7 +35,13 @@ namespace Ticket_Hive.UI.Pages.Member
         public int Tickets { get; set; }
 
 
-
+        /**
+        <summary>Constructor for the EvenemangModel class.</summary>
+        <param name="signInManager">The SignInManager object for user authentication and management.</param>
+        <param name="eventRepo">The IEventModelRepo object for accessing event data.</param>
+        <param name="appUserModelRepo">The IAppUserModelRepo object for accessing application user data.</param>
+        <param name="bookingRepo">The IBookingRepo object for accessing booking data.</param>
+        */
         public EvenemangModel(SignInManager<IdentityUser> signInManager, IEventModelRepo eventRepo, IAppUserModelRepo appUserModelRepo, IBookingRepo bookingRepo)
         {
             this.signInManager = signInManager;
@@ -42,6 +51,13 @@ namespace Ticket_Hive.UI.Pages.Member
             EventManager = new();
             CookieManager = new();
         }
+
+        /// <summary>
+        /// Handles the HTTP GET request for the page.
+        /// Retrieves the event with the specified ID and sets the TicketsLeft property based on the number of available tickets for the event.
+        /// Gets the currently logged in user and their associated shopping cart from the cookie.
+        /// </summary>
+        /// <param name="id">The ID of the event to retrieve.</param>
         public async Task OnGet(int id)
         {
             CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
@@ -68,6 +84,13 @@ namespace Ticket_Hive.UI.Pages.Member
             }
 
         }
+
+        ///<summary>
+        ///Handles the HTTP POST request to add an event booking to the shopping cart
+        ///.</summary>
+        ///<returns>
+        ///Returns an IActionResult representing the result of the operation.
+        ///</returns>
         public async Task<IActionResult> OnPost()
         {
             CookieManager.SetAttributesToCookieManager(appUserModelRepo, eventRepo, bookingRepo, signInManager, HttpContext);
