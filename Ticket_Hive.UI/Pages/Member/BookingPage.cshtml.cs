@@ -21,9 +21,9 @@ namespace Ticket_Hive.UI.Pages.Member
 		public List<EventModel> Events { get; set; } = new();
         public string search { get; set; }
 
-        public BookingPageModel(IEventModelRepo eventRepo)
+        public BookingPageModel(IEventModelRepo eventRepo, string search)
 		{
-			
+			this.search = search;
 			this.eventRepo = eventRepo;
 		}
 
