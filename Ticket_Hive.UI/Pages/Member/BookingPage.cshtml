@@ -53,10 +53,27 @@
 				</div>
 
 
-			}
-		}
+.event-card:hover {
+			box-shadow: 0 8px 16px 0 #305076;
+}
 
-	</div>
+.event-card h2.event-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    color: #fff;
+    text-shadow: 1px 1px #000;
+}
+
+.event-card div {
+    margin-top: 0.5em;
+    color: #fff;
+    text-shadow: 1px 1px #000;
+}
+
+.event-card label {
+    font-weight: bold;
 }
 else
 {
@@ -103,35 +120,173 @@ else
 			}
 		}
 
-	</div>
+.event-card p {
+    margin: 0;
 }
 
-@*<script>
-		function GetEvents() {
-			fetch("/api/Events")
-				.then(res => res.json())
-				.then(data => {
-					console.log(data);
-					let output = '<h2>Events</h2>';
-					data.forEach(function (event) {
-						output += `
-								<span class="EventInfo">
-									<span class="name">${event.Name}</span>
-									<span class="type">${event.EventType}</span>
-									<span class="location">${event.Location}</span>
-									<span class="price">${event.Price :-}</span>
-									<span class="date">${event.DateTime}</span>
-								</span>
-							`;
-					});
-					document.getElementById('output').innerHTML = output;
-				});
+.events-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.events-container > * {
+    flex-basis: calc(33.33% - 2em);
+    margin: 1em;
+}
+
+#sort-button, #sortprice-button {
+  display: inline-block;
+  margin-left: 10px; 
+  background-color: #305076;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+
+	.searchbar-size {
+		width: 500px;
+		height: 50px;
+		text-size-adjust: auto;
+		padding: 0 10px;
+		font-size: 35px;	}
+
+	.button-container {
+		display: flex;
+		gap: 10px;
+		margin-top: 10px;
+	}
+
+		.button-container button {
+			background-color: #305076;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			padding: 10px 20px;
+			font-size: 16px;
+			cursor: pointer;
 		}
 
-		</script>*@
-@*<button id="getEvents">Get Events</button>
-	<div id="output"></div>
-*@
+</style>
+
+
+<input class="searchbar-size" id="search-bar" type="text">
+<div class="button-container">
+	<button id="sort-button">Sort by Name</button>
+	<button id="sortprice-button">Sort by Price</button>
+</div>
+<div id="output"></div>	
+
+
+<script>
+	// Variables
+	let allEvents;
+
+	// Selectors
+	let searchBar = document.querySelector("#search-bar");
+	let sortButton = document.querySelector("#sort-button");
+	let sortPriceButton = document.querySelector("#sortprice-button");
+	let sortDateButton = document.querySelector("#sortdate-button")
+
+
+	// Event listeners
+	searchBar.addEventListener("input", filterEvents)
+
+	sortButton.addEventListener("click", sortEvents);
+	sortPriceButton.addEventListener("click", sortPriceEvents);
+
+	
+
+	// Function calls
+	getEvents();
+
+	// Functions
+
+	// Function to sort events by name
+	function sortEvents() {
+		allEvents.sort((a, b) => a.name.localeCompare(b.name));
+		displayData(allEvents);
+	}
+
+	// Function to sort events by price
+	function sortPriceEvents() {
+		allEvents.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+		displayData(allEvents);
+	}
+
+	// Function to filter events based on search term
+	function filterEvents(e) {
+		let searchTerm = e.target.value.toLowerCase();
+
+		let filteredEvents = allEvents.filter(e => {
+			if (e.name.toLowerCase().includes(searchTerm) || e.location.toLowerCase().includes(searchTerm) || e.eventType.toLowerCase().includes(searchTerm)) {
+				return true;
+			}
+		})
+		displayData(filteredEvents);
+	}
+
+	// Function to get all event data from API
+	function getEvents(search) {
+		fetch("/api/events").then(res => res.json()).then(data => {
+			allEvents = data;
+			displayData(allEvents);
+		});
+	}
+
+	// Function to display event data on the page
+	function displayData(events) {
+
+
+		let output = '<h2>Events</h2>';
+		output += '<div class="events-container">';
+		events.forEach(function (event) {
+			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
+			// Create a card for the event with its data and image as background
+			output += `
+							<div class="event-card p-3 m-2 border border-2 border-dark" style="background-image: url('${event.image}')">	
+									<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
+								<div>
+									<label class="fw-bold">Type:</label>
+									<p class="">${event.eventType}</p>
+								</div>
+								<div>
+									<label class="fw-bold">Location:</label>
+									<p class="">${event.location}</p>
+								</div>
+								<div>
+									<label class="fw-bold">Price:</label>
+									<p class="">${event.price}</p>
+								</div>
+								<div>
+									<label class="fw-bold">Date:</label>
+									<p class="">${eventDate}</p>
+								</div>
+							</div>`
+
+		});
+
+		output += '</div>';
+
+		document.getElementById('output').innerHTML = output;
+
+		//Makes it possible to click the events name to go that events info page
+		let eventDivs = document.querySelectorAll(".event-name");
+		eventDivs.forEach(function (div) {
+			div.addEventListener("click", function () {
+				let eventId = this.getAttribute("data-id");
+				window.location.href = "/member/evenemang?id=" + eventId;
+			});
+		});
+	}
+</script>
+
+
+
+
 
 
 

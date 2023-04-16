@@ -21,31 +21,13 @@ namespace Ticket_Hive.UI.Pages.Member
         public async Task OnGetAsync()
         {
 
-            Events = await eventRepo.GetAllEventsAsync();
-            SearchResults = Events;
+}
+			
+		}
+	
 
+    
 
-            var searchQuery = Request.Query["search"].ToString();
-            if (!string.IsNullOrEmpty(searchQuery))
-            {
-
-                var searchTerms = searchQuery.Split(' ');
-
-
-                search = searchTerms.FirstOrDefault();
-
-
-                SearchResults = SearchResults
-                    .Where(e =>
-                        (string.IsNullOrEmpty(search) ||
-                        e.Name.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                        e.EventType.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                        e.Location.Contains(search, StringComparison.OrdinalIgnoreCase)))
-                    .ToList();
-
-            }
-        }
-    }
 }
 
 
