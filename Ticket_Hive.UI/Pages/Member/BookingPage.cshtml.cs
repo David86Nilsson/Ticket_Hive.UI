@@ -10,7 +10,6 @@ namespace Ticket_Hive.UI.Pages.Member
 		private readonly IEventModelRepo eventRepo;
 		public List<EventModel> SearchResults { get; set; }
 		public List<EventModel> Events { get; set; } = new();
-		public string search { get; set; }
 
 		public BookingPageModel(IEventModelRepo eventRepo)
 		{

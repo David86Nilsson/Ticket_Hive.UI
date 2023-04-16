@@ -2,10 +2,15 @@
 @using Ticket_Hive.Data.Models;
 @model Ticket_Hive.UI.Pages.Member.BookingPageModel
 @{
-	bool showSearchResults = !string.IsNullOrEmpty(Model.search);
+	
 }
-
+<body>
 <style>
+		.event-card {
+			background-size: cover;
+			background-position: center;
+			
+		}
 .event-card:hover {
 			box-shadow: 0 8px 16px 0 #305076;
 }
@@ -17,13 +22,16 @@
     margin-bottom: 0.5em;
     color: #fff;
     text-shadow: 1px 1px #000;
+
 }
 
 .event-card div {
     margin-top: 0.5em;
     color: #fff;
     text-shadow: 1px 1px #000;
+		
 }
+
 
 .event-card label {
     font-weight: bold;
@@ -83,7 +91,8 @@
 </style>
 
 
-<input class="searchbar-size" id="search-bar" type="text">
+
+	<input class="searchbar-size" id="search-bar" type="text" value="${searchQuery}">
 <div class="button-container">
 	<button id="sort-button">Sort by Name</button>
 	<button id="sortprice-button">Sort by Price</button>
@@ -94,13 +103,16 @@
 <script>
 	// Variables
 	let allEvents;
-
 	// Selectors
 	let searchBar = document.querySelector("#search-bar");
 	let sortButton = document.querySelector("#sort-button");
 	let sortPriceButton = document.querySelector("#sortprice-button");
-	let sortDateButton = document.querySelector("#sortdate-button")
 
+		const urlParams = new URLSearchParams(window.location.search);
+		const searchParam = urlParams.get('search');
+
+		// Set the value of the search bar input field to the search parameter value
+		document.querySelector('#search-bar').value = searchParam;
 
 	// Event listeners
 	searchBar.addEventListener("input", filterEvents)
@@ -108,14 +120,15 @@
 	sortButton.addEventListener("click", sortEvents);
 	sortPriceButton.addEventListener("click", sortPriceEvents);
 
-	
+		
+
+		
 
 	// Function calls
+
 	getEvents();
 
 	// Functions
-
-	// Function to sort events by name
 	function sortEvents() {
 		allEvents.sort((a, b) => a.name.localeCompare(b.name));
 		displayData(allEvents);
@@ -125,8 +138,9 @@
 	function sortPriceEvents() {
 		allEvents.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
 		displayData(allEvents);
-	}
+	}	 
 
+    
 	/// <summary>
 	/// Function to filter events based on search term
 	/// </summary>	
@@ -143,7 +157,7 @@
 	}
 
 	// Function to get all event data from API
-	function getEvents(search) {
+	function getEvents() {
 		fetch("/api/events").then(res => res.json()).then(data => {
 			allEvents = data;
 			displayData(allEvents);
@@ -161,6 +175,32 @@
 		events.forEach(function (event) {
 			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
 
+			if(event.ticketsSold >= event.capacity)
+			{
+					output += `
+									<div class="event-card p-3 m-2 border border-2 border-dark" style="background-image: url('${event.image}')">
+											<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
+										<div>
+											<label class="fw-bold">Type:</label>
+											<p class="">${event.eventType}</p>
+										</div>
+										<div>
+											<label class="fw-bold">Location:</label>
+											<p class="">${event.location}</p>
+										</div>
+										<div>
+											<label class="fw-bold">Price:</label>
+											<p class="sold-out">Sold out</p>
+										</div>
+										<div>
+											<label class="fw-bold">Date:</label>
+											<p class="">${eventDate}</p>
+										</div>
+									</div>`
+			}
+			else{
+
+			
 			/// <summary>
 			/// Create a card for the events with its data and image as background
 			/// </summary>
@@ -184,6 +224,7 @@
 									<p class="">${eventDate}</p>
 								</div>
 							</div>`
+							}
 
 		});
 
@@ -203,7 +244,7 @@
 		});
 	}
 </script>
-
+</body>
 
 
 
