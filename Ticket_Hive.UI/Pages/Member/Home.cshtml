@@ -8,44 +8,31 @@
   
 </head>
 <body>
-    <div class="row">
-        <div class="col-12">
-    <nav class="navbar navbar-expand-sm">
-        <h1 id="title" class="me-3">TicketHive</h1>
-
-        <a asp-page="./Home" class="btn btn-primary me-1">Home</a>
-
-        <a asp-page="./BookingPage" class="btn btn-primary me-1">Show Events</a>
-        <a asp-page="./ShoppingCartPage" class="btn btn-primary me-1">Shopping Cart</a>
-        <a asp-page="./ChangePassword" class="btn btn-primary me-1">User Page</a>
+ 
+    <nav class="navbar justify-content-center">
+        <h1 id="title" class="me-5">TicketHive</h1>
+        <a asp-page="./Home" class="btn btn-primary me-2">Home</a>
+        <a asp-page="./BookingPage" class="btn btn-primary me-2">Show Events</a>
+        <a asp-page="./ShoppingCartPage" class="btn btn-primary me-2">Shopping Cart</a>
+        <a asp-page="./ChangePassword" class="btn btn-primary me-2">User Page</a>
 
         @if (Model.IsAdmin && User.Identity.IsAuthenticated)
         {
-            <a asp-page="/AppPages/Admin" class="btn btn-primary me-1">Admin Page</a>
-        }   
+            <a asp-page="/AppPages/Admin" class="btn btn-primary me-2">Admin Page</a>
+        }
         else
         {
-            <button class="btn btn-primary me-1" disabled>Admin Page</button>
+            <button class="btn btn-primary me-2" disabled>Admin Page</button>
         }
 
         <form method="post" asp-page-handler="SignOut">
-            <button class="btn btn-primary" type="submit">Sign Out</button>
+            <button class="btn btn-primary me-5" type="submit">Sign Out</button>
+        </form>
+        <form id="searchForm" method="get" asp-page="/Member/BookingPage">
+            <input id="searchbar" type="text" name="search" placeholder="Keyword" />
+            <button class="btn btn-primary" type="submit">Search</button>
         </form>
     </nav>
-    </div>
-    </div>
-    <div class="row">
-        
-            <div class="col">
-                <div class="search container ">
-                    <form id="searchForm" method="get" asp-page="/Member/BookingPage">
-                        <input id="searchbar" type="text" name="search" placeholder="Keyword" />
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
-    </div>
-    
     <div class="row mt-3">
         <div class="col-12">
     @if (Model.popularEvents != null)
@@ -55,11 +42,12 @@
                 <div class="row movie-list d-flex">
                     @foreach (var eventToDisplay in Model.popularEvents)
                     {         
-                                        <div class="image-container col-3 border border-dark border-2 p-2 m-2">
+                                        <div class="image-container col-4 border border-dark border-1 text-center">
                                             <h4>@eventToDisplay.Name</h4>
-                                            <img class="pictureSizeBig" src="@eventToDisplay.Image" />
+                                            <img class="pictureSizeHome" src="@eventToDisplay.Image" />
                                             <br>
-                                            <a class="btn btn-primary" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
+                                            <a class="btn btn-primary m-1" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
+                                            
                                         </div>
                     }
                 </div>
@@ -70,21 +58,18 @@
          <div class="col-12">
     @if (Model.ConfirmedBookings != null && Model.ConfirmedBookings.Any())
     {
-        <div class="">
-            <h2 class="booked-events">Your confirmed bookings:</h2>
+            <h2 class="booked-events mt-4">Your confirmed bookings</h2>
             <div class="row movie-list">
                 @foreach (var booking in Model.ConfirmedBookings)
                 {
-                        <div class="image-container border border-dark border-2 p-2 m-2">
+                        <div class="image-container border border-dark border-1 p-2">
                                 <br>
-
                             <h3>@booking.Event.Name</h3>
                             <p>Event Date: @booking.Event.DateTime.ToShortDateString()</p>
                              <p>Tickets booked: @booking.NbrOfTickets</p>
                         </div>
                 }
             </div>
-        </div>
     }
         </div>
      </div>   
