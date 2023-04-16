@@ -5,13 +5,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <h1 id="title">TicketHive</h1>
-
+  
 </head>
 <body>
     <div class="row">
         <div class="col-12">
     <nav class="navbar navbar-expand-sm">
+        <h1 id="title" class="me-3">TicketHive</h1>
+
+        <a asp-page="./Home" class="btn btn-primary me-1">Home</a>
+
         <a asp-page="./BookingPage" class="btn btn-primary me-1">Show Events</a>
         <a asp-page="./ShoppingCartPage" class="btn btn-primary me-1">Shopping Cart</a>
         <a asp-page="./ChangePassword" class="btn btn-primary me-1">User Page</a>
@@ -19,7 +22,7 @@
         @if (Model.IsAdmin && User.Identity.IsAuthenticated)
         {
             <a asp-page="/AppPages/Admin" class="btn btn-primary me-1">Admin Page</a>
-        }
+        }   
         else
         {
             <button class="btn btn-primary me-1" disabled>Admin Page</button>
@@ -43,13 +46,13 @@
             </div>
     </div>
     
-    <div class="row m-5">
+    <div class="row mt-3">
         <div class="col-12">
     @if (Model.popularEvents != null)
     {
                 <h2 class="popular-events">What's Hot</h2>
                 <hr />
-                <div class="row movie-list">
+                <div class="row movie-list d-flex">
                     @foreach (var eventToDisplay in Model.popularEvents)
                     {         
                                         <div class="image-container col-3 border border-dark border-2 p-2 m-2">
@@ -67,12 +70,14 @@
          <div class="col-12">
     @if (Model.ConfirmedBookings != null && Model.ConfirmedBookings.Any())
     {
-        <div class="d-flex flex-row">
-            <h1 class="booked-events">Your confirmed bookings:</h1>
+        <div class="">
+            <h2 class="booked-events">Your confirmed bookings:</h2>
             <div class="row movie-list">
                 @foreach (var booking in Model.ConfirmedBookings)
                 {
                         <div class="image-container border border-dark border-2 p-2 m-2">
+                                <br>
+
                             <h3>@booking.Event.Name</h3>
                             <p>Event Date: @booking.Event.DateTime.ToShortDateString()</p>
                              <p>Tickets booked: @booking.NbrOfTickets</p>

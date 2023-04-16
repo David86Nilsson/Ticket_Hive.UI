@@ -2,6 +2,17 @@
 @model Ticket_Hive.UI.Pages.Member.ConfirmationPageModel
 @{
 }
+<nav class="navbar navbar-expand-sm">
+    <a asp-page="./Home" class="btn btn-primary me-1">Home</a>
+
+    <a asp-page="./BookingPage" class="btn btn-primary me-1">Show Events</a>
+    <a asp-page="./ShoppingCartPage" class="btn btn-primary me-1">Shopping Cart</a>
+    <a asp-page="./ChangePassword" class="btn btn-primary me-1">User Page</a>
+
+    <form method="post" asp-page-handler="SignOut">
+        <button class="btn btn-primary" type="submit">Sign Out</button>
+    </form>
+</nav>
 
 <div class="d-flex justify-content-between" style="width:100%">
     <h1 class="display-3 blueColor mt-3">Thank You For Your Order!</h1>
