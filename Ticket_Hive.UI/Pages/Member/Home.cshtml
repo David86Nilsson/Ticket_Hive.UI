@@ -1,89 +1,89 @@
-﻿@page
+﻿@page 
 @model Ticket_Hive.UI.Pages.Member.HomeModel
 @{
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <h1 id="title">TicketHive</h1>
+
 </head>
 <body>
-<nav class="navbar ">
-    <h1 id="title" class="mt-2">TicketHive</h1>
-    <div class="search">
-        <form method="get" asp-page="/Member/BookingPage" class="d-inline">
-            <button id="eventbtn" class="btn btn-primary me-1" type="submit">All Events</button>
-        </form>
-        <a asp-page="/Member/ShoppingCartPage" class="btn btn-primary me-1">Shopping Cart</a>
+
+    <nav class="navbar navbar-expand-sm">
+        <a asp-page="./BookingPage" class="btn btn-primary me-1">Show Events</a>
+        <a asp-page="./ShoppingCartPage" class="btn btn-primary me-1">Shopping Cart</a>
         <a asp-page="./ChangePassword" class="btn btn-primary me-1">User Page</a>
 
-            @if (Model.IsAdmin && User.Identity.IsAuthenticated)
-            {
-                <a asp-page="/AppPages/Admin" class="btn btn-primary me-1">Admin Page</a>
-            }
-            else
-            {
-                <button class="btn btn-primary me-1" disabled>Admin Page</button>
-            }
-        <form method="post" class="d-inline">
-            <button class="btn btn-primary me-5" type="submit" asp-page-handler="SignOut">Sign Out</button>
+        @if (Model.IsAdmin && User.Identity.IsAuthenticated)
+        {
+            <a asp-page="/AppPages/Admin" class="btn btn-primary me-1">Admin Page</a>
+        }
+        else
+        {
+            <button class="btn btn-primary me-1" disabled>Admin Page</button>
+        }
+
+        <form method="post" asp-page-handler="SignOut">
+            <button class="btn btn-primary" type="submit">Sign Out</button>
         </form>
-        <!-- Replace the search function here -->
-        <form id="searchForm" method="get" asp-page="/Member/BookingPage" class="d-inline d-flex">
-            <input id="searchbar" class="form-control mt-3" type="text" name="search" placeholder="Keyword" />
-            <button class="btn btn-primary me-1" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
+        </div>
+    </nav>
+
+
+    <div class="search container ">
+        <form id="searchForm" method="get" asp-page="/Member/BookingPage">
+            <input id="searchbar" type="text" name="search" placeholder="Keyword" />
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>        
+    
 
     @if (Model.popularEvents != null)
     {
-        <br />
-        <h2 class="popular-events">What's Hot</h2>
-        <hr />
-        <div class="row movie-list">
+                <h2 class="popular-events">What's Hot</h2>
+                <hr />
+                <div class="row movie-list">
             @foreach (var eventToDisplay in Model.popularEvents)
-            {
-                    <div class="image-container">
-                        <h4>@eventToDisplay.Name</h4>
-                        <a class="btn btn-primary mb-4" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
-                        <hr>
-                    </div>
+            {         
+                                <div class="image-container col-4">
+                                    <h3>@eventToDisplay.Name</h3>
+                                    <img class="pictureSizeBig" src="@eventToDisplay.Image" />
+                                    <br>
+                                    <a class="btn btn-primary" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
+                                </div>
             }
-        </div>
+                </div>
     }
 
     @if (Model.ConfirmedBookings != null && Model.ConfirmedBookings.Any())
     {
-        <br />
-        <h2 class="booked-events">Your Booked Events:</h2>
-        <hr />
-        <div class="row row-cols-1 row-cols-sm-2">
-            @foreach (var booking in Model.ConfirmedBookings)
-            {
-                    <div class="col mb-4">
-                                <div class="card h-100 custom-card ">
-                            <div class="card-body">
-                                <h3>@booking.Event.Name</h3>
-                                <p>Event Date: @booking.Event.DateTime.ToShortDateString()</p>
-                                <p>Tickets booked: @booking.NbrOfTickets</p>
-                            </div>
+        <div class="confirmed-bookings-container">
+            <h1 class="booked-events">Your confirmed bookings:</h1>
+            <div class="row movie-list">
+                @foreach (var booking in Model.ConfirmedBookings)
+                {
+                        <div class="image-container">
+                            <h3>@booking.Event.Name</h3>
+                            <p>Event Date: @booking.Event.DateTime.ToShortDateString()</p>
+                             <p>Tickets booked: @booking.NbrOfTickets</p>
                         </div>
-                    </div>
-            }
+                }
+            </div>
         </div>
     }
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchbar = document.getElementById('searchbar');
+                const searchForm = document.getElementById('searchForm');
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchbar = document.getElementById('searchbar');
-        const searchForm = document.getElementById('searchForm');
+                searchForm.addEventListener('submit', function(e) {
+                    if (searchbar.value.trim() === '') {
+                        e.preventDefault();
+                    }
+                });
+            });
+        </script>
+    </div>
 
-        searchForm.addEventListener('submit', function(e) {
-            if (searchbar.value.trim() === '') {
-                e.preventDefault();
-            }
-        });
-    });
-</script>
 </body>
 </html>
