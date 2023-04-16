@@ -206,7 +206,10 @@
 		displayData(allEvents);
 	}
 
-	// Function to filter events based on search term
+	/// <summary>
+	/// Function to filter events based on search term
+	/// </summary>	
+	
 	function filterEvents(e) {
 		let searchTerm = e.target.value.toLowerCase();
 
@@ -226,7 +229,9 @@
 		});
 	}
 
-	// Function to display event data on the page
+	/// <summary>
+	/// Function to display event data on the page
+	/// </summary>
 	function displayData(events) {
 
 
@@ -234,7 +239,10 @@
 		output += '<div class="events-container">';
 		events.forEach(function (event) {
 			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
-			// Create a card for the event with its data and image as background
+
+			/// <summary>
+			/// Create a card for the events with its data and image as background
+			/// </summary>
 			output += `
 							<div class="event-card p-3 m-2 border border-2 border-dark" style="background-image: url('${event.image}')">	
 									<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
@@ -262,7 +270,9 @@
 
 		document.getElementById('output').innerHTML = output;
 
+		/// <summary>
 		//Makes it possible to click the events name to go that events info page
+		/// </summary>
 		let eventDivs = document.querySelectorAll(".event-name");
 		eventDivs.forEach(function (div) {
 			div.addEventListener("click", function () {
