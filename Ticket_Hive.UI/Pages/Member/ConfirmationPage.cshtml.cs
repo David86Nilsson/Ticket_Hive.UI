@@ -44,5 +44,6 @@ namespace Ticket_Hive.UI.Pages.Member
             };
             await cookieManager.SetShoppingCartToCookieAsync(emptyShoppingCart);
         }
+
     }
 }
