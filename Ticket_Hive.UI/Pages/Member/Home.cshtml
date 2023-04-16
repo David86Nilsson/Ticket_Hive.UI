@@ -4,11 +4,7 @@
 }
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-</head>
-<body>
- 
+<body> 
     <nav class="navbar justify-content-center">
         <h1 id="title" class="me-5">TicketHive</h1>
         <a asp-page="./Home" class="btn btn-primary me-2">Home</a>
@@ -33,36 +29,38 @@
             <button class="btn btn-primary" type="submit">Search</button>
         </form>
     </nav>
-    <div class="row mt-3">
+    <div class="row mt-3 container">
         <div class="col-12">
     @if (Model.popularEvents != null)
     {
                 <h2 class="popular-events">What's Hot</h2>
+                <hr />
                 <div class="row movie-list d-flex">
                     @foreach (var eventToDisplay in Model.popularEvents)
                     {         
-                                        <div class="image-container col-4 border border-dark border-1 text-center">
+                                        <div class="image-container col-4 text-center">
                                             <h4>@eventToDisplay.Name</h4>
                                             <img class="pictureSizeHome" src="@eventToDisplay.Image" />
                                             <br>
                                             <a class="btn btn-primary m-1" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
-                                            
                                         </div>
                     }
+                    <hr />
+
                 </div>
     }
     </div>
     </div>
-    <div class="row">
+    <div class="row container">
          <div class="col-12">
     @if (Model.ConfirmedBookings != null && Model.ConfirmedBookings.Any())
     {
-            <h2 class="booked-events mt-4">Your confirmed bookings</h2>
-            <div class="row movie-list">
+            <h2 class="booked-events ">Your confirmed bookings</h2>
+            <hr />
+            <div class="movie-list">
                 @foreach (var booking in Model.ConfirmedBookings)
                 {
-                        <div class="image-container border border-dark border-1 p-2">
-                                <br>
+                        <div class="image-container border-bottom border-dark  p-2">
                             <h3>@booking.Event.Name</h3>
                             <p>Event Date: @booking.Event.DateTime.ToShortDateString()</p>
                              <p>Tickets booked: @booking.NbrOfTickets</p>
