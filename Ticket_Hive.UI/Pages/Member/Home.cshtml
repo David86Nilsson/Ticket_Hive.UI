@@ -9,7 +9,8 @@
 
 </head>
 <body>
-
+    <div class="row">
+        <div class="col-12">
     <nav class="navbar navbar-expand-sm">
         <a asp-page="./BookingPage" class="btn btn-primary me-1">Show Events</a>
         <a asp-page="./ShoppingCartPage" class="btn btn-primary me-1">Shopping Cart</a>
@@ -27,42 +28,51 @@
         <form method="post" asp-page-handler="SignOut">
             <button class="btn btn-primary" type="submit">Sign Out</button>
         </form>
-        </div>
     </nav>
-
-
-    <div class="search container ">
-        <form id="searchForm" method="get" asp-page="/Member/BookingPage">
-            <input id="searchbar" type="text" name="search" placeholder="Keyword" />
-            <button class="btn btn-primary" type="submit">Search</button>
-        </form>        
+    </div>
+    </div>
+    <div class="row">
+        
+            <div class="col">
+                <div class="search container ">
+                    <form id="searchForm" method="get" asp-page="/Member/BookingPage">
+                        <input id="searchbar" type="text" name="search" placeholder="Keyword" />
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+    </div>
     
-
+    <div class="row m-5">
+        <div class="col-12">
     @if (Model.popularEvents != null)
     {
                 <h2 class="popular-events">What's Hot</h2>
                 <hr />
                 <div class="row movie-list">
-            @foreach (var eventToDisplay in Model.popularEvents)
-            {         
-                                <div class="image-container col-4">
-                                    <h3>@eventToDisplay.Name</h3>
-                                    <img class="pictureSizeBig" src="@eventToDisplay.Image" />
-                                    <br>
-                                    <a class="btn btn-primary" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
-                                </div>
-            }
+                    @foreach (var eventToDisplay in Model.popularEvents)
+                    {         
+                                        <div class="image-container col-3 border border-dark border-2 p-2 m-2">
+                                            <h4>@eventToDisplay.Name</h4>
+                                            <img class="pictureSizeBig" src="@eventToDisplay.Image" />
+                                            <br>
+                                            <a class="btn btn-primary" asp-page="Evenemang" asp-route-id="@eventToDisplay.Id">Read more</a>
+                                        </div>
+                    }
                 </div>
     }
-
+    </div>
+    </div>
+    <div class="row">
+         <div class="col-12">
     @if (Model.ConfirmedBookings != null && Model.ConfirmedBookings.Any())
     {
-        <div class="confirmed-bookings-container">
+        <div class="d-flex flex-row">
             <h1 class="booked-events">Your confirmed bookings:</h1>
             <div class="row movie-list">
                 @foreach (var booking in Model.ConfirmedBookings)
                 {
-                        <div class="image-container">
+                        <div class="image-container border border-dark border-2 p-2 m-2">
                             <h3>@booking.Event.Name</h3>
                             <p>Event Date: @booking.Event.DateTime.ToShortDateString()</p>
                              <p>Tickets booked: @booking.NbrOfTickets</p>
@@ -71,7 +81,10 @@
             </div>
         </div>
     }
-    <script>
+        </div>
+     </div>   
+        
+        <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const searchbar = document.getElementById('searchbar');
                 const searchForm = document.getElementById('searchForm');
@@ -83,7 +96,6 @@
                 });
             });
         </script>
-    </div>
 
 </body>
 </html>
