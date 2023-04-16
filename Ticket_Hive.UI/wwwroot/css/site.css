@@ -149,6 +149,7 @@ a:hover {
     text-align: center;
 }
 
-/*.navbar {
-    background-color: #305076;
-}*/
+.pictureSizeHome {
+    width:350px;
+    height:220px;
+}
