@@ -2,7 +2,7 @@
 @using Ticket_Hive.Data.Models;
 @model Ticket_Hive.UI.Pages.Member.BookingPageModel
 @{
-	
+
 }
 <nav class="navbar navbar-expand-sm">
 	<a asp-page="./Home" class="btn btn-primary me-1">Home</a>
@@ -12,56 +12,61 @@
 </nav>
 
 <style>
-.event-card:hover {
+	.event-card {
+		background-size: cover;
+		background-position: center;
+	}
+
+		.event-card:hover {
 			box-shadow: 0 8px 16px 0 #305076;
-}
+		}
 
-.event-card h2.event-name {
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 1em;
-    margin-bottom: 0.5em;
-    color: #fff;
-    text-shadow: 1px 1px #000;
-}
+		.event-card h2.event-name {
+			font-size: 24px;
+			font-weight: bold;
+			margin-top: 1em;
+			margin-bottom: 0.5em;
+			color: #fff;
+			text-shadow: 1px 1px #000;
+		}
 
-.event-card div {
-    margin-top: 0.5em;
-    color: #fff;
-    text-shadow: 1px 1px #000;
-}
+		.event-card div {
+			margin-top: 0.5em;
+			color: #fff;
+			text-shadow: 1px 1px #000;
+		}
 
-.event-card label {
-    font-weight: bold;
-	color: #fff;
-}
+		.event-card label {
+			font-weight: bold;
+			color: #fff;
+		}
 
 
-.event-card p {
-    margin: 0;
-	color:navajowhite;
-}
+		.event-card p {
+			margin: 0;
+			color: navajowhite;
+		}
 
-.events-container {
-    display: flex;
-    flex-wrap: wrap;
-}
+	.events-container {
+		display: flex;
+		flex-wrap: wrap;
+	}
 
-.events-container > * {
-    flex-basis: calc(33.33% - 2em);
-    margin: 1em;
-}
+		.events-container > * {
+			flex-basis: calc(33.33% - 2em);
+			margin: 1em;
+		}
 
-#sort-button, #sortprice-button {
-  display: inline-block;
-  margin-left: 10px; 
-  background-color: #305076;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
+	#sort-button, #sortprice-button {
+		display: inline-block;
+		margin-left: 10px;
+		background-color: #305076;
+		color: #fff;
+		border: none;
+		padding: 10px;
+		font-size: 16px;
+		cursor: pointer;
+	}
 
 
 
@@ -70,7 +75,8 @@
 		height: 50px;
 		text-size-adjust: auto;
 		padding: 0 10px;
-		font-size: 35px;	}
+		font-size: 35px;
+	}
 
 	.button-container {
 		display: flex;
@@ -91,12 +97,12 @@
 </style>
 
 
-<input class="searchbar-size mt-3" id="search-bar" type="text" placeholder="Search">
+<input class="searchbar-size" id="search-bar" type="text" value="${searchQuery}">
 <div class="button-container">
 	<button id="sort-button">Sort by Name</button>
 	<button id="sortprice-button">Sort by Price</button>
 </div>
-<div id="output"></div>	
+<div id="output"></div>
 
 
 <script>
@@ -107,7 +113,12 @@
 	let searchBar = document.querySelector("#search-bar");
 	let sortButton = document.querySelector("#sort-button");
 	let sortPriceButton = document.querySelector("#sortprice-button");
-	let sortDateButton = document.querySelector("#sortdate-button")
+
+	const urlParams = new URLSearchParams(window.location.search);
+	const searchParam = urlParams.get('search');
+
+	// Set the value of the search bar input field to the search parameter value
+	document.querySelector('#search-bar').value = searchParam;
 
 
 	// Event listeners
@@ -116,7 +127,7 @@
 	sortButton.addEventListener("click", sortEvents);
 	sortPriceButton.addEventListener("click", sortPriceEvents);
 
-	
+
 
 	// Function calls
 	getEvents();
@@ -137,8 +148,8 @@
 
 	/// <summary>
 	/// Function to filter events based on search term
-	/// </summary>	
-	
+	/// </summary>
+
 	function filterEvents(e) {
 		let searchTerm = e.target.value.toLowerCase();
 
@@ -172,28 +183,53 @@
 			/// <summary>
 			/// Create a card for the events with its data and image as background
 			/// </summary>
-			output += `
-							<div class="event-card p-3 m-2 border border-2 border-dark" style="background-image: url('${event.image}')">	
-									<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
-								<div>
-									<label class="fw-bold">Type:</label>
-									<p class="">${event.eventType}</p>
-								</div>
-								<div>
-									<label class="fw-bold">Location:</label>
-									<p class="">${event.location}</p>
-								</div>
-								<div>
-									<label class="fw-bold">Price:</label>
-									<p class="">${event.price}</p>
-								</div>
-								<div>
-									<label class="fw-bold">Date:</label>
-									<p class="">${eventDate}</p>
-								</div>
-							</div>`
+			if (event.ticketsSold >= event.capacity) {
+				output += `
+											<div class="event-card p-3 m-2 border border-2 border-dark" style="background-image: url('${event.image}')">
+													<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
+												<div>
+													<label class="fw-bold">Type:</label>
+													<p class="">${event.eventType}</p>
+												</div>
+												<div>
+													<label class="fw-bold">Location:</label>
+													<p class="">${event.location}</p>
+												</div>
+												<div>
+													<label class="fw-bold">Price:</label>
+													<p class="sold-out">Sold out</p>
+												</div>
+												<div>
+													<label class="fw-bold">Date:</label>
+													<p class="">${eventDate}</p>
+												</div>
+											</div>`
+			}
+			else {
+				output += `
+									<div class="event-card p-3 m-2 border border-2 border-dark" style="background-image: url('${event.image}')">
+											<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
+										<div>
+											<label class="fw-bold">Type:</label>
+											<p class="">${event.eventType}</p>
+										</div>
+										<div>
+											<label class="fw-bold">Location:</label>
+											<p class="">${event.location}</p>
+										</div>
+										<div>
+											<label class="fw-bold">Price:</label>
+											<p class="">${event.price}</p>
+										</div>
+										<div>
+											<label class="fw-bold">Date:</label>
+											<p class="">${eventDate}</p>
+										</div>
+									</div>`
+			}
 
 		});
+
 
 		output += '</div>';
 
