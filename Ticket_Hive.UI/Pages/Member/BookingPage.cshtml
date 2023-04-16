@@ -188,7 +188,8 @@
 	sortPriceButton.addEventListener("click", sortPriceEvents);
 	//sortDateButton.addEventListener("click", sortDateEvents);
 
-
+	let searchParams = new URLSearchParams(window.location.search);
+	let searchTerm = searchParams.get('search');
 
 	// Function calls
 	getEvents();
@@ -206,19 +207,22 @@
 
 	
 
-	function filterEvents(e) {
-		let searchTerm = e.target.value.toLowerCase();
-
-		let filteredEvents = allEvents.filter(e => {
-			if (e.name.toLowerCase().includes(searchTerm) || e.location.toLowerCase().includes(searchTerm) || e.eventType.toLowerCase().includes(searchTerm)) {
-				return true;
-			}
-		})
-
+	function filterEvents(searchTerm) {
+		let filteredEvents;
+		if (searchTerm) {
+			searchTerm = searchTerm.toLowerCase();
+			filteredEvents = allEvents.filter(event => {
+				if (event.name.toLowerCase().includes(searchTerm) || event.location.toLowerCase().includes(searchTerm) || event.eventType.toLowerCase().includes(searchTerm)) {
+					return true;
+				}
+			});
+		} else {
+			filteredEvents = allEvents;
+		}
 		displayData(filteredEvents);
 	}
 
-	function getEvents() {
+	function getEvents(search) {
 		fetch("/api/events").then(res => res.json()).then(data => {
 			allEvents = data;
 			displayData(allEvents);
