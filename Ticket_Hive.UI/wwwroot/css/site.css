@@ -101,3 +101,47 @@ a:hover {
 
 }
 
+.EventInfo {
+    height: 40px;
+    padding: 0 30px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.SortBar span {
+    display: inline-block;
+    width: 14%;
+    text-align: center;
+}
+
+
+
+.EventInfo .name {
+    width: 14%;
+    display: inline-block;
+    text-align: center;
+}
+
+.EventInfo .type {
+    width: 14%;
+    display: inline-block;
+    text-align: center;
+}
+
+.EventInfo .location {
+    width: 14%;
+    display: inline-block;
+    text-align: center;
+}
+
+.EventInfo .price {
+    width: 14%;
+    display: inline-block;
+    text-align: center;
+}
+
+.EventInfo .date {
+    width: 14%;
+    display: inline-block;
+    text-align: center;
+}

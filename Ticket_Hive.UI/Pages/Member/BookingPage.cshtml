@@ -4,76 +4,11 @@
 @{
 	bool showSearchResults = !string.IsNullOrEmpty(Model.search);
 }
-<style>
-	body {
-		background-color: #fbe89c;
-		margin: 10px;
-	}
-
-	a:hover {
-		cursor: pointer;
-	}
-
-	
-	a {
-		text-decoration: none;
-		color: #305076;
-	}
-
-	.EventInfo {
-		height: 40px;
-		padding: 0 30px;
-		font-size: 30px;
-		text-align: center;
-	}
-
-	.MarginFix {
-		margin-bottom: 25px;
-		margin-top: 25px;
-	}
-
-	.SortBar span {
-		display: inline-block;
-		width: 14%;
-		text-align: center;
-	}
-
-	.EventInfo .name {
-		width: 14%;
-		display: inline-block;
-		text-align: center;
-	}
-
-	.EventInfo .type {
-		width: 14%;
-		display: inline-block;
-		text-align: center;
-	}
-
-	.EventInfo .location {
-		width: 14%;
-		display: inline-block;
-		text-align: center;
-	}
-
-	.EventInfo .price {
-		width: 14%;
-		display: inline-block;
-		text-align: center;
-	}
-
-	.EventInfo .date {
-		width: 14%;
-		display: inline-block;
-		text-align: center;
-	}
-
-</style>
 
 <form id="search-form">
 	<label for="query">Search:</label>
 	<input type="text" id="event-search" name="Search" />
-	<button type="submit">Search</button>
+	<button type="submit" class="btn">Search</button>
 </form>
 @if (showSearchResults)
 {
@@ -105,7 +40,7 @@
 			}
 			else
 			{
-				<div>
+				<div class="link">
 					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
 						<span class="EventInfo">
 							<span class="name">@result.Name</span>
@@ -143,7 +78,7 @@ else
 			@if (result.TicketsSold >= result.Capacity)
 			{
 				<div>
-					<span class="sold-out EventInfo">
+					<span class="sold-out EventInfo text-danger">
 						<span class="name">@result.Name</span>
 						<span class="type">@result.EventType</span>
 						<span class="location">@result.Location</span>
