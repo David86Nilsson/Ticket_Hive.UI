@@ -27,6 +27,10 @@ namespace Ticket_Hive.UI.Pages.Member
             eventManager = new();
             cookieManager = new();
         }
+
+        /// <summary>
+        /// Called when the page is requested.
+        /// </summary>
         public async Task OnGet()
         {
             // Hämta Shoppingcart från cookie

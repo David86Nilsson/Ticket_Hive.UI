@@ -7,6 +7,10 @@ using Ticket_Hive.Logic;
 
 namespace Ticket_Hive.UI.Pages.Member
 {
+        /**
+        The ShoppingCartPageModel class represents the model for the shopping cart page.
+        It manages the user's shopping cart, which stores the user's selected events and the number of tickets they have booked.
+        */
     public class ShoppingCartPageModel : PageModel
     {
 

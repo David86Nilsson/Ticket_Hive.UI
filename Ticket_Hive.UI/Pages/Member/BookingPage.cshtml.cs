@@ -6,14 +6,21 @@ using Ticket_Hive.Data.Repos;
 
 namespace Ticket_Hive.UI.Pages.Member
 {
-	public class BookingPageModel : PageModel
+    /// <summary>
+    /// Represents the Booking page model for the Booking area of the website.
+    /// </summary>
+    public class BookingPageModel : PageModel
 	{
 
 		private readonly IEventModelRepo eventRepo;
 		public List<EventModel> SearchResults { get; set; }
 		public List<EventModel> Events { get; set; } = new();
 
-		public BookingPageModel(IEventModelRepo eventRepo)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BookingPageModel"/> class.
+        /// </summary>
+        /// <param name="eventRepo">The event model repository.</param>
+        public BookingPageModel(IEventModelRepo eventRepo)
 		{
 
 			this.eventRepo = eventRepo;
