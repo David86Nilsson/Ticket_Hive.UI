@@ -3,14 +3,20 @@
 @{
 }
 
+<nav class="navbar navbar-expand-sm">
+    <a asp-page="./Home" class="btn btn-primary me-1">Home</a>
+    <a asp-page="./BookingPage" class="btn btn-primary me-1">Show Events</a>
+    <a asp-page="./ShoppingCartPage" class="btn btn-primary me-1">Shopping Cart</a>
+    <a asp-page="./ChangePassword" class="btn btn-primary me-1">User Page</a>
+</nav>
 
 <div class="row">
     <div class="col-12 text-center">
         <h1>Shopping Cart</h1>
     </div>
-    <div class="col-12 d-flex">
+@*    <div class="col-12 d-flex">
         <a class="btn" asp-page="/Member/BookingPage">To BookingPage</a>
-    </div>
+    </div>*@
     <div class="col-12 d-flex justify-content-center">
         @if (Model.ShoppingCart.Bookings.Count > 0)
         {

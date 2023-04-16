@@ -146,3 +146,8 @@ a:hover {
     display: inline-block;
     text-align: center;
 }
+
+.pictureSizeHome {
+    width:350px;
+    height:220px;
+}

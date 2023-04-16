@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Ticket_Hive.Data.Models;
 using Ticket_Hive.Data.Repos;
@@ -23,8 +25,6 @@ namespace Ticket_Hive.UI.Pages.Member
 		}
 
 	}
-
-
 
 
 }

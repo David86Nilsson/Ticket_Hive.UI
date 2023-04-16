@@ -103,6 +103,12 @@ namespace Ticket_Hive.UI.Pages.Member
                 return Page();
             }
         }
+        public async Task<IActionResult> OnPostSignOutAsync()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToPage("/Index");
+        }
+
     }
  
 }
