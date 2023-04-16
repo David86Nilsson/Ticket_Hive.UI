@@ -11,12 +11,19 @@ namespace Ticket_Hive.Data.Repos
         {
             this.context = context;
         }
+
+        /// <summary>
+        /// Adds a new Booking to the database 
+        /// </summary>
         public async Task AddBookingAsync(BookingModel newBooking)
         {
             await context.Bookings.AddAsync(newBooking);
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Deletes a Booking from the database asynchronously
+        /// </summary>
         public async Task DeleteBookingAsync(BookingModel bookingToDelete)
         {
             BookingModel? booking = await context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingToDelete.Id);
@@ -27,16 +34,27 @@ namespace Ticket_Hive.Data.Repos
             }
         }
 
+        /// <summary>
+        /// Retrieves all Bookings from the database 
+        /// </summary>
         public async Task<IEnumerable<BookingModel>?> GetAllBookingsAsync()
         {
             return await context.Bookings.Include(b => b.Event).Include(b => b.User).ToListAsync();
         }
 
+        /// <summary>
+        /// Retrieves a Booking by its ID from the database 
+        /// </summary>
+        /// <returns>BookingModel object if found, otherwise null</returns>
         public async Task<BookingModel?> GetBookingByIdAsync(int id)
         {
             return await context.Bookings.Include(b => b.Event).Include(b => b.User).FirstOrDefaultAsync(b => b.Id == id);
         }
 
+        /// <summary>
+        /// Updates a Booking in the database
+        /// </summary>
+        /// <returns>True if the update was successful, otherwise false</returns>
         public async Task<bool> UpdateBookingAsync(BookingModel updatedBooking)
         {
             BookingModel? booking = await context.Bookings.FirstOrDefaultAsync(b => b.Id == updatedBooking.Id);
@@ -52,6 +70,10 @@ namespace Ticket_Hive.Data.Repos
             return false;
         }
 
+        /// <summary>
+        /// Retrieves confirmed Bookings by a specific user name 
+        /// </summary>
+        /// <returns>List of BookingModel objects</returns>
         public async Task<List<BookingModel>> GetConfirmedBookingsByUserNameAsync(string userName)
         {
             return await context.Bookings

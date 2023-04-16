@@ -15,7 +15,7 @@ namespace Ticket_Hive.UI.Pages.Member
     public class HomeModel : PageModel
     {
         /// <summary>
-        /// Hämtar en instans av IEventModelRepo som används för att hantera händelser.
+        /// Hämtar en instans av IEventModelRepo som används för att hantera event.
         /// </summary>
         public IEventModelRepo EventsService { get; }
         private readonly UserManager<IdentityUser> _userManager;
@@ -59,7 +59,6 @@ namespace Ticket_Hive.UI.Pages.Member
         /// <summary>
         /// Hanterar GET-begäran för hemsidan.
         /// </summary>
-        /// <returns>Task som utför den asynkrona operationen.</returns>
         public async Task OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -85,7 +84,6 @@ namespace Ticket_Hive.UI.Pages.Member
         /// <summary>
         /// Hanterar POST-begäran för att logga ut användaren.
         /// </summary>
-        /// <returns>En IActionResult som representerar resultatet av operationen.</returns>
         public async Task<IActionResult> OnPostSignOutAsync()
         {
             await _signInManager.SignOutAsync();
