@@ -47,7 +47,7 @@ namespace Ticket_Hive.UI.Pages.Member
         public string AlertType { get; set; }
 
         /// <summary>
-        /// Representerar en klass för att binda inputfält i change password form.
+        /// Representerar en klass för att binda inputfält i change password.
         /// </summary>
         public class InputModel
         {
@@ -68,7 +68,6 @@ namespace Ticket_Hive.UI.Pages.Member
         /// <summary>
         /// Hanterar POST-begäran för att ändra lösenordet.
         /// </summary>
-        /// <returns>En IActionResult som representerar resultatet av operationen.</returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
