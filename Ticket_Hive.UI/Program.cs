@@ -18,7 +18,11 @@ builder.Services.AddRazorPages(options =>
 
     options.Conventions.AuthorizeFolder("/Member");
 });
+
+builder.Services.AddControllers();
+
 builder.Services.AddAuthentication();
+
 
 // Add services to the container.
 var UserconnectionString = builder.Configuration.GetConnectionString("UserDbConnectionstring") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -129,5 +133,6 @@ app.UseAuthorization();
 
 app.UseSession();
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();

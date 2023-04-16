@@ -14,7 +14,7 @@
 		cursor: pointer;
 	}
 
-	
+
 	a {
 		text-decoration: none;
 		color: #305076;
@@ -68,135 +68,215 @@
 		text-align: center;
 	}
 
+	.events-container {
+		display: flex;
+		flex-wrap: wrap;
+		max-height: calc(100vh - 250px); 
+		overflow-y: auto;
+	}
+
+	.event-card {
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    background-image: url('${event.image}');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+.event-card:hover {
+			box-shadow: 0 8px 16px 0 #305076;
+}
+
+.event-card h2.event-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    color: #fff;
+    text-shadow: 1px 1px #000;
+}
+
+.event-card div {
+    margin-top: 0.5em;
+    color: #fff;
+    text-shadow: 1px 1px #000;
+}
+
+.event-card label {
+    font-weight: bold;
+}
+
+.event-card p {
+    margin: 0;
+}
+
+.events-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.events-container > * {
+    flex-basis: calc(33.33% - 2em);
+    margin: 1em;
+}
+
+#sort-button, #sortprice-button {
+  display: inline-block;
+  margin-left: 10px; /* optional: add some space between the buttons */
+  background-color: #305076;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+
+	.searchbar-size {
+		width: 500px;
+		height: 50px;
+		text-size-adjust: auto;
+		padding: 0 10px;
+		font-size: 35px;	}
+
+	.button-container {
+		display: flex;
+		gap: 10px;
+		margin-top: 10px;
+	}
+
+		.button-container button {
+			background-color: #305076;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			padding: 10px 20px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+
 </style>
 
-<form id="search-form">
-	<label for="query">Search:</label>
-	<input type="text" id="event-search" name="Search" />
-	<button type="submit">Search</button>
-</form>
-@if (showSearchResults)
-{
-	<h2>Search Results:</h2>
-	<div class="Eventinfo">
-		<span class="SortBar EventInfo">
-			<span>Name</span>
-			<span>EventType</span>
-			<span>Location</span>
-			<span>Price</span>
-			<span>Date</span>
-		</span>
-	</div>
-	<div class="container">
-		@foreach (var result in Model.SearchResults)
-		{
-			<hr />
-			@if (result.TicketsSold >= result.Capacity)
-			{
-				<div>
-					<span class="EventInfo text-danger">
-						<span class="name">@result.Name</span>
-						<span class="type">@result.EventType</span>
-						<span class="location">@result.Location</span>
-						<span class="price sold-out">SOLD OUT</span>
-						<span class="date">@result.DateTime</span>
-					</span>
-				</div>
-			}
-			else
-			{
-				<div>
-					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
-						<span class="EventInfo">
-							<span class="name">@result.Name</span>
-							<span class="type">@result.EventType</span>
-							<span class="location">@result.Location</span>
-							<span class="price">@result.Price :-</span>
-							<span class="date">@result.DateTime</span>
-						</span>
-					</a>
-				</div>
+
+<input class="searchbar-size" id="search-bar" type="text">
+<div class="button-container">
+	<button id="sort-button">Sort by Name</button>
+	<button id="sortprice-button">Sort by Price</button>
+</div>
+<div id="output"></div>	
 
 
-			}
-		}
+<script>
+	// Variables
+	let allEvents;
 
-	</div>
-}
-else
-{
+	// Selectors
+	let searchBar = document.querySelector("#search-bar");
+	let sortButton = document.querySelector("#sort-button");
+	let sortPriceButton = document.querySelector("#sortprice-button");
+	let sortDateButton = document.querySelector("#sortdate-button")
+
+
+	// Event listeners
+	searchBar.addEventListener("input", filterEvents)
+
+	sortButton.addEventListener("click", sortEvents);
+	sortPriceButton.addEventListener("click", sortPriceEvents);
+	//sortDateButton.addEventListener("click", sortDateEvents);
+
+	let searchParams = new URLSearchParams(window.location.search);
+	let searchTerm = searchParams.get('search');
+
+	// Function calls
+	getEvents();
+
+	// Functions
+	function sortEvents() {
+		allEvents.sort((a, b) => a.name.localeCompare(b.name));
+		displayData(allEvents);
+	}
+
+	function sortPriceEvents() {
+		allEvents.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+		displayData(allEvents);
+	}
+
 	
-	<h2>All Events:</h2>
-	<div class="Eventinfo">
-		<span class="SortBar EventInfo">
-			<span>Name</span>
-			<span>EventType</span>
-			<span>Location</span>
-			<span>Price</span>
-			<span>Date</span>
-		</span>
-	</div>
-	<div class="container">
-		@foreach (var result in Model.SearchResults)
-		{
-			<hr />
-			@if (result.TicketsSold >= result.Capacity)
-			{
-				<div>
-					<span class="sold-out EventInfo">
-						<span class="name">@result.Name</span>
-						<span class="type">@result.EventType</span>
-						<span class="location">@result.Location</span>
-						<span class="price">SOLD OUT</span>
-						<span class="date">@result.DateTime</span>
-					</span>
-				</div>
-			}
-			else
-			{
-				<div>
-					<a asp-page="/Member/Evenemang" asp-route-id="@result.Id">
-						<span class="EventInfo">
-							<span class="name">@result.Name</span>
-							<span class="type">@result.EventType</span>
-							<span class="location">@result.Location</span>
-							<span class="price">@result.Price :-</span>
-							<span class="date">@result.DateTime</span>
-						</span>
-					</a>
-				</div>
-			}
+
+	function filterEvents(searchTerm) {
+		let filteredEvents;
+		if (searchTerm) {
+			searchTerm = searchTerm.toLowerCase();
+			filteredEvents = allEvents.filter(event => {
+				if (event.name.toLowerCase().includes(searchTerm) || event.location.toLowerCase().includes(searchTerm) || event.eventType.toLowerCase().includes(searchTerm)) {
+					return true;
+				}
+			});
+		} else {
+			filteredEvents = allEvents;
 		}
+		displayData(filteredEvents);
+	}
 
-	</div>
-}
+	function getEvents(search) {
+		fetch("/api/events").then(res => res.json()).then(data => {
+			allEvents = data;
+			displayData(allEvents);
+		});
+	}
 
-@*<script>
-		function GetEvents() {
-			fetch("/api/Events")
-				.then(res => res.json())
-				.then(data => {
-					console.log(data);
-					let output = '<h2>Events</h2>';
-					data.forEach(function (event) {
-						output += `
-								<span class="EventInfo">
-									<span class="name">${event.Name}</span>
-									<span class="type">${event.EventType}</span>
-									<span class="location">${event.Location}</span>
-									<span class="price">${event.Price :-}</span>
-									<span class="date">${event.DateTime}</span>
-								</span>
-							`;
-					});
-					document.getElementById('output').innerHTML = output;
-				});
-		}
+	function displayData(events) {
 
-		</script>*@
-@*<button id="getEvents">Get Events</button>
-	<div id="output"></div>
-*@
+
+		let output = '<h2>Events</h2>';
+		output += '<div class="events-container">';
+		events.forEach(function (event) {
+			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
+			output += `
+							<div class="event-card p-3 m-2 border border-2 border-dark" style="background-image: url('${event.image}')">	
+									<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
+								<div>
+									<label class="fw-bold">Type:</label>
+									<p class="">${event.eventType}</p>
+								</div>
+								<div>
+									<label class="fw-bold">Location:</label>
+									<p class="">${event.location}</p>
+								</div>
+								<div>
+									<label class="fw-bold">Price:</label>
+									<p class="">${event.price}</p>
+								</div>
+								<div>
+									<label class="fw-bold">Date:</label>
+									<p class="">${eventDate}</p>
+								</div>
+							</div>`
+
+		});
+
+		output += '</div>';
+
+		document.getElementById('output').innerHTML = output;
+
+
+		let eventDivs = document.querySelectorAll(".event-name");
+		eventDivs.forEach(function (div) {
+			div.addEventListener("click", function () {
+				let eventId = this.getAttribute("data-id");
+				window.location.href = "/member/evenemang?id=" + eventId;
+			});
+		});
+	}
+</script>
+
+
+
+
 
 
 
