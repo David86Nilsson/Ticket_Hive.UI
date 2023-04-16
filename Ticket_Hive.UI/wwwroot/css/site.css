@@ -40,13 +40,11 @@ body {
 .custom-card {
     background-color: #fbe89c;
 }
-* {
-    color: #305076;
-}
+
 .sold-out {
     color: red;
 }
-.event-name {
+.event-card {
     cursor: pointer;
 }
 .btn {

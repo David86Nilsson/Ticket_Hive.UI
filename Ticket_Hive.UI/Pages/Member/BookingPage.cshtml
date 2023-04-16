@@ -2,7 +2,7 @@
 @using Ticket_Hive.Data.Models;
 @model Ticket_Hive.UI.Pages.Member.BookingPageModel
 @{
-	bool showSearchResults = !string.IsNullOrEmpty(Model.search);
+	
 }
 <nav class="navbar navbar-expand-sm">
 	<a asp-page="./Home" class="btn btn-primary me-1">Home</a>
@@ -151,7 +151,7 @@
 	}
 
 	// Function to get all event data from API
-	function getEvents(search) {
+	function getEvents() {
 		fetch("/api/events").then(res => res.json()).then(data => {
 			allEvents = data;
 			displayData(allEvents);
@@ -202,10 +202,10 @@
 		/// <summary>
 		//Makes it possible to click the events name to go that events info page
 		/// </summary>
-		let eventDivs = document.querySelectorAll(".event-name");
-		eventDivs.forEach(function (div) {
-			div.addEventListener("click", function () {
-				let eventId = this.getAttribute("data-id");
+		let eventCards = document.querySelectorAll(".event-card");
+		eventCards.forEach(function (card) {
+			card.addEventListener("click", function () {
+				let eventId = this.querySelector(".event-name").getAttribute("data-id");
 				window.location.href = "/member/evenemang?id=" + eventId;
 			});
 		});
