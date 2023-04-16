@@ -1,7 +1,6 @@
 ﻿@page
 @using Ticket_Hive.Data.Models;
 @model Ticket_Hive.UI.Pages.Member.BookingPageModel
-@model
 @{
 	bool showSearchResults = !string.IsNullOrEmpty(Model.search);
 }
@@ -74,7 +73,6 @@
 		flex-wrap: wrap;
 		max-height: calc(100vh - 250px); 
 		overflow-y: auto;
-		justify-content: space-between;
 	}
 
 	.event-card {
@@ -89,7 +87,7 @@
 }
 
 .event-card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+			box-shadow: 0 8px 16px 0 #305076;
 }
 
 .event-card h2.event-name {
@@ -125,22 +123,51 @@
     margin: 1em;
 }
 
+#sort-button, #sortprice-button {
+  display: inline-block;
+  margin-left: 10px; /* optional: add some space between the buttons */
+  background-color: #305076;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 
 
 	.searchbar-size {
 		width: 500px;
 		height: 50px;
 		text-size-adjust: auto;
+		padding: 0 10px;
+		font-size: 35px;	}
+
+	.button-container {
+		display: flex;
+		gap: 10px;
+		margin-top: 10px;
 	}
+
+		.button-container button {
+			background-color: #305076;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			padding: 10px 20px;
+			font-size: 16px;
+			cursor: pointer;
+		}
 
 </style>
 
 
 <input class="searchbar-size" id="search-bar" type="text">
-<div><button id="sort-button">Sort by Name</button></div>
-<div><button id="sortprice-button">Sort by Price</button></div>
-@*<div><button id="sortdate-button">Sort by Date</button></div>
-*@<div id="output"></div>
+<div class="button-container">
+	<button id="sort-button">Sort by Name</button>
+	<button id="sortprice-button">Sort by Price</button>
+</div>
+<div id="output"></div>	
 
 
 <script>
@@ -177,10 +204,7 @@
 		displayData(allEvents);
 	}
 
-	//function sortDateEvents() {
-	//	allEvents.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
-	//	displayData(allEvents);
-	//}
+	
 
 	function filterEvents(e) {
 		let searchTerm = e.target.value.toLowerCase();
