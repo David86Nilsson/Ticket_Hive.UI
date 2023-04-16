@@ -125,7 +125,7 @@
 
 #sort-button, #sortprice-button {
   display: inline-block;
-  margin-left: 10px; /* optional: add some space between the buttons */
+  margin-left: 10px; 
   background-color: #305076;
   color: #fff;
   border: none;
@@ -186,42 +186,39 @@
 
 	sortButton.addEventListener("click", sortEvents);
 	sortPriceButton.addEventListener("click", sortPriceEvents);
-	//sortDateButton.addEventListener("click", sortDateEvents);
 
-	let searchParams = new URLSearchParams(window.location.search);
-	let searchTerm = searchParams.get('search');
+	
 
 	// Function calls
 	getEvents();
 
 	// Functions
+
+	// Function to sort events by name
 	function sortEvents() {
 		allEvents.sort((a, b) => a.name.localeCompare(b.name));
 		displayData(allEvents);
 	}
 
+	// Function to sort events by price
 	function sortPriceEvents() {
 		allEvents.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
 		displayData(allEvents);
 	}
 
-	
+	// Function to filter events based on search term
+	function filterEvents(e) {
+		let searchTerm = e.target.value.toLowerCase();
 
-	function filterEvents(searchTerm) {
-		let filteredEvents;
-		if (searchTerm) {
-			searchTerm = searchTerm.toLowerCase();
-			filteredEvents = allEvents.filter(event => {
-				if (event.name.toLowerCase().includes(searchTerm) || event.location.toLowerCase().includes(searchTerm) || event.eventType.toLowerCase().includes(searchTerm)) {
-					return true;
-				}
-			});
-		} else {
-			filteredEvents = allEvents;
-		}
+		let filteredEvents = allEvents.filter(e => {
+			if (e.name.toLowerCase().includes(searchTerm) || e.location.toLowerCase().includes(searchTerm) || e.eventType.toLowerCase().includes(searchTerm)) {
+				return true;
+			}
+		})
 		displayData(filteredEvents);
 	}
 
+	// Function to get all event data from API
 	function getEvents(search) {
 		fetch("/api/events").then(res => res.json()).then(data => {
 			allEvents = data;
@@ -229,6 +226,7 @@
 		});
 	}
 
+	// Function to display event data on the page
 	function displayData(events) {
 
 
@@ -236,6 +234,7 @@
 		output += '<div class="events-container">';
 		events.forEach(function (event) {
 			let eventDate = event.dateTime.substring(0, 16).replace("T", " ");
+			// Create a card for the event with its data and image as background
 			output += `
 							<div class="event-card p-3 m-2 border border-2 border-dark" style="background-image: url('${event.image}')">	
 									<h2 class="mb-2 event-name" data-id="${event.id}">${event.name}</h2>
@@ -263,7 +262,7 @@
 
 		document.getElementById('output').innerHTML = output;
 
-
+		//Makes it possible to click the events name to go that events info page
 		let eventDivs = document.querySelectorAll(".event-name");
 		eventDivs.forEach(function (div) {
 			div.addEventListener("click", function () {
