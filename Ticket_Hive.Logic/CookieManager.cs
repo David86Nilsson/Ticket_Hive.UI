@@ -25,6 +25,9 @@ namespace Ticket_Hive.Logic
             this.signInManager = signInManager;
             this.httpContext = httpContext;
         }
+        /// <summary>
+        /// Sets the shopping cart data to cookies for the current user.
+        /// </summary>
 
         public async Task SetShoppingCartToCookieAsync(ShoppingCartModel cart)
         {
@@ -48,6 +51,10 @@ namespace Ticket_Hive.Logic
             var cookieValue = JsonConvert.SerializeObject(cartCookieList);
             httpContext.Session.SetString("ShoppingCart", cookieValue);
         }
+
+        /// <summary>
+        /// Gets the shopping cart data from cookies for the current user.
+        /// </summary>
         public async Task<ShoppingCartModel?> GetShoppingCartFromCookieAsync()
         {
             AppUserModel? AppUser = null;

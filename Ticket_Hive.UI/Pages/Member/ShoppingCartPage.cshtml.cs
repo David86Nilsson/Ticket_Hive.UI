@@ -38,32 +38,47 @@ namespace Ticket_Hive.UI.Pages.Member
         {
             cookieManager.SetAttributesToCookieManager(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
             ShoppingCart = await cookieManager.GetShoppingCartFromCookieAsync();
+            foreach (BookingModel booking in ShoppingCart.Bookings)
+            {
+                booking.Event = await eventModelRepo.GetEventByIdAsync(booking.Event.Id);
+                if (booking.NbrOfTickets > eventManager.TicketsLeft(booking.Event))
+                {
+                    booking.NbrOfTickets = eventManager.TicketsLeft(booking.Event);
+                }
+            }
         }
+        /// <summary>
+        /// Saves bookings in users Shoopinglist to database
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostBuy()
         {
             cookieManager.SetAttributesToCookieManager(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);
             ShoppingCart = await cookieManager.GetShoppingCartFromCookieAsync();
-            // Remove bookings with 0 tickets
+            // Remove bookings with 0 tickets or if not enough tickets left in event
             var bookings = ShoppingCart.Bookings;
             for (int i = 0; i < ShoppingCart.Bookings.Count; i++)
             {
                 BookingModel booking = ShoppingCart.Bookings[i];
-                if (booking.NbrOfTickets == 0)
+                if (booking.NbrOfTickets == 0 || eventManager.TicketsLeft(await eventModelRepo.GetEventByIdAsync(booking.Event.Id)) < booking.NbrOfTickets)
                 {
                     ShoppingCart.Bookings.Remove(booking);
                 }
             }
-            //await cookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
             // Buy tickets and save to database
             if (ShoppingCart.Bookings.Count > 0)
             {
+                await cookieManager.SetShoppingCartToCookieAsync(ShoppingCart);
                 await eventManager.BuyTicketsAsync(ShoppingCart, bookingRepo, eventModelRepo, appUserModelRepo, ShoppingCart.User);
                 return RedirectToPage("/Member/ConfirmationPage");
             }
-            //comment
             return Page();
         }
 
+        /// <summary>
+        /// Updates the quantity of tickets in the shopping cart to Cookie
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostCookie()
         {
             cookieManager.SetAttributesToCookieManager(appUserModelRepo, eventModelRepo, bookingRepo, signInManager, HttpContext);

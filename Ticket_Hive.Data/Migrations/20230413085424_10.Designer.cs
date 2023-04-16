@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ticket_Hive.Data;
 
@@ -11,9 +12,11 @@ using Ticket_Hive.Data;
 namespace Ticket_Hive.Data.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    partial class EventDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230413085424_10")]
+    partial class _10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,9 +147,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 1,
                             Capacity = 100,
-
                             DateTime = new DateTime(2023, 4, 23, 10, 54, 24, 830, DateTimeKind.Local).AddTicks(53),
-
                             EventType = "Nightclub",
                             Image = "/Images/EventImages/image 1",
                             Location = "Lund",
@@ -158,9 +159,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 2,
                             Capacity = 300,
-
                             DateTime = new DateTime(2023, 4, 18, 10, 54, 24, 830, DateTimeKind.Local).AddTicks(120),
-
                             EventType = "Musical",
                             Image = "/Images/EventImages/image 2",
                             Location = "Malmö",
@@ -172,9 +171,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 3,
                             Capacity = 30000,
-
                             DateTime = new DateTime(2023, 5, 3, 10, 54, 24, 830, DateTimeKind.Local).AddTicks(124),
-
                             EventType = "Sport",
                             Image = "/Images/EventImages/image 3",
                             Location = "Stockholm",
@@ -186,9 +183,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 4,
                             Capacity = 20,
-
                             DateTime = new DateTime(2023, 4, 15, 10, 54, 24, 830, DateTimeKind.Local).AddTicks(128),
-
                             EventType = "Övrigt",
                             Image = "/Images/EventImages/image 4",
                             Location = "Halmstad",
@@ -200,9 +195,7 @@ namespace Ticket_Hive.Data.Migrations
                         {
                             Id = 5,
                             Capacity = 10,
-
                             DateTime = new DateTime(2023, 5, 8, 10, 54, 24, 830, DateTimeKind.Local).AddTicks(132),
-
                             EventType = "Sport",
                             Image = "/Images/EventImages/image 5",
                             Location = "Köpenhamn",

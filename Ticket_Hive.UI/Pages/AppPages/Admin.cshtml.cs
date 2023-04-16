@@ -13,18 +13,17 @@ namespace Ticket_Hive.UI.Pages.AppPages
 
         [Required(ErrorMessage = "Please enter a name")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "Please enter a capacity")]
         public int Capacity { get; set; }
         [Required(ErrorMessage = "Please enter a location")]
         public string Location { get; set; }
         [Required(ErrorMessage = "Please enter an event type")]
         public string EventType { get; set; }
+        [Required(ErrorMessage = "Please Choose a date")]
         public DateTime DateTime { get; set; }
+        public TimeSpan EventTime { get; set; }
+        [Required(ErrorMessage = "Please choose a ticketprice")]
         public decimal Price { get; set; }
-        public int Year { get; set; }
-        public int Month { get; set; }
-        public int Day { get; set; }
-        public int Hour { get; set; }
-        public int Minute { get; set; }
 
         public List<EventModel> Events;
 
@@ -36,11 +35,10 @@ namespace Ticket_Hive.UI.Pages.AppPages
         }
         public async Task OnGet()
         {
-            Year = DateTime.Now.Year;
-            Month = DateTime.Now.Month;
-            Day = DateTime.Now.Day;
-            Hour = DateTime.Now.Hour;
             Events = await eventModelRepo.GetAllEventsAsync();
+            Capacity = 1;
+            Price = 1;
+
         }
         public async Task<IActionResult> OnPostAdd()
         {
@@ -52,16 +50,12 @@ namespace Ticket_Hive.UI.Pages.AppPages
                     Capacity = Capacity,
                     Location = Location,
                     EventType = EventType,
-                    DateTime = new DateTime(Year, Month, Day, Hour, Minute, 0),
+                    DateTime = DateTime.Add(EventTime),
                     Price = Price,
                     Image = $"/Images/EventImages/image {new Random().Next(1, 10)}.png"
                 };
                 await eventModelRepo.AddEventAsync(newEvent);
             }
-            Year = DateTime.Now.Year;
-            Month = DateTime.Now.Month;
-            Day = DateTime.Now.Day;
-            Hour = DateTime.Now.Hour;
 
             Events = await eventModelRepo.GetAllEventsAsync();
 
@@ -71,14 +65,10 @@ namespace Ticket_Hive.UI.Pages.AppPages
         {
             await eventModelRepo.DeleteEventAsync(await eventModelRepo.GetEventByIdAsync(EventToDelete));
 
-            Year = DateTime.Now.Year;
-            Month = DateTime.Now.Month;
-            Day = DateTime.Now.Day;
-            Hour = DateTime.Now.Hour;
 
             Events = await eventModelRepo.GetAllEventsAsync();
 
-            return Page();
+            return RedirectToPage();
         }
     }
 }

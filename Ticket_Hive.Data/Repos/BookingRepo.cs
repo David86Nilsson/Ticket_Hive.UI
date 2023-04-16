@@ -51,5 +51,15 @@ namespace Ticket_Hive.Data.Repos
             }
             return false;
         }
+
+        public async Task<List<BookingModel>> GetConfirmedBookingsByUserNameAsync(string userName)
+        {
+            return await context.Bookings
+                .Include(b => b.Event)
+                .Include(b => b.User)
+                .Where(b => b.User.Username == userName)
+                .ToListAsync();
+        }
+
     }
 }

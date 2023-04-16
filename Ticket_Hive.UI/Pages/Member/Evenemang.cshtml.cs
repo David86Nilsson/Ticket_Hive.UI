@@ -92,7 +92,7 @@ namespace Ticket_Hive.UI.Pages.Member
                 ShoppingCart = await CookieManager.GetShoppingCartFromCookieAsync();
             }
 
-            if (AppUser != null && EventToShow != null && ShoppingCart != null && Tickets < TicketsLeft)
+            if (AppUser != null && EventToShow != null && ShoppingCart != null && Tickets <= TicketsLeft)
             {
 
                 // Check if evnt is already booked
@@ -114,11 +114,6 @@ namespace Ticket_Hive.UI.Pages.Member
                 return RedirectToPage("/Member/Home");
             }
             return Page();
-        }
-
-        private void GetData()
-        {
-
         }
     }
 }

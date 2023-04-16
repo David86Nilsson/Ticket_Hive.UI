@@ -57,7 +57,7 @@ namespace Ticket_Hive.Data
                     Price = 100m,
                     Capacity = 100,
                     TicketsSold = 0,
-                    Image = "/Images/EventImages/image 1"
+                    Image = "/Images/EventImages/image 1.png"
                 },
                 new EventModel()
                 {
@@ -69,7 +69,7 @@ namespace Ticket_Hive.Data
                     Price = 200m,
                     Capacity = 300,
                     TicketsSold = 0,
-                    Image = "/Images/EventImages/image 2"
+                    Image = "/Images/EventImages/image 2.png"
                 },
                 new EventModel()
                 {
@@ -81,7 +81,7 @@ namespace Ticket_Hive.Data
                     Price = 500m,
                     Capacity = 30000,
                     TicketsSold = 0,
-                    Image = "/Images/EventImages/image 3"
+                    Image = "/Images/EventImages/image 3.png"
                 },
                 new EventModel()
                 {
@@ -93,7 +93,7 @@ namespace Ticket_Hive.Data
                     Price = 10m,
                     Capacity = 20,
                     TicketsSold = 20,
-                    Image = "/Images/EventImages/image 4"
+                    Image = "/Images/EventImages/image 4.png"
                 },
                 new EventModel()
                 {
@@ -105,8 +105,9 @@ namespace Ticket_Hive.Data
                     Price = 25m,
                     Capacity = 10,
                     TicketsSold = 0,
-                    Image = "/Images/EventImages/image 5"
+                    Image = "/Images/EventImages/image 5.png"
                 }
+
              );
         }
 

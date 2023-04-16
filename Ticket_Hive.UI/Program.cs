@@ -18,7 +18,11 @@ builder.Services.AddRazorPages(options =>
 
     options.Conventions.AuthorizeFolder("/Member");
 });
+
 builder.Services.AddControllers();
+
+builder.Services.AddAuthentication();
+
 
 // Add services to the container.
 var UserconnectionString = builder.Configuration.GetConnectionString("UserDbConnectionstring") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -93,8 +97,8 @@ using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider()
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Home";
-    options.AccessDeniedPath = "/AppPages/SignIn";
+    options.LoginPath = "/SignIn";
+    options.AccessDeniedPath = "/SignIn";
 });
 
 
@@ -124,6 +128,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
