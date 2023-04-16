@@ -175,10 +175,13 @@
 	let allEvents;
 
 	// Selectors
-	let searchBar = document.querySelector("#search-bar");
+	let searchInput = document.querySelector("#search-bar");
 	let sortButton = document.querySelector("#sort-button");
 	let sortPriceButton = document.querySelector("#sortprice-button");
 	let sortDateButton = document.querySelector("#sortdate-button")
+
+	let searchParams = new URLSearchParams(window.location.search);
+	let searchTerm = searchParams.get("search");
 
 
 	// Event listeners
@@ -187,11 +190,12 @@
 	sortButton.addEventListener("click", sortEvents);
 	sortPriceButton.addEventListener("click", sortPriceEvents);
 
-	
+	searchInput.value = searchTerm;
+
 
 	// Function calls
 	getEvents();
-
+	filterEvents({ target: searchInput });
 	// Functions
 
 	// Function to sort events by name
