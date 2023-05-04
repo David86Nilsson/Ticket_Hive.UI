@@ -151,7 +151,7 @@
 	/// </summary>
 
 	function filterEvents(e) {
-		let searchTerm = e.target.value.toLowerCase();
+		let searchTerm = e.target.value ? e.target.value.toLowerCase() : "";
 
 		let filteredEvents = allEvents.filter(e => {
 			if (e.name.toLowerCase().includes(searchTerm) || e.location.toLowerCase().includes(searchTerm) || e.eventType.toLowerCase().includes(searchTerm)) {
